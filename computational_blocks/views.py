@@ -6,8 +6,8 @@ from django.http import (
     JsonResponse
 )
 
-from computational_blocks.technical_analysis.mappings import INDICATORS
-from computational_blocks.technical_analysis.main import run
+from computational_blocks.blocks.technical_analysis.mappings import INDICATORS
+from computational_blocks.blocks.technical_analysis.main import run
 
 # Create your views here.
 
