@@ -16,6 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+import computational_blocks.views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    path('COMPUTATIONAL_BLOCK/1/indicators', computational_blocks.views.get_indicators),
+    path('COMPUTATIONAL_BLOCK/1/<indicator_name>/fields', computational_blocks.views.get_indiciator_fields),
+    path('COMPUTATIONAL_BLOCK/1/run', computational_blocks.views.post_run)
 ]
