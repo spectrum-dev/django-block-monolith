@@ -1,50 +1,55 @@
 import pandas as pd
 from datetime import datetime
 
-# TODO: How to convert this to support n "streams"
 def main(df):
     response = []
 
+    # TODO: Support more than two line segments
+
     # Segment Layout
-    segment_series_one = [[0, 0], [0, 0]]
-    segment_series_two = [[0, 0], [0, 0]]
-    
+    # Creates n segments, depending on the number of data keys
+    segments = []
+    for i in range(len(list(df.keys()))):
+        segments.append([[0, 0], [0, 0]])
+
     i = 0
     for index, row in df.iterrows():
         numerical_index = datetime.strptime(index, '%Y-%m-%d').timestamp()
 
         if (i == 0):
-            segment_series_one[0][0] = numerical_index
-            segment_series_one[0][1] = row["streamOne"]
-
-            segment_series_two[0][0] = numerical_index
-            segment_series_two[0][1] = row["streamTwo"]
-
+            segment_index = 0
+            for data in row:
+                segments[segment_index][0][0] = numerical_index
+                segments[segment_index][0][1] = data
+                segment_index += 1
+            
             response.append(False)
         else:
-            # Assign the second parameter
-            segment_series_one[1][0] = numerical_index
-            segment_series_one[1][1] = row["streamOne"]
+            segment_index = 0
+            for data in row:
+                segments[segment_index][1][0] = numerical_index
+                segments[segment_index][1][1] = data
+                segment_index += 1
+            
+            print ("Segments: ", segments)
 
-            segment_series_two[1][0] = numerical_index
-            segment_series_two[1][1] = row["streamTwo"]
-        
-            is_intersect = intersects(segment_series_one, segment_series_two)
+            # TODO: Check Intersection Here
+            is_intersect = intersect_aggregator(segments)
 
+            # TODO: Append the correct response from the intersection here
             if (response[i-1] == True):
                 response.append(False)
             else:
                 response.append(is_intersect)
 
-            # Moves initial value to next value
-            segment_series_one[0][0] = numerical_index
-            segment_series_one[0][1] = row["streamOne"]
-
-            segment_series_two[0][0] = numerical_index
-            segment_series_two[0][1] = row["streamTwo"]
+            segment_index = 0
+            for data in row:
+                segments[segment_index][0][0] = numerical_index
+                segments[segment_index][0][1] = data
+                segment_index += 1
 
         i += 1
-        
+    
     return df[response]
 
 # check if r lies on (p,q)
@@ -81,3 +86,33 @@ def intersects(seg1, seg2):
     if o4 == 0 and on_segment(p2, q2, q1) : return True
 
     return False
+
+def intersect_aggregator(segments):
+    """
+        Takes in a list of segments and checks if all segments intersect with one another
+
+        Attributes
+        ----------
+        segments: List of segments
+    """
+
+    # TODO: Generate list of all pairs with unique elements from the list
+    pairs = []
+
+    i = 0
+    j = i + 1
+    while i < len(segments):
+        j = i + 1
+        while j < len(segments):
+            pairs.append((segments[i], segments[j]))
+            j += 1
+        i += 1
+
+    intersect_boolean = True
+    
+    for pair in pairs:
+        intersect_pair = intersects(pair[0], pair[1])
+
+        intersect_boolean = intersect_boolean and intersect_pair
+
+    return intersect_boolean

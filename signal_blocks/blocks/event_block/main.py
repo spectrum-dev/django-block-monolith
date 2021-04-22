@@ -1,3 +1,6 @@
+import pandas as pd
+from functools import reduce
+
 from signal_blocks.blocks.event_block.events.main import handle_intersect, handle_not_implemented
 
 def run(input, computational_block):
@@ -16,13 +19,13 @@ def run(input, computational_block):
     # Dictionary of supported events
     EVENT_MAP = {
         "INTERSECT": handle_intersect(computational_block_df),
-        "NOT_IMPLEMENTED": handle_not_implemented(event_type)
+        "NOT_IMPLEMENTED": handle_not_implemented(input["event_type"])
     }
     
     # TODO: Should potentially raise an error here?
     response_df = EVENT_MAP.get(input["event_type"], "NOT_IMPLEMENTED")
 
-    return _format_response(response_df)
+    return _format_response(input["event_action"], response_df)
 
 def _format_request(data):
     df_list = []

@@ -1,7 +1,7 @@
 import logging
 import pandas as pd
 
-from signal_blocks.blocks.event_block.events.intersect import main
+from signal_blocks.blocks.event_block.events.intersect import main, main_v2
 
 def handle_intersect(computational_block_df):
     """
@@ -12,6 +12,7 @@ def handle_intersect(computational_block_df):
         df: 
     """
     response = main(computational_block_df)
+
     return response
 
 def handle_not_implemented(event_type):
