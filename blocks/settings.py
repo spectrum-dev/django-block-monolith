@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'data_blocks',
     'computational_blocks',
     'signal_blocks',
     'strategy_blocks',

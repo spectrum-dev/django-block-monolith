@@ -9,6 +9,9 @@ from strategy_blocks.blocks.backtest.main import run
 
 # Create your views here.
 
+# Backtest (Strategy Block with ID 1)
+# --------------------------------------------------
+
 def post_run(request):
     request_body = json.loads(request.body)
     
