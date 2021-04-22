@@ -1,7 +1,7 @@
 import logging
 import pandas as pd
 
-from signal_blocks.blocks.event_block.events.intersect import main, main_v2
+from signal_blocks.blocks.event_block.events.intersect import main
 
 def handle_intersect(computational_block_df):
     """
