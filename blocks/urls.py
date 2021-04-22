@@ -18,6 +18,7 @@ from django.urls import path
 
 import computational_blocks.views
 import signal_blocks.views
+import strategy_blocks.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +30,6 @@ urlpatterns = [
     path('SIGNAL_BLOCK/1/eventTypes', signal_blocks.views.get_event_types),
     path('SIGNAL_BLOCK/1/eventActions', signal_blocks.views.get_event_actions),
     path('SIGNAL_BLOCK/1/run', signal_blocks.views.post_run),
+
+    path('STRATEGY_BLOCK/1/run', signal_blocks.views.post_run),
 ]
