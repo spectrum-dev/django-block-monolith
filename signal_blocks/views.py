@@ -1,8 +1,11 @@
+import json
 from django.shortcuts import render
 
 from django.http import (
     JsonResponse
 )
+
+from signal_blocks.blocks.event_block.main import run
 
 # Create your views here.
 
@@ -30,4 +33,11 @@ def get_event_actions(request):
     JsonResponse(response)
 
 def post_run(request):
-    pass
+    """
+        Runs the event block
+    """
+    request_body = json.loads(request.body)
+    
+    response = run(request_body["input"], request_body["output"])
+
+    return JsonResponse(response)
