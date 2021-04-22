@@ -1,5 +1,6 @@
 from django.test import TestCase, Client
 
+from strategy_blocks.blocks.backtest.main import run
 # Create your tests here.
 class BacktestBlock(TestCase):
     def test_backtest(self):
@@ -11,7 +12,7 @@ class BacktestBlock(TestCase):
                 "stop_loss": 0.1,
                 "take_profit": 0.1,
                 "trade_amount_value": 10.00,
-                "trade-amount_unit": "PERCENTAGE"
+                "trade_amount_unit": "PERCENTAGE"
             },
             "output": {
                 "DATA_BLOCK-1-1": [
@@ -51,3 +52,8 @@ class BacktestBlock(TestCase):
                 ]
             },
         }
+
+        port_vals, trades = run(request_payload["input"], request_payload["output"]["DATA_BLOCK-1-1"], request_payload["output"]["SIGNAL_BLOCK-1-1"])
+        
+        assert port_vals == [{'value': 10000.0, 'timestamp': '01/01/2020'}, {'value': 8995.150000000009, 'timestamp': '01/02/2020'}, {'value': 18085.15000000001, 'timestamp': '01/03/2020'}]
+        assert trades == [{'date': '01/02/2020', 'symbol': 'close', 'order': 'BUY', 'monetary_amount': 100000.0, 'trade_id': '', 'stop_loss': '', 'take_profit': '', 'shares': 9090, 'cash_value': 100989.9}]

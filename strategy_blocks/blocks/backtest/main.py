@@ -14,7 +14,7 @@ def run(input, data_block, signal_block):
         signal_block: Signal Block from output
     """
     data_block_df = _generate_data_block_df(data_block)
-    signal_block_df = _generate_signals_df(signal_block)
+    signal_block_df = _generate_signal_block_df(signal_block)
     trades_df = _generate_trades_df(input, signal_block_df)
 
     # TODO: Implement the marketsim
@@ -78,7 +78,7 @@ def _generate_trades_df(input, signal_block_df):
     elif (input["trade_amount_unit"] == "NOMINAL"):
         trade_amount = input["trade_amount_value"]
     else:
-        raise ValueError(f"The unit {input["trade_amount_unit"]} is not valid")
+        raise ValueError(f"The unit {input['trade_amount_unit']} is not valid")
 
     for index, row in signal_block_df.iterrows():
         if row["buy"]:

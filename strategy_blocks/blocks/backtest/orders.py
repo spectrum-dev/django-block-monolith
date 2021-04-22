@@ -1,4 +1,4 @@
-
+import pandas as pd
 class Orders:
     def __init__(self):
         self.trades_df = pd.DataFrame(columns=[
@@ -23,7 +23,7 @@ class Orders:
             'date': date,
             'symbol': symbol,
             'order': 'BUY',
-            'monetary_amount': amount,
+            'monetary_amount': monetary_amount,
             'trade_id': trade_id,
             'stop_loss': stop_loss,
             'take_profit': take_profit
@@ -47,7 +47,7 @@ class Orders:
             'date': date,
             'symbol': symbol,
             'order': 'SELL',
-            'monetary_amount': amount,
+            'monetary_amount': monetary_amount,
             'trade_id': trade_id,
             'stop_loss': stop_loss,
             'take_profit': take_profit

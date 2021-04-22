@@ -29,7 +29,7 @@ def post_run(request):
             data_block = output[key]
             break
 
-    port_vals, trades = run(request, data_block, signal_block)
+    port_vals, trades = run(input, data_block, signal_block)
 
     response = {
         "response": {

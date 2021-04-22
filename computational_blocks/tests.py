@@ -4,7 +4,7 @@ from computational_blocks.blocks.technical_analysis.main import run
 from computational_blocks.data.technical_analysis import DATA_BLOCK 
 
 class TechnicalAnalysisBlock(TestCase):
-    def test_compute_ma():
+    def test_compute_ma(self):
         input = {
             "short_name": "MA",
             "indicator_name": "MA",

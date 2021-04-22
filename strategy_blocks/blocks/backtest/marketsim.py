@@ -2,7 +2,7 @@ import math
 import numpy as np
 import pandas as pd
 
-def compute_portvals(
+def run(
     orders_df, price_df, start_val, commission, impact
 ):
     if (orders_df is not None):
