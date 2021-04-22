@@ -19,6 +19,7 @@ from django.urls import path
 import computational_blocks.views
 import signal_blocks.views
 import strategy_blocks.views
+import data_blocks.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,4 +33,8 @@ urlpatterns = [
     path('SIGNAL_BLOCK/1/run', signal_blocks.views.post_run),
 
     path('STRATEGY_BLOCK/1/run', signal_blocks.views.post_run),
+
+    path('DATA_BLOCK/1/equityTypes', data_blocks.views.get_equity_regions),
+    path('DATA_BLOCK/1/equityRegions', data_blocks.views.get_equity_regions),
+    path('DATA_BLOCK/1/run', data_blocks.views.post_run),
 ]
