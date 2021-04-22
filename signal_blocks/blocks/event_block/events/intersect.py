@@ -14,13 +14,15 @@ def main(df):
 
     i = 0
     for index, row in df.iterrows():
+        # TODO: Make this more generic as it accomodates the data block format
+        index = index.split("T")[0]
         numerical_index = datetime.strptime(index, '%Y-%m-%d').timestamp()
 
         if (i == 0):
             segment_index = 0
             for data in row:
                 segments[segment_index][0][0] = numerical_index
-                segments[segment_index][0][1] = data
+                segments[segment_index][0][1] = float(data)
                 segment_index += 1
             
             response.append(False)
@@ -28,15 +30,11 @@ def main(df):
             segment_index = 0
             for data in row:
                 segments[segment_index][1][0] = numerical_index
-                segments[segment_index][1][1] = data
+                segments[segment_index][1][1] = float(data)
                 segment_index += 1
             
-            print ("Segments: ", segments)
-
-            # TODO: Check Intersection Here
             is_intersect = intersect_aggregator(segments)
 
-            # TODO: Append the correct response from the intersection here
             if (response[i-1] == True):
                 response.append(False)
             else:
@@ -45,7 +43,7 @@ def main(df):
             segment_index = 0
             for data in row:
                 segments[segment_index][0][0] = numerical_index
-                segments[segment_index][0][1] = data
+                segments[segment_index][0][1] = float(data)
                 segment_index += 1
 
         i += 1

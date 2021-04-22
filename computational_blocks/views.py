@@ -52,4 +52,4 @@ def post_run(request):
     
     response = run(input, data_block)
 
-    return JsonResponse(response)
+    return JsonResponse({"response": response})

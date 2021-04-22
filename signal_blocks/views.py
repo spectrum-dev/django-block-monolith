@@ -39,5 +39,5 @@ def post_run(request):
     request_body = json.loads(request.body)
     
     response = run(request_body["input"], request_body["output"])
-
-    return JsonResponse(response)
+    
+    return JsonResponse({"response": response})

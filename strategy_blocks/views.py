@@ -29,7 +29,7 @@ def post_run(request):
     for key in output.keys():
         key_breakup = key.split("-")
         if key_breakup[0] == "SIGNAL_BLOCK":
-            data_block = output[key]
+            signal_block = output[key]
             break
 
     port_vals, trades = run(input, data_block, signal_block)
