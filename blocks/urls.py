@@ -40,5 +40,6 @@ urlpatterns = [
 
     path('DATA_BLOCK/1/equityTypes', data_blocks.views.get_equity_regions),
     path('DATA_BLOCK/1/equityRegions', data_blocks.views.get_equity_regions),
+    path('DATA_BLOCK/1/searchTicker', data_blocks.views.get_search_equity_name),
     path('DATA_BLOCK/1/run', data_blocks.views.post_run),
 ]

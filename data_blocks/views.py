@@ -5,7 +5,7 @@ from django.http import (
     JsonResponse
 )
 
-from data_blocks.blocks.equity_data_block.main import run
+from data_blocks.blocks.equity_data_block.main import run, search_equity
 
 # Create your views here.
 
@@ -26,6 +26,18 @@ def get_equity_regions(request):
     """
     response_payload = [ "US" ]
     return JsonResponse({"response": response_payload})
+
+def get_search_equity_name(request):
+    """
+        Get list of search results for equity names based on
+        requested keyword
+    """
+    request_body = json.loads(request.body)
+    keyword = request_body["keyword"]
+
+    response = search_equity(keyword)
+
+    return JsonResponse(response)
 
 def post_run(request):
     """
