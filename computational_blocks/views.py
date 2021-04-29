@@ -20,9 +20,11 @@ def get_indicators(request):
         "response": list(INDICATORS.keys())
     }
 
-    JsonResponse(response)
+    return JsonResponse(response)
 
-def get_indiciator_fields(request, indicator_name):
+def get_indiciator_fields(request):
+    indicator_name = request.GET.get('indicatorName', None)
+
     indicator_information = INDICATORS.get(indicator_name)
 
     if indicator_information:

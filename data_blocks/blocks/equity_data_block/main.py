@@ -1,5 +1,6 @@
 from data_blocks.blocks.equity_data_block.alpha_vantage import get_ticker_data
 
+
 def run(input):
     """
         Runs a query to get the equity data

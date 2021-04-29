@@ -20,7 +20,7 @@ def get_event_types(request):
         "response": ["INTERSECT"]
     }
     
-    JsonResponse(response)
+    return JsonResponse(response)
 
 def get_event_actions(request):
     """
@@ -30,7 +30,7 @@ def get_event_actions(request):
         "response": ["BUY"]
     }
 
-    JsonResponse(response)
+    return JsonResponse(response)
 
 def post_run(request):
     """

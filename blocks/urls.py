@@ -27,18 +27,20 @@ import data_blocks.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
-    path('COMPUTATIONAL_BLOCK/1/indicators', computational_blocks.views.get_indicators),
-    path('COMPUTATIONAL_BLOCK/1/<indicator_name>/fields', computational_blocks.views.get_indiciator_fields),
+
+    path('DATA_BLOCK/1/equityName', data_blocks.views.get_equity_name),
+    path('DATA_BLOCK/1/dataType', data_blocks.views.get_data_type),
+    path('DATA_BLOCK/1/interval', data_blocks.views.get_interval),
+    path('DATA_BLOCK/1/outputSize', data_blocks.views.get_output_size),
+    path('DATA_BLOCK/1/run', data_blocks.views.post_run),
+
+    path('COMPUTATIONAL_BLOCK/1/indicator', computational_blocks.views.get_indicators),
+    path('COMPUTATIONAL_BLOCK/1/indicatorField', computational_blocks.views.get_indiciator_fields),
     path('COMPUTATIONAL_BLOCK/1/run', computational_blocks.views.post_run),
 
-    path('SIGNAL_BLOCK/1/eventTypes', signal_blocks.views.get_event_types),
-    path('SIGNAL_BLOCK/1/eventActions', signal_blocks.views.get_event_actions),
+    path('SIGNAL_BLOCK/1/eventType', signal_blocks.views.get_event_types),
+    path('SIGNAL_BLOCK/1/eventAction', signal_blocks.views.get_event_actions),
     path('SIGNAL_BLOCK/1/run', signal_blocks.views.post_run),
 
     path('STRATEGY_BLOCK/1/run', strategy_blocks.views.post_run),
-
-    path('DATA_BLOCK/1/equityTypes', data_blocks.views.get_equity_regions),
-    path('DATA_BLOCK/1/equityRegions', data_blocks.views.get_equity_regions),
-    path('DATA_BLOCK/1/run', data_blocks.views.post_run),
 ]
