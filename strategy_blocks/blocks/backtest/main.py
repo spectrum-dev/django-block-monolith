@@ -18,7 +18,7 @@ def run(input, data_block, signal_block):
     trades_df = _generate_trades_df(input, signal_block_df)
 
     # TODO: Implement the marketsim
-    port_vals, trades_df = run_marketsim(trades_df, data_block_df, input["start_value"], input["commission"], input["impact"])
+    port_vals, trades_df = run_marketsim(trades_df, data_block_df, float(input["start_value"]), float(input["commission"]), float(input["impact"]))
 
     # Generates Responses
     port_vals = _generate_port_vals_response(port_vals)
@@ -72,13 +72,16 @@ def _generate_trades_df(input, signal_block_df):
         signal_block_df: The DataFrame of signals generated earlier
     """
     orders = Orders()
-    
-    if (input["trade_amount_unit"] == "PERCENTAGE"):
-        trade_amount = input["start_value"] * input["trade_amount_value"]
-    elif (input["trade_amount_unit"] == "NOMINAL"):
-        trade_amount = input["trade_amount_value"]
-    else:
-        raise ValueError(f"The unit {input['trade_amount_unit']} is not valid")
+
+    #  TODO: Do we want a dropdown for the trade_amount_unit, and if so need to uncomment this logic
+    # if (input["trade_amount_unit"] == "PERCENTAGE"):
+    #     trade_amount = input["start_value"] * input["trade_amount_value"]
+    # elif (input["trade_amount_unit"] == "NOMINAL"):
+    #     trade_amount = input["trade_amount_value"]
+    # else:
+    #     raise ValueError(f"The unit {input['trade_amount_unit']} is not valid")
+
+    trade_amount = float(input["start_value"]) * float(input["trade_amount_value"])
 
     for index, row in signal_block_df.iterrows():
         if row["buy"]:

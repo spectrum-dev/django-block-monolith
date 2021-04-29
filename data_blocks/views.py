@@ -49,8 +49,6 @@ def post_run(request):
         Runs a data querying process against data source's API
     """
     request_body = json.loads(request.body)
-    print("Request Body")
-    print(request_body)
 
     input = request_body["input"]
 

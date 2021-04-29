@@ -32,10 +32,14 @@ def calculate_indicator(
         data_block_df: Incoming Data from Flow in Pandas Form
     """
     # Retrieves function name of indicator being calculated
-    function_name = INDICATORS[input["short_name"]]["functionName"]
+    # TODO: Delete this if confirm not required
+    # function_name = INDICATORS[input["short_name"]]["functionName"]
+    function_name = INDICATORS[input["indicator_name"]]["functionName"]
+
 
     # Removes key from payload passed into run function
-    input.pop("short_name", None)
+    # TODO: Delete this if confirm not required
+    # input.pop("short_name", None)
     input.pop("indicator_name", None)
 
     # Assembles a python function in string form to be executed
