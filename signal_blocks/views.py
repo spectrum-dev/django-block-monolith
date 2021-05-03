@@ -27,7 +27,7 @@ def get_event_actions(request):
         Retrieves a list of supported event actions
     """
     response = {
-        "response": ["BUY"]
+        "response": ["BUY", "SELL"]
     }
 
     return JsonResponse(response)
