@@ -41,7 +41,7 @@ def get_output_size(request):
     """
         Gets supported output size
     """
-    response_payload = ["full"]
+    response_payload = ["compact", "full"]
     return JsonResponse({"response": response_payload})
 
 def post_run(request):
