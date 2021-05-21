@@ -5,7 +5,8 @@ from django.http import (
     JsonResponse
 )
 
-from data_blocks.blocks.equity_data_block.main import run
+from data_blocks.blocks.equity_data_block.main import run as equity_run
+from data_blocks.blocks.crypto_data_block.main import run as crpto_run
 
 # Create your views here.
 
@@ -44,7 +45,7 @@ def get_output_size(request):
     response_payload = ["compact", "full"]
     return JsonResponse({"response": response_payload})
 
-def post_run(request):
+def post_equity_run(request):
     """
         Runs a data querying process against data source's API
     """
@@ -55,7 +56,22 @@ def post_run(request):
     #  TODO: Added this for testing - should be remomved when date ranges are fixed
     input["start_date"] = ""
     input["end_date"] = ""
-
-    response = run(input)
+    response = equity_run(input)
 
     return JsonResponse(response)
+
+def post_crypto_run(request):
+    """
+        Runs a data querying process against data source's API
+    """
+    request_body = json.loads(request.body)
+
+    input = request_body["input"]
+
+    #  TODO: Added this for testing - should be remomved when date ranges are fixed
+    input["start_date"] = ""
+    input["end_date"] = ""
+    response = crpto_run(input)
+
+    return JsonResponse(response)
+    

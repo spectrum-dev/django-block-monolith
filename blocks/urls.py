@@ -32,7 +32,8 @@ urlpatterns = [
     path('DATA_BLOCK/1/dataType', data_blocks.views.get_data_type),
     path('DATA_BLOCK/1/interval', data_blocks.views.get_interval),
     path('DATA_BLOCK/1/outputSize', data_blocks.views.get_output_size),
-    path('DATA_BLOCK/1/run', data_blocks.views.post_run),
+    path('DATA_BLOCK/1/run', data_blocks.views.post_equity_run),
+    path('DATA_BLOCK/2/run', data_blocks.views.post_crypto_run),
 
     path('COMPUTATIONAL_BLOCK/1/indicator', computational_blocks.views.get_indicators),
     path('COMPUTATIONAL_BLOCK/1/indicatorField', computational_blocks.views.get_indiciator_fields),
