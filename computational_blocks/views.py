@@ -27,9 +27,27 @@ def get_indiciator_fields(request):
 
     indicator_information = INDICATORS.get(indicator_name)
 
+    response = []
+    for indicator in indicator_information['params']:
+        if "values" in indicator:
+            response.append({
+                "fieldName": indicator["name"],
+                "fieldType": "dropdown",
+                "fieldVariableName": indicator["internalName"],
+                "fieldData": {
+                    "options": indicator['values']
+                }
+            })
+        else:
+            response.append({
+                "fieldName": indicator["name"],
+                "fieldType": "slider",
+                "fieldVariableName": indicator["internalName"],
+            })
+
     if indicator_information:
         response = {
-            "response": indicator_information
+            "response": response
         }
     else:
         response = {

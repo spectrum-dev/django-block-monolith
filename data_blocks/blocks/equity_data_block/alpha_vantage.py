@@ -51,9 +51,8 @@ def get_ticker_data(ticker, data_type='intraday', interval='1min', outputsize='f
 def search_ticker(keyword):
     ts = TimeSeries(key=env("ALPHA_VANTAGE_API_KEY"), output_format='pandas')
     data, meta_data = ts.get_symbol_search(keywords=[keyword])
-    data = data.to_dict(orient="record")
-    response = {"bestMatches": data}
-    return response
+    data = data['1. symbol'].tolist()
+    return {"response": data}
 
 def get_company_overview(ticker):
     fd = FundamentalData(key=env("ALPHA_VANTAGE_API_KEY"), output_format='pandas')

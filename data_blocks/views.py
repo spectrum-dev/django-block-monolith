@@ -5,6 +5,8 @@ from django.http import (
     JsonResponse
 )
 
+from data_blocks.blocks.equity_data_block.alpha_vantage import search_ticker
+
 from data_blocks.blocks.equity_data_block.main import run
 
 # Create your views here.
@@ -18,8 +20,13 @@ def get_equity_name(request):
     """
         Gets a list of supported equity names (search)
     """
-    response_payload = ["AAPL"]
-    return JsonResponse({"response": response_payload})
+    ticker_fuzzy_name = request.GET.get("name")
+    if (ticker_fuzzy_name):
+        response = search_ticker(ticker_fuzzy_name)
+    else:
+        response = {'response': []}
+    
+    return JsonResponse(response)
 
 
 def get_data_type(request):
