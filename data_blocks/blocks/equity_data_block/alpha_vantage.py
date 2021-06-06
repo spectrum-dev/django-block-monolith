@@ -1,15 +1,12 @@
 import pandas as pd
+from os import environ
 
 from alpha_vantage.timeseries import TimeSeries
 from alpha_vantage.fundamentaldata import FundamentalData
 
-from blocks.settings import env
-
-# from app import settings
-
 def get_ticker_data(ticker, data_type='intraday', interval='1min', outputsize='full', start_date=None, end_date=None):
     # TODO: Swap out with AlphaVantage Key
-    ts = TimeSeries(key=env("ALPHA_VANTAGE_API_KEY"), output_format='pandas')
+    ts = TimeSeries(key=environ["ALPHA_VANTAGE_API_KEY"], output_format='pandas')
     data, meta_data = None, None
     if (data_type == "intraday"):
         data, meta_data = ts.get_intraday(ticker, interval=interval, outputsize=outputsize)
@@ -49,18 +46,18 @@ def get_ticker_data(ticker, data_type='intraday', interval='1min', outputsize='f
     return response_dict
 
 def search_ticker(keyword):
-    ts = TimeSeries(key=env("ALPHA_VANTAGE_API_KEY"), output_format='pandas')
+    ts = TimeSeries(key=environ["ALPHA_VANTAGE_API_KEY"], output_format='pandas')
     data, meta_data = ts.get_symbol_search(keywords=[keyword])
     data = data['1. symbol'].tolist()
     return {"response": data}
 
 def get_company_overview(ticker):
-    fd = FundamentalData(key=env("ALPHA_VANTAGE_API_KEY"), output_format='pandas')
+    fd = FundamentalData(key=environ["ALPHA_VANTAGE_API_KEY"], output_format='pandas')
     data, _ = fd.get_company_overview(ticker)
     return data.to_dict(orient="record")[0]
 
 def get_income_statement(ticker, time_period="annual"):
-    fd = FundamentalData(key=env("ALPHA_VANTAGE_API_KEY"), output_format='pandas')
+    fd = FundamentalData(key=environ["ALPHA_VANTAGE_API_KEY"], output_format='pandas')
     data = None
     if (time_period == "annual"):
         data, _ = fd.get_income_statement_annual(ticker)
@@ -72,7 +69,7 @@ def get_income_statement(ticker, time_period="annual"):
     return data.to_dict(orient="record")[0]
 
 def get_balance_sheet(ticker, time_period="annual"):
-    fd = FundamentalData(key=env("ALPHA_VANTAGE_API_KEY"), output_format='pandas')
+    fd = FundamentalData(key=environ["ALPHA_VANTAGE_API_KEY"], output_format='pandas')
     data = None
     if (time_period == "annual"):
         data, _ = fd.get_balance_sheet_annual(ticker)
@@ -84,7 +81,7 @@ def get_balance_sheet(ticker, time_period="annual"):
     return data.to_dict(orient="record")[0]
 
 def get_cash_flow(ticker, time_period="annual"):
-    fd = FundamentalData(key=env("ALPHA_VANTAGE_API_KEY"), output_format='pandas')
+    fd = FundamentalData(key=environ["ALPHA_VANTAGE_API_KEY"], output_format='pandas')
     data = None
     if (time_period == "annual"):
         data, _ = fd.get_cash_flow_annual(ticker)

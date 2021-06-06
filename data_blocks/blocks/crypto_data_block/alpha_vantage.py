@@ -1,15 +1,15 @@
 import pandas as pd
+from os import environ
 
 from alpha_vantage.cryptocurrencies import CryptoCurrencies
 from alpha_vantage.fundamentaldata import FundamentalData
 
-from blocks.settings import env
 
 # from app import settings
 
 def get_crypto_data(symbol, data_type='intraday', start_date=None, end_date=None):
     # TODO: Swap out with AlphaVantage Key
-    crypto = CryptoCurrencies(key=env("ALPHA_VANTAGE_API_KEY"), output_format='pandas')
+    crypto = CryptoCurrencies(key=environ["ALPHA_VANTAGE_API_KEY"], output_format='pandas')
     data, meta_data = None, None
     if (data_type == "daily"):
         data, meta_data = crypto.get_digital_currency_daily(symbol=symbol, market='USD')
