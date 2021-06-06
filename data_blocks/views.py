@@ -1,9 +1,7 @@
 import json
 from django.shortcuts import render
 
-from django.http import (
-    JsonResponse
-)
+from django.http import JsonResponse
 
 from data_blocks.blocks.equity_data_block.main import run as equity_run
 from data_blocks.blocks.crypto_data_block.main import run as crpto_run
@@ -20,11 +18,11 @@ def get_equity_name(request):
         Gets a list of supported equity names (search)
     """
     ticker_fuzzy_name = request.GET.get("name")
-    if (ticker_fuzzy_name):
+    if ticker_fuzzy_name:
         response = search_ticker(ticker_fuzzy_name)
     else:
-        response = {'response': []}
-    
+        response = {"response": []}
+
     return JsonResponse(response)
 
 
@@ -43,12 +41,14 @@ def get_interval(request):
     response_payload = ["1min"]
     return JsonResponse({"response": response_payload})
 
+
 def get_output_size(request):
     """
         Gets supported output size
     """
     response_payload = ["compact", "full"]
     return JsonResponse({"response": response_payload})
+
 
 def post_equity_run(request):
     """
@@ -65,6 +65,7 @@ def post_equity_run(request):
 
     return JsonResponse(response)
 
+
 def post_crypto_run(request):
     """
         Runs a data querying process against data source's API
@@ -79,4 +80,3 @@ def post_crypto_run(request):
     response = crpto_run(input)
 
     return JsonResponse(response)
-    

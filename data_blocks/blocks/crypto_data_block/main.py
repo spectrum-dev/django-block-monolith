@@ -10,6 +10,11 @@ def run(input):
         input: The input payload
     """
     print("I AM HERE")
-    response = get_crypto_data(input["symbol"], data_type=input["data_type"], start_date=input["start_date"], end_date=input["end_date"])
+    response = get_crypto_data(
+        input["symbol"],
+        data_type=input["data_type"],
+        start_date=input["start_date"],
+        end_date=input["end_date"],
+    )
 
     return response

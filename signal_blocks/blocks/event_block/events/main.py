@@ -3,6 +3,7 @@ import pandas as pd
 
 from signal_blocks.blocks.event_block.events.intersect import main
 
+
 def handle_intersect(computational_block_df):
     """
         Handles the intersection between multiple indicators
@@ -14,6 +15,7 @@ def handle_intersect(computational_block_df):
     response = main(computational_block_df)
 
     return response
+
 
 def handle_not_implemented(event_type):
     """

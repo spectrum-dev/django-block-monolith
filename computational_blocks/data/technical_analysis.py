@@ -6,7 +6,7 @@ DATA_BLOCK = [
         "high": "10.00",
         "low": "10.00",
         "close": "10.00",
-        "volume": "10.00"
+        "volume": "10.00",
     },
     {
         "timestamp": "01/02/2020",
@@ -15,7 +15,7 @@ DATA_BLOCK = [
         "high": "11.00",
         "low": "11.00",
         "close": "11.00",
-        "volume": "11.00"
+        "volume": "11.00",
     },
     {
         "timestamp": "01/03/2020",
@@ -24,7 +24,7 @@ DATA_BLOCK = [
         "high": "12.00",
         "low": "12.00",
         "close": "12.00",
-        "volume": "12.00"
+        "volume": "12.00",
     },
     {
         "timestamp": "01/02/2020",
@@ -33,7 +33,7 @@ DATA_BLOCK = [
         "high": "13.00",
         "low": "13.00",
         "close": "13.00",
-        "volume": "13.00"
+        "volume": "13.00",
     },
     {
         "timestamp": "01/03/2020",
@@ -42,7 +42,6 @@ DATA_BLOCK = [
         "high": "14.00",
         "low": "14.00",
         "close": "14.00",
-        "volume": "14.00"
-    }
+        "volume": "14.00",
+    },
 ]
-

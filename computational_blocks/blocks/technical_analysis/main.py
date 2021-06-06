@@ -1,8 +1,8 @@
-
 import json
 
 from computational_blocks.blocks.technical_analysis.momentum import *
 from computational_blocks.blocks.technical_analysis.mappings import INDICATORS
+
 
 def run(input, data_block):
     """
@@ -17,9 +17,9 @@ def run(input, data_block):
     response = calculate_indicator(input, data_block_df)
     return _format_response(response)
 
+
 def calculate_indicator(
-    input,
-    data_block_df,
+    input, data_block_df,
 ):
     """
         Provided the form input and data that needs to be processed,
@@ -36,7 +36,6 @@ def calculate_indicator(
     # function_name = INDICATORS[input["short_name"]]["functionName"]
     function_name = INDICATORS[input["indicator_name"]]["functionName"]
 
-
     # Removes key from payload passed into run function
     # TODO: Delete this if confirm not required
     # input.pop("short_name", None)
@@ -46,11 +45,11 @@ def calculate_indicator(
     i = 0
     parameters = "(data_block=data_block_df, "
     for k, v in input.items():
-        if (i == len(input.keys()) - 1):
+        if i == len(input.keys()) - 1:
             parameters += f"{k}='{v}'"
         else:
             parameters += f"{k}='{v}', "
-        
+
         i += 1
     parameters += ")"
 
@@ -58,6 +57,7 @@ def calculate_indicator(
     response = eval(f"{function_name}{parameters}")
 
     return response
+
 
 def _format_request(request_json):
     """
@@ -69,13 +69,14 @@ def _format_request(request_json):
 
     return request_df
 
+
 def _format_response(response_df):
     """
         Helper method to format response
     """
-    response_df.index.name = 'timestamp'
-    response_df.name = 'data'
-    response_json = response_df.reset_index().to_json(orient='records')
+    response_df.index.name = "timestamp"
+    response_df.name = "data"
+    response_json = response_df.reset_index().to_json(orient="records")
     response_json = json.loads(response_json)
 
     return response_json

@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from data_blocks.blocks.equity_data_block.main import run
+
 # Create your tests here.
 class EquityDataBlock(TestCase):
     def test_get_intraday_data(self):
@@ -13,7 +14,7 @@ class EquityDataBlock(TestCase):
                 "start_date": "",
                 "end_date": "",
             },
-            "output": {}
+            "output": {},
         }
 
         response = run(request_payload["input"])
@@ -29,13 +30,13 @@ class EquityDataBlock(TestCase):
                 "interval": "1min",
                 "outputsize": "full",
                 "start_date": "2020-01-01",
-                "end_date": "2021-01-01"
+                "end_date": "2021-01-01",
             },
-            "output": {}
+            "output": {},
         }
 
         response = run(request_payload["input"])
 
-        print (response)
+        print(response)
 
         assert False
