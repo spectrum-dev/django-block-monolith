@@ -1,7 +1,7 @@
 name: Run CI Tests
 on:
   push:
-    branches: [ master ]
+    branches: [ master, fix/ci ]
   pull_request:
     branches: [ master ]
 
@@ -41,7 +41,7 @@ jobs:
 
     - name: Runs tests
       run: |
-        docker-compose run -e DATABASE_NAME="postgres" -e DATABASE_USER="postgres" -e DATABASE_PASSWORD="postgres" -e DATABASE_HOST="127.0.0.1" -e DATABASE_PORT=${{ matrix.db_port }} -e ALPHA_VANTAGE_API_KEY= ${{ secrets.ALPHA_VANTAGE_API_KEY }} test
+        docker-compose run -e DATABASE_NAME="postgres" -e DATABASE_USER="postgres" -e DATABASE_PASSWORD="postgres" -e DATABASE_HOST="127.0.0.1" -e DATABASE_PORT=${{ matrix.db_port }} -e ALPHA_VANTAGE_API_KEY=${{ secrets.ALPHA_VANTAGE_API_KEY }} test
     
     - name: Run Lint
       run: |
