@@ -3,8 +3,10 @@ from django.shortcuts import render
 
 from django.http import JsonResponse
 
+from data_blocks.blocks.equity_data_block.alpha_vantage import search_ticker
 from data_blocks.blocks.equity_data_block.main import run as equity_run
 from data_blocks.blocks.crypto_data_block.main import run as crpto_run
+
 
 # Create your views here.
 
