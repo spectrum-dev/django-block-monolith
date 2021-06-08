@@ -39,7 +39,7 @@ def get_indiciator_fields(request):
             response.append(
                 {
                     "fieldName": indicator["name"],
-                    "fieldType": "slider",
+                    "fieldType": "input",
                     "fieldVariableName": indicator["internalName"],
                 }
             )
