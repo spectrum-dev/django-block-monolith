@@ -26,7 +26,7 @@ def get_indiciator_fields(request):
 
     if not indicator_information:
         return JsonResponse({"error": f"The indicator {indicator_name} was not found"})
-    
+
     response = []
     for indicator in indicator_information["params"]:
         if "values" in indicator:
@@ -48,6 +48,7 @@ def get_indiciator_fields(request):
             )
 
     return JsonResponse({"response": response})
+
 
 # Runner
 def post_run(request):

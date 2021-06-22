@@ -5,14 +5,15 @@ from data_blocks.blocks.equity_data.main import run
 
 # Create your tests here.
 
+
 class GetEquityName(TestCase):
     @responses.activate
     def test_ok(self):
-        ticker_name = 'GOOG'
+        ticker_name = "GOOG"
 
         responses.add(
-            responses.GET, 
-            f'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={ticker_name}&apikey=demo&datatype=json',
+            responses.GET,
+            f"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={ticker_name}&apikey=demo&datatype=json",
             json={
                 "bestMatches": [
                     {
@@ -24,7 +25,7 @@ class GetEquityName(TestCase):
                         "6. marketClose": "16:00",
                         "7. timezone": "UTC-04",
                         "8. currency": "USD",
-                        "9. matchScore": "1.0000"
+                        "9. matchScore": "1.0000",
                     },
                     {
                         "1. symbol": "BAB",
@@ -35,77 +36,63 @@ class GetEquityName(TestCase):
                         "6. marketClose": "16:00",
                         "7. timezone": "UTC-04",
                         "8. currency": "USD",
-                        "9. matchScore": "0.8000"
-                    }
+                        "9. matchScore": "0.8000",
+                    },
                 ],
-            }, status=200
+            },
+            status=200,
         )
 
-        response = self.client.get(f'/DATA_BLOCK/1/equityName?name={ticker_name}')
+        response = self.client.get(f"/DATA_BLOCK/1/equityName?name={ticker_name}")
 
-        self.assertEqual(
-            response.json(),
-            {'response': ['BA', 'BAB']}
-        )
+        self.assertEqual(response.json(), {"response": ["BA", "BAB"]})
 
     @responses.activate
     def test_empty_input(self):
-        ticker_name = ''
-        
-        response = self.client.get(f'/DATA_BLOCK/1/equityName?name={ticker_name}')
-        
-        self.assertEqual(
-            response.json(),
-            {'response': []}
-        )
-    
+        ticker_name = ""
+
+        response = self.client.get(f"/DATA_BLOCK/1/equityName?name={ticker_name}")
+
+        self.assertEqual(response.json(), {"response": []})
+
     @responses.activate
     def test_not_found(self):
         responses.add(
-            responses.GET, 
-            f'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=Ticker%20Name%20DNE&apikey=demo&datatype=json',
-            json={
-                "bestMatches": [],
-            }, status=200
+            responses.GET,
+            f"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=Ticker%20Name%20DNE&apikey=demo&datatype=json",
+            json={"bestMatches": [],},
+            status=200,
         )
 
-        response = self.client.get(f'/DATA_BLOCK/1/equityName?name=Ticker Name DNE')
-        
-        self.assertEqual(
-            response.json(),
-            {'response': []}
-        )
+        response = self.client.get(f"/DATA_BLOCK/1/equityName?name=Ticker Name DNE")
+
+        self.assertEqual(response.json(), {"response": []})
 
     # TODO: It seems like there is no API limit
     def test_error_api_key_limit(self):
         pass
 
+
 class GetDataType(TestCase):
     def test_ok(self):
-        response = self.client.get('/DATA_BLOCK/1/dataType')
+        response = self.client.get("/DATA_BLOCK/1/dataType")
 
-        self.assertEqual(
-            response.json(),
-            {'response': ['intraday', 'daily_adjusted']}
-        )
+        self.assertEqual(response.json(), {"response": ["intraday", "daily_adjusted"]})
+
 
 class GetInterval(TestCase):
     def test_ok(self):
-        response = self.client.get('/DATA_BLOCK/1/interval')
+        response = self.client.get("/DATA_BLOCK/1/interval")
 
-        self.assertEqual(
-            response.json(),
-            {'response': ['1min']}
-        )
+        self.assertEqual(response.json(), {"response": ["1min"]})
+
 
 class OutputSize(TestCase):
     def test_ok(self):
-        response = self.client.get('/DATA_BLOCK/1/outputSize')
+        response = self.client.get("/DATA_BLOCK/1/outputSize")
 
-        self.assertEqual(
-            response.json(),
-            {'response': ['compact', 'full']}
-        )
+        self.assertEqual(response.json(), {"response": ["compact", "full"]})
+
 
 class PostRun(TestCase):
     # def test_get_intraday_data_ok(self):
@@ -118,12 +105,13 @@ class PostRun(TestCase):
     #     print (response.json())
 
     #     pass
-    
+
     def test_get_intraday_data_error_cannot_find_ticker(self):
         pass
 
     def test_get_intraday_data_invalid_payload(self):
         pass
+
 
 # class EquityDataBlock(TestCase):
 #     def test_get_intraday_data(self):

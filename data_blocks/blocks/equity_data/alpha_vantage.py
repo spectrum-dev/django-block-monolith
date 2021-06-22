@@ -61,7 +61,7 @@ def get_ticker_data(
 def search_ticker(keyword):
     ts = TimeSeries(key=environ["ALPHA_VANTAGE_API_KEY"], output_format="pandas")
     data, meta_data = ts.get_symbol_search(keywords=[keyword])
-    
+
     if data.empty:
         data = []
     else:

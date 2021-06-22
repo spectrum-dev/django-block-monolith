@@ -7,20 +7,18 @@ from signal_blocks.blocks.event_block.main import run
 
 class GetEventType(TestCase):
     def test_ok(self):
-        response = self.client.get('/SIGNAL_BLOCK/1/eventType')
+        response = self.client.get("/SIGNAL_BLOCK/1/eventType")
 
-        self.assertEqual(
-            response.json(),
-            {'response': ['INTERSECT']}
-        )
+        self.assertEqual(response.json(), {"response": ["INTERSECT"]})
+
+
 class GetEventAction(TestCase):
     def test_ok(self):
-        response = self.client.get('/SIGNAL_BLOCK/1/eventAction')
+        response = self.client.get("/SIGNAL_BLOCK/1/eventAction")
 
-        self.assertEqual(
-            response.json(),
-            {'response': ['BUY', 'SELL']}
-        )
+        self.assertEqual(response.json(), {"response": ["BUY", "SELL"]})
+
+
 class PostRun(TestCase):
     def test_intersect_event_two_outputs(self):
         request_payload = {
