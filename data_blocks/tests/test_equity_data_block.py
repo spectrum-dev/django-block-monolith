@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from data_blocks.blocks.equity_data_block.main import run
+from data_blocks.blocks.equity_data.main import run
 
 # Create your tests here.
 class EquityDataBlock(TestCase):

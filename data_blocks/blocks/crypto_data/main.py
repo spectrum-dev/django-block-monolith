@@ -1,4 +1,4 @@
-from data_blocks.blocks.crypto_data_block.alpha_vantage import get_crypto_data
+from data_blocks.blocks.crypto_data.alpha_vantage import get_crypto_data
 
 
 def run(input):

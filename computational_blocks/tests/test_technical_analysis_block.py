@@ -1,4 +1,4 @@
-from django.test import TestCase, Client
+from django.test import TestCase
 
 from computational_blocks.blocks.technical_analysis.main import run
 from computational_blocks.data.technical_analysis import DATA_BLOCK

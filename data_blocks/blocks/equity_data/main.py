@@ -1,4 +1,4 @@
-from data_blocks.blocks.equity_data_block.alpha_vantage import get_ticker_data
+from data_blocks.blocks.equity_data.alpha_vantage import get_ticker_data
 
 
 def run(input):
