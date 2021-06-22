@@ -3,8 +3,34 @@ from django.test import TestCase
 from computational_blocks.blocks.technical_analysis.main import run
 from computational_blocks.data.technical_analysis import DATA_BLOCK
 
+class GetIndicator(TestCase):
+    def test_ok(self):
+        response = self.client.get(f'/COMPUTATIONAL_BLOCK/1/indicator')
 
-class TechnicalAnalysisBlock(TestCase):
+        self.assertEqual(
+            response.json(),
+            {'response': ['MA', 'EMA', 'MACD', 'ADX', 'ADXR', 'APO', 'AROONOSC', 'BOP', 'CCI', 'CMO', 'DX', 'RSI']}
+        )
+class GetIndicatorField(TestCase):
+    def test_ok(self):
+        indicator_name = 'MA'
+        response = self.client.get(f'/COMPUTATIONAL_BLOCK/1/indicatorField?indicatorName={indicator_name}')
+
+        self.assertEqual(
+            response.json(),
+            {'response': [{'fieldName': 'Lookback Period', 'fieldType': 'input', 'fieldVariableName': 'lookback_period'}, {'fieldName': 'Lookback Unit', 'fieldType': 'dropdown', 'fieldVariableName': 'lookback_unit', 'fieldData': {'options': ['DATA_POINT']}}]}
+        )
+    
+    def test_error_not_found(self):
+        indicator_name = 'INDICATOR_DNE'
+        response = self.client.get(f'/COMPUTATIONAL_BLOCK/1/indicatorField?indicatorName={indicator_name}')
+
+        self.assertEqual(
+            response.json(),
+            {'error': 'The indicator INDICATOR_DNE was not found'}
+        )
+
+class PostRun(TestCase):
     def test_compute_ma(self):
         input = {
             "short_name": "MA",
