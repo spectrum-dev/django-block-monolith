@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.http import JsonResponse
 from django.middleware.csrf import get_token
 
 import computational_blocks.views
@@ -29,7 +28,7 @@ urlpatterns = [
     path("DATA_BLOCK/1/dataType", data_blocks.views.get_data_type),
     path("DATA_BLOCK/1/interval", data_blocks.views.get_interval),
     path("DATA_BLOCK/1/outputSize", data_blocks.views.get_output_size),
-    path("DATA_BLOCK/1/run", data_blocks.views.post_equity_run),
+    path("DATA_BLOCK/1/run", data_blocks.views.EquityRunView.as_view()),
     path("COMPUTATIONAL_BLOCK/1/indicator", computational_blocks.views.get_indicators),
     path(
         "COMPUTATIONAL_BLOCK/1/indicatorField",

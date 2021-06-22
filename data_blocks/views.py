@@ -2,6 +2,9 @@ import json
 
 from django.shortcuts import render
 from django.http import JsonResponse
+from rest_framework import serializers
+from rest_framework.views import APIView
+from enumchoicefield import ChoiceEnum, EnumChoiceField
 
 from data_blocks.blocks.equity_data.alpha_vantage import search_ticker
 from data_blocks.blocks.equity_data.main import run as equity_run
@@ -52,21 +55,48 @@ def get_output_size(request):
     return JsonResponse({"response": response_payload})
 
 
-def post_equity_run(request):
-    """
-    Runs a data querying process against data source's API
-    """
-    request_body = json.loads(request.body)
+class EquityRunView(APIView):
+    def post(self, request):
+        """
+            Runs a data querying process against data source's API
+        """
+        class DataType(ChoiceEnum):
+            intraday = "intraday"
+            daily_adjusted = "daily_adjusted"
+        
+        class Interval(ChoiceEnum):
+            one_minute = "1min"
+            five_minute = "5min"
+        
+        class OutputSize(ChoiceEnum):
+            compact = "compact"
+            full = "full"
+        
+        class InputSerializer(serializers.Serializer):
+            equity_name = serializers.CharField(max_length=10)
+            data_type = EnumChoiceField(enum_class=DataType)
+            interval = EnumChoiceField(enum_class=Interval)
+            outputsize = EnumChoiceField(enum_class=OutputSize)
+            start_date = serializers.DateTimeField()
+            end_date = serializers.DateTimeField()
 
-    input = request_body["input"]
+            def validate(self, data):
+                if data['start_date'] > data['end_date']:
+                    raise serializers.ValidationError("finish must occur after start")
+                return data
+        
+        request_body = json.loads(request.body)
 
-    #  TODO: Added this for testing - should be remomved when date ranges are fixed
-    input["start_date"] = ""
-    input["end_date"] = ""
-    response = equity_run(input)
+        input = request_body["input"]
+        if (InputSerializer(data=input).is_valid()):
+            #  TODO: Added this for testing - should be remomved when date ranges are fixed
+            input["start_date"] = ""
+            input["end_date"] = ""
+            response = equity_run(input)
 
-    return JsonResponse(response)
-
+            return JsonResponse(response)    
+        else:
+            return JsonResponse({'error': 'Validation Error'}, status=400)
 
 # Crypto Data (Data Block with ID 2)
 # -----------------------------------

@@ -105,7 +105,7 @@ class PostRun(TestCase):
             "input": {
                 "equity_name": "AAPL",
                 "data_type": "intraday",
-                "interval": "1min",
+                "interval": "3min",
                 "outputsize": "full",
                 "start_date": "2021-06-21 19:58:00",
                 "end_date": "2021-06-21 20:00:00",
