@@ -10,7 +10,15 @@ services:
     test:
         build: .
         command: python manage.py test
+        environment:
+            - ALPHA_VANTAGE_API_KEY=demo
+    test-coverage:
+        build: .
+        command: |
+            coverage run --omit='*/venv/*' manage.py test &&
+        environment:
+            - ALPHA_VANTAGE_API_KEY=demo
     test-lint:
         build: .
         command: python -m black . -t py38 --check
-        
+    

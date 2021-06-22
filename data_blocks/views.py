@@ -1,6 +1,6 @@
 import json
-from django.shortcuts import render
 
+from django.shortcuts import render
 from django.http import JsonResponse
 
 from data_blocks.blocks.equity_data.alpha_vantage import search_ticker
@@ -67,6 +67,9 @@ def post_equity_run(request):
 
     return JsonResponse(response)
 
+
+# Crypto Data (Data Block with ID 2)
+# -----------------------------------
 
 def post_crypto_run(request):
     """
