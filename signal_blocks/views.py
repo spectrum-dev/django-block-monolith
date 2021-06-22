@@ -13,7 +13,7 @@ from signal_blocks.blocks.event_block.main import run
 
 def get_event_types(request):
     """
-        Retrieves a list of supported event types
+    Retrieves a list of supported event types
     """
     response = {"response": ["INTERSECT"]}
 
@@ -22,7 +22,7 @@ def get_event_types(request):
 
 def get_event_actions(request):
     """
-        Retrieves a list of supported event actions
+    Retrieves a list of supported event actions
     """
     response = {"response": ["BUY", "SELL"]}
 
@@ -31,7 +31,7 @@ def get_event_actions(request):
 
 def post_run(request):
     """
-        Runs the event block
+    Runs the event block
     """
     request_body = json.loads(request.body)
 

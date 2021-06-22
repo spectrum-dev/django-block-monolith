@@ -17,16 +17,16 @@ class Orders:
 
     def buy(self, date, symbol, monetary_amount, trade_id, stop_loss, take_profit):
         """
-            Processes a BUY Request
+        Processes a BUY Request
 
-            Attributes
-            ----------
-            date            :       Date New Trade is Placed
-            symbol          :       Ticker of stock purchased
-            amount          :       Number of Shares Purchased
-            trade_id        :       Unique ID of Each Trade
-            stop_loss       :       Stop Loss Buffer for User
-            take_profit     :       Auto-Sell Price Level
+        Attributes
+        ----------
+        date            :       Date New Trade is Placed
+        symbol          :       Ticker of stock purchased
+        amount          :       Number of Shares Purchased
+        trade_id        :       Unique ID of Each Trade
+        stop_loss       :       Stop Loss Buffer for User
+        take_profit     :       Auto-Sell Price Level
         """
 
         self.trades_df = self.trades_df.append(
@@ -44,16 +44,16 @@ class Orders:
 
     def sell(self, date, symbol, monetary_amount, trade_id, stop_loss, take_profit):
         """
-            Processes a SELL Request
+        Processes a SELL Request
 
-            Attributes
-            ----------
-            date            :       Date New Trade is Placed
-            symbol          :       Ticker of stock purchased
-            amount          :       Number of Shares Purchased
-            trade_id        :       Unique ID of Each Trade
-            stop_loss       :       Stop Loss Buffer for User
-            take_profit     :       Auto-Sell Price Level
+        Attributes
+        ----------
+        date            :       Date New Trade is Placed
+        symbol          :       Ticker of stock purchased
+        amount          :       Number of Shares Purchased
+        trade_id        :       Unique ID of Each Trade
+        stop_loss       :       Stop Loss Buffer for User
+        take_profit     :       Auto-Sell Price Level
         """
 
         self.trades_df = self.trades_df.append(

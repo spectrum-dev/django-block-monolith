@@ -103,11 +103,11 @@ def intersects(seg1, seg2):
 
 def intersect_aggregator(segments):
     """
-        Takes in a list of segments and checks if all segments intersect with one another
+    Takes in a list of segments and checks if all segments intersect with one another
 
-        Attributes
-        ----------
-        segments: List of segments
+    Attributes
+    ----------
+    segments: List of segments
     """
 
     # TODO: Generate list of all pairs with unique elements from the list

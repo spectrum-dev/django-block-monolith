@@ -1,13 +1,13 @@
-from data_blocks.blocks.equity_data_block.alpha_vantage import get_ticker_data
+from data_blocks.blocks.equity_data.alpha_vantage import get_ticker_data
 
 
 def run(input):
     """
-        Runs a query to get the equity data
+    Runs a query to get the equity data
 
-        Attributes
-        ----------
-        input: The input payload
+    Attributes
+    ----------
+    input: The input payload
     """
 
     response = get_ticker_data(

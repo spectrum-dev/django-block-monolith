@@ -9,13 +9,13 @@ from signal_blocks.blocks.event_block.events.main import (
 
 def run(input, computational_block):
     """
-        Takes in elements from the form input and multiple COMPUTATIONAL_BLOCKS
-        to generates a series of events associated with that block
+    Takes in elements from the form input and multiple COMPUTATIONAL_BLOCKS
+    to generates a series of events associated with that block
 
-        Attributes
-        ----------
-        input: Form Inputs
-        computational_block: Time series data from a computational block
+    Attributes
+    ----------
+    input: Form Inputs
+    computational_block: Time series data from a computational block
     """
 
     computational_block_df = _format_request(computational_block)
