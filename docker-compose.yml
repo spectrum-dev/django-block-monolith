@@ -12,5 +12,5 @@ services:
         command: python manage.py test
     test-lint:
         build: .
-        command: python -m black . -t py38 
+        command: python -m black . -t py38 --check
         
