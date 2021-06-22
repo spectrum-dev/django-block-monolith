@@ -1,7 +1,7 @@
 name: Run CI Tests
 on:
   push:
-    branches: [ master, fix/ci ]
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -45,4 +45,4 @@ jobs:
     
     - name: Run Lint
       run: |
-        python -m black . -t py38 --check
+        docker-compose run test-lint

@@ -60,7 +60,9 @@ class GetEquityName(TestCase):
         responses.add(
             responses.GET,
             f"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=Ticker%20Name%20DNE&apikey=demo&datatype=json",
-            json={"bestMatches": [],},
+            json={
+                "bestMatches": [],
+            },
             status=200,
         )
 

@@ -15,7 +15,9 @@ INDICATORS = {
                 "name": "Lookback Unit",
                 "internalName": "lookback_unit",
                 "description": "",  # DESCRIPTIONS["lookbackUnit"],
-                "values": ["DATA_POINT",],
+                "values": [
+                    "DATA_POINT",
+                ],
             },
         ],
     },
@@ -34,7 +36,9 @@ INDICATORS = {
                 "name": "Lookback Unit",
                 "internalName": "lookback_unit",
                 "description": "",  # DESCRIPTIONS["lookbackUnit"],
-                "values": ["DATA_POINT",],
+                "values": [
+                    "DATA_POINT",
+                ],
             },
         ],
     },

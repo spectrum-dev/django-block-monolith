@@ -17,12 +17,12 @@ def moving_average(
     lookback_unit="DATA_POINT",
 ):
     """
-        Implementation of a simple moving average strategy with a variable
-        time period in the calculation
-        data_block          :   Data corresponding to price data
-        lookback_data_type  :   Data Type from Lookback
-        lookback_period     :   Time Period of Rolling Average
-        lookback_unit       :   Unit of How Looking Back
+    Implementation of a simple moving average strategy with a variable
+    time period in the calculation
+    data_block          :   Data corresponding to price data
+    lookback_data_type  :   Data Type from Lookback
+    lookback_period     :   Time Period of Rolling Average
+    lookback_unit       :   Unit of How Looking Back
     """
     rolling_average = (
         data_block[lookback_data_type].rolling(window=int(lookback_period)).mean()
@@ -38,11 +38,11 @@ def exponential_moving_average(
     lookback_unit="DATA_POINT",
 ):
     """
-        Implementation of an exponential moving average strategy with
-        a variable time period in the calculation
+    Implementation of an exponential moving average strategy with
+    a variable time period in the calculation
 
-        data                :   Data corresponding to price data
-        time_period         :   TBD
+    data                :   Data corresponding to price data
+    time_period         :   TBD
     """
 
     ema = EMA(data_block[lookback_data_type], timeperiod=int(lookback_period))
@@ -58,11 +58,11 @@ def macd(
     lookback_unit="DATA_POINT",
 ):
     """
-        Implementation of the moving average converdence divergence indicator
-        https://www.investopedia.com/terms/m/macd.asp
-        data_block                    :   Data corresponding to price data
-        lookback_period_one     :   TBD
-        lookback_period_two     :   TBD
+    Implementation of the moving average converdence divergence indicator
+    https://www.investopedia.com/terms/m/macd.asp
+    data_block                    :   Data corresponding to price data
+    lookback_period_one     :   TBD
+    lookback_period_two     :   TBD
     """
 
     macd = exponential_moving_average(

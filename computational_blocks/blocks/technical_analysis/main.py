@@ -6,12 +6,12 @@ from computational_blocks.blocks.technical_analysis.mappings import INDICATORS
 
 def run(input, data_block):
     """
-        Takes in elements from the form input, and a DATA_BLOCK to create a technical analysis signal
+    Takes in elements from the form input, and a DATA_BLOCK to create a technical analysis signal
 
-        Attributes
-        ----------
-        input: Form inputs provided in metadata
-        data_block: Data from a data_block stream
+    Attributes
+    ----------
+    input: Form inputs provided in metadata
+    data_block: Data from a data_block stream
     """
     data_block_df = _format_request(data_block)
     response = calculate_indicator(input, data_block_df)
@@ -19,17 +19,18 @@ def run(input, data_block):
 
 
 def calculate_indicator(
-    input, data_block_df,
+    input,
+    data_block_df,
 ):
     """
-        Provided the form input and data that needs to be processed,
-        this will form a stringified version of the python function
-        and execute the function
+    Provided the form input and data that needs to be processed,
+    this will form a stringified version of the python function
+    and execute the function
 
-        Attributes
-        ----------
-        input: Form Inputs
-        data_block_df: Incoming Data from Flow in Pandas Form
+    Attributes
+    ----------
+    input: Form Inputs
+    data_block_df: Incoming Data from Flow in Pandas Form
     """
     # Retrieves function name of indicator being calculated
     # TODO: Delete this if confirm not required
@@ -61,7 +62,7 @@ def calculate_indicator(
 
 def _format_request(request_json):
     """
-        Helper method to format request
+    Helper method to format request
     """
     request_df = pd.DataFrame(request_json)
     request_df = request_df.sort_values(by="timestamp")
@@ -72,7 +73,7 @@ def _format_request(request_json):
 
 def _format_response(response_df):
     """
-        Helper method to format response
+    Helper method to format response
     """
     response_df.index.name = "timestamp"
     response_df.name = "data"

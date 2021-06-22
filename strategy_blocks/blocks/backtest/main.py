@@ -6,13 +6,13 @@ from strategy_blocks.blocks.backtest.marketsim import run as run_marketsim
 
 def run(input, data_block, signal_block):
     """
-        Runs the backtest
+    Runs the backtest
 
-        Attributes
-        ----------
-        input: Form Input Values
-        data_block: Data Block from output
-        signal_block: Signal Block from output
+    Attributes
+    ----------
+    input: Form Input Values
+    data_block: Data Block from output
+    signal_block: Signal Block from output
     """
     data_block_df = _generate_data_block_df(data_block)
     signal_block_df = _generate_signal_block_df(signal_block)
@@ -36,12 +36,12 @@ def run(input, data_block, signal_block):
 
 def _generate_data_block_df(data_block):
     """
-        Generates a Data Block DF
+    Generates a Data Block DF
 
-        Attributes
-        ----------
-        
-        data_block: Incoming Data Block DF
+    Attributes
+    ----------
+
+    data_block: Incoming Data Block DF
     """
     data_block_df = pd.DataFrame(data_block)
     data_block_df = data_block_df.sort_values(by="timestamp")
@@ -52,11 +52,11 @@ def _generate_data_block_df(data_block):
 
 def _generate_signal_block_df(signal_block):
     """
-        Generates a dataframe for the signals
-        
-        Attributes
-        ----------
-        signal_block: Incoming Signal Block JSON
+    Generates a dataframe for the signals
+
+    Attributes
+    ----------
+    signal_block: Incoming Signal Block JSON
     """
     signal_block_df = pd.DataFrame(columns=["datetime", "buy", "sell"])
 
@@ -77,12 +77,12 @@ def _generate_signal_block_df(signal_block):
 
 def _generate_trades_df(input, signal_block_df):
     """
-        Generates the trades dataframe
+    Generates the trades dataframe
 
-        Attributes
-        ----------
-        input: Form Input
-        signal_block_df: The DataFrame of signals generated earlier
+    Attributes
+    ----------
+    input: Form Input
+    signal_block_df: The DataFrame of signals generated earlier
     """
     orders = Orders()
 
@@ -109,11 +109,11 @@ def _generate_trades_df(input, signal_block_df):
 
 def _generate_port_vals_response(port_vals):
     """
-        Generates JSON response from port_vals
+    Generates JSON response from port_vals
 
-        Attributes
-        ----------
-        port_vals: List of Portfolio Values
+    Attributes
+    ----------
+    port_vals: List of Portfolio Values
     """
     port_vals_df = port_vals.to_frame()
     port_vals_df = port_vals_df.rename(columns={0: "value"})
@@ -126,11 +126,11 @@ def _generate_port_vals_response(port_vals):
 
 def _generate_trades_df_response(trades_df):
     """
-        Generates JSON response from trades
+    Generates JSON response from trades
 
-        Attributes
-        ----------
-        trades_df: DataFrame of Trades
+    Attributes
+    ----------
+    trades_df: DataFrame of Trades
     """
     trades = trades_df.to_dict(orient="records")
 

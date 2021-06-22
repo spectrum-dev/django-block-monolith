@@ -17,7 +17,7 @@ from data_blocks.blocks.crypto_data.main import run as crpto_run
 # Dropdowns
 def get_equity_name(request):
     """
-        Gets a list of supported equity names (search)
+    Gets a list of supported equity names (search)
     """
     ticker_fuzzy_name = request.GET.get("name")
     if ticker_fuzzy_name:
@@ -30,7 +30,7 @@ def get_equity_name(request):
 
 def get_data_type(request):
     """
-        Gets list of data typed
+    Gets list of data typed
     """
     response_payload = ["intraday", "daily_adjusted"]
     return JsonResponse({"response": response_payload})
@@ -38,7 +38,7 @@ def get_data_type(request):
 
 def get_interval(request):
     """
-        Gets supported intervals
+    Gets supported intervals
     """
     response_payload = ["1min"]
     return JsonResponse({"response": response_payload})
@@ -46,7 +46,7 @@ def get_interval(request):
 
 def get_output_size(request):
     """
-        Gets supported output size
+    Gets supported output size
     """
     response_payload = ["compact", "full"]
     return JsonResponse({"response": response_payload})
@@ -54,7 +54,7 @@ def get_output_size(request):
 
 def post_equity_run(request):
     """
-        Runs a data querying process against data source's API
+    Runs a data querying process against data source's API
     """
     request_body = json.loads(request.body)
 
@@ -70,7 +70,7 @@ def post_equity_run(request):
 
 def post_crypto_run(request):
     """
-        Runs a data querying process against data source's API
+    Runs a data querying process against data source's API
     """
     request_body = json.loads(request.body)
 
