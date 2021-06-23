@@ -12,6 +12,9 @@ services:
         command: python manage.py test
         environment:
             - ALPHA_VANTAGE_API_KEY=demo
+    lint:
+        build: .
+        command: python -m black . -t py38
     test-coverage:
         build: .
         command: |

@@ -88,10 +88,11 @@ class EquityRunView(APIView):
         request_body = json.loads(request.body)
         input = request_body["input"]
 
+        response = {'response': []}
         if (InputSerializer(data=input).is_valid(raise_exception=True)):
             response = equity_run(input)
 
-            return JsonResponse(response)
+        return JsonResponse(response)
 
 # Crypto Data (Data Block with ID 2)
 # -----------------------------------

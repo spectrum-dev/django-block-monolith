@@ -14,7 +14,6 @@ def get_ticker_data(
     end_date=None,
 ):
     try:
-        # TODO: Swap out with AlphaVantage Key
         ts = TimeSeries(key=environ["ALPHA_VANTAGE_API_KEY"], output_format="pandas")
         data, meta_data = None, None
         if data_type == "intraday":
