@@ -1,7 +1,10 @@
 import json
-from django.shortcuts import render
+import enum
 
+from django.shortcuts import render
 from django.http import JsonResponse
+from rest_framework import serializers
+from rest_enumfield import EnumField
 
 from signal_blocks.blocks.event_block.main import run
 
@@ -33,8 +36,20 @@ def post_run(request):
     """
     Runs the event block
     """
+    class EventType(enum.Enum):
+        INTERSECT = "INTERSECT"
+    
+    class EventAction(enum.Enum):
+        BUY = "BUY"
+        SELL = "SELL"
+    class InputSerializer(serializers.Serializer):
+        event_type = EnumField(choices=EventType)
+        event_action = EnumField(choices=EventAction)
+
     request_body = json.loads(request.body)
 
-    response = run(request_body["input"], request_body["output"])
+    response = []
+    if InputSerializer(data=request["input"]).is_valid(raise_exception=True):
+        response = run(request_body["input"], request_body["output"])
 
     return JsonResponse({"response": response})
