@@ -197,8 +197,8 @@ class PostRun(TestCase):
                 "data_type": "daily_adjusted",
                 "interval": "1min",
                 "outputsize": "full",
-                "start_date": "2021-05-21 00:00:00",
-                "end_date": "2021-06-21 00:00:00",
+                "start_date": "2021-06-18 00:00:00",
+                "end_date": "2021-06-22 00:00:00",
             },
             "output": {},
         }
@@ -256,8 +256,8 @@ class PostRun(TestCase):
                 "data_type": "daily_adjusted",
                 "interval": "1min",
                 "outputsize": "full",
-                "start_date": "2021-05-21 00:00:00",
-                "end_date": "2021-06-21 00:00:00",
+                "start_date": "2021-06-18 00:00:00",
+                "end_date": "2021-06-22 00:00:00",
             },
             "output": {},
         }
@@ -285,8 +285,8 @@ class PostRun(TestCase):
                 "data_type": "daily_adjusted",
                 "interval": "1min",
                 "outputsize": "full",
-                "start_date": "2021-06-21 00:00:00",
-                "end_date": "2021-05-21 00:00:00",
+                "start_date": "2021-06-18 00:00:00",
+                "end_date": "2021-06-22 00:00:00",
             },
             "output": {},
         }
