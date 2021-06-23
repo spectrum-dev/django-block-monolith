@@ -1,15 +1,15 @@
 import json
 
+import enum
 from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework import serializers
 from rest_framework.views import APIView
-from enumchoicefield import ChoiceEnum, EnumChoiceField
+from rest_enumfield import EnumField
 
 from data_blocks.blocks.equity_data.alpha_vantage import search_ticker
 from data_blocks.blocks.equity_data.main import run as equity_run
 from data_blocks.blocks.crypto_data.main import run as crpto_run
-
 
 # Create your views here.
 
@@ -60,43 +60,38 @@ class EquityRunView(APIView):
         """
             Runs a data querying process against data source's API
         """
-        class DataType(ChoiceEnum):
-            intraday = "intraday"
-            daily_adjusted = "daily_adjusted"
+        class DataType(enum.Enum):
+            INTRADAY = "intraday"
+            DAILY_ADJUSTED = "daily_adjusted"
         
-        class Interval(ChoiceEnum):
-            one_minute = "1min"
-            five_minute = "5min"
+        class Interval(enum.Enum):
+            ONE_MINUTE = "1min"
+            FIVE_MINUTES = "5min"
         
-        class OutputSize(ChoiceEnum):
-            compact = "compact"
-            full = "full"
+        class OutputSize(enum.Enum):
+            COMPACT = "compact"
+            FULL = "full"
         
         class InputSerializer(serializers.Serializer):
-            equity_name = serializers.CharField(max_length=10)
-            data_type = EnumChoiceField(enum_class=DataType)
-            interval = EnumChoiceField(enum_class=Interval)
-            outputsize = EnumChoiceField(enum_class=OutputSize)
-            start_date = serializers.DateTimeField()
-            end_date = serializers.DateTimeField()
+            equity_name = serializers.CharField(max_length=10, required=True)
+            data_type = EnumField(choices=DataType)
+            interval = EnumField(choices=Interval)
+            outputsize = EnumField(choices=OutputSize)
+            start_date = serializers.DateTimeField(required=True)
+            end_date = serializers.DateTimeField(required=True)
 
             def validate(self, data):
                 if data['start_date'] > data['end_date']:
                     raise serializers.ValidationError("finish must occur after start")
                 return data
-        
+                    
         request_body = json.loads(request.body)
-
         input = request_body["input"]
-        if (InputSerializer(data=input).is_valid()):
-            #  TODO: Added this for testing - should be remomved when date ranges are fixed
-            input["start_date"] = ""
-            input["end_date"] = ""
+
+        if (InputSerializer(data=input).is_valid(raise_exception=True)):
             response = equity_run(input)
 
-            return JsonResponse(response)    
-        else:
-            return JsonResponse({'error': 'Validation Error'}, status=400)
+            return JsonResponse(response)
 
 # Crypto Data (Data Block with ID 2)
 # -----------------------------------

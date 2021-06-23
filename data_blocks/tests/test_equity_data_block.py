@@ -11,7 +11,7 @@ from data_blocks.blocks.equity_data.main import run
 class GetEquityName(TestCase):
     @responses.activate
     def test_ok(self):
-        ticker_name = "GOOG"
+        ticker_name = "BA"
 
         responses.add(
             responses.GET,
@@ -105,7 +105,7 @@ class PostRun(TestCase):
             "input": {
                 "equity_name": "AAPL",
                 "data_type": "intraday",
-                "interval": "3min",
+                "interval": "1min",
                 "outputsize": "full",
                 "start_date": "2021-06-21 19:58:00",
                 "end_date": "2021-06-21 20:00:00",
@@ -188,8 +188,45 @@ class PostRun(TestCase):
             response.json(),
             {'response': []}
         )
+    
+    def test_get_daily_adjusted_data_ok(self):
+        payload = {
+            "input": {
+                "equity_name": "AAPL",
+                "data_type": "daily_adjusted",
+                "interval": "1min",
+                "outputsize": "full",
+                "start_date": "2021-06-21 19:58:00",
+                "end_date": "2021-06-21 20:00:00",
+            },
+            "output": {},
+        }
+    @responses.activate
+    def test_get_daily_adjusted_data_error_cannot_find_ticker(self):
+        payload = {
+            "input": {
+                "equity_name": "TICKER_DNE",
+                "data_type": "daily_adjusted",
+                "outputsize": "full",
+                "start_date": "2021-06-21 19:58:00",
+                "end_date": "2021-06-21 20:00:00",
+            },
+            "output": {},
+        }
 
-    # TODO: Add this when DRF is installed and the serializer validation is set up
-    # https://stackoverflow.com/questions/44085153/how-to-validate-a-json-object-in-django
-    def test_get_intraday_data_invalid_payload(self):
-        pass
+        responses.add(
+            responses.GET,
+            f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=TICKER_DNE&outputsize=full&apikey=%22TROTOWG20AM6Z39Z%22&datatype=json",
+            json={
+                "Error Message": "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."
+            },
+            status=200,
+        )
+
+        response = self.client.post("/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json")
+
+        self.assertEqual(
+            response.json(),
+            {'response': []}
+        )
+
