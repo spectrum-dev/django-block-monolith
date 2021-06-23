@@ -47,7 +47,7 @@ class GetEquityName(TestCase):
 
         response = self.client.get(f"/DATA_BLOCK/1/equityName?name={ticker_name}")
 
-        self.assertEqual(response.json(), {"response": ["BA", "BAB"]})
+        self.assertDictEqual(response.json(), {"response": ["BA", "BAB"]})
 
     @responses.activate
     def test_empty_input(self):
@@ -55,7 +55,7 @@ class GetEquityName(TestCase):
 
         response = self.client.get(f"/DATA_BLOCK/1/equityName?name={ticker_name}")
 
-        self.assertEqual(response.json(), {"response": []})
+        self.assertDictEqual(response.json(), {"response": []})
 
     @responses.activate
     def test_not_found(self):
@@ -70,7 +70,7 @@ class GetEquityName(TestCase):
 
         response = self.client.get(f"/DATA_BLOCK/1/equityName?name=Ticker Name DNE")
 
-        self.assertEqual(response.json(), {"response": []})
+        self.assertDictEqual(response.json(), {"response": []})
 
     # TODO: It seems like there is no API limit
     def test_error_api_key_limit(self):
@@ -81,21 +81,21 @@ class GetDataType(TestCase):
     def test_ok(self):
         response = self.client.get("/DATA_BLOCK/1/dataType")
 
-        self.assertEqual(response.json(), {"response": ["intraday", "daily_adjusted"]})
+        self.assertDictEqual(response.json(), {"response": ["intraday", "daily_adjusted"]})
 
 
 class GetInterval(TestCase):
     def test_ok(self):
         response = self.client.get("/DATA_BLOCK/1/interval")
 
-        self.assertEqual(response.json(), {"response": ["1min"]})
+        self.assertDictEqual(response.json(), {"response": ["1min"]})
 
 
 class OutputSize(TestCase):
     def test_ok(self):
         response = self.client.get("/DATA_BLOCK/1/outputSize")
 
-        self.assertEqual(response.json(), {"response": ["compact", "full"]})
+        self.assertDictEqual(response.json(), {"response": ["compact", "full"]})
 
 
 class PostRun(TestCase):
@@ -154,7 +154,7 @@ class PostRun(TestCase):
 
         response = self.client.post("/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json")
         
-        self.assertEqual(
+        self.assertDictEqual(
             response.json(),
             {'response': [{'open': 132.38, 'high': 132.45, 'low': 132.38, 'close': 132.45, 'volume': 7165.0, 'timestamp': '2021-06-21T20:00:00.000000000'}, {'open': 132.39, 'high': 132.41, 'low': 132.38, 'close': 132.41, 'volume': 1212.0, 'timestamp': '2021-06-21T19:59:00.000000000'}]}
         )
@@ -184,7 +184,7 @@ class PostRun(TestCase):
 
         response = self.client.post("/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json")
 
-        self.assertEqual(
+        self.assertDictEqual(
             response.json(),
             {'response': []}
         )
@@ -243,9 +243,9 @@ class PostRun(TestCase):
 
         response = self.client.post("/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json")
 
-        self.assertEqual(
+        self.assertDictEqual(
             response.json(),
-            {'response': [{'open': 130.3, 'high': 132.41, 'low': 129.21, 'close': 132.3, 'volume': 79663316.0, 'timestamp': '2021-06-21T00:00:00.000000000'}, {'open': 130.71, 'high': 131.51, 'low': 130.24, 'close': 130.46, 'volume': 108953309.0, 'timestamp': '2021-06-18T00:00:00.000000000'}]}
+            {'response': [{'open': 132.13, 'high': 134.08, 'low': 131.62, 'close': 133.98, 'volume': 74783618.0, 'timestamp': '2021-06-22T00:00:00.000000000'}, {'open': 130.3, 'high': 132.41, 'low': 129.21, 'close': 132.3, 'volume': 79663316.0, 'timestamp': '2021-06-21T00:00:00.000000000'}]}
         )
 
     @responses.activate
@@ -273,7 +273,7 @@ class PostRun(TestCase):
 
         response = self.client.post("/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json")
 
-        self.assertEqual(
+        self.assertDictEqual(
             response.json(),
             {'response': []}
         )
@@ -285,8 +285,8 @@ class PostRun(TestCase):
                 "data_type": "daily_adjusted",
                 "interval": "1min",
                 "outputsize": "full",
-                "start_date": "2021-06-18 00:00:00",
-                "end_date": "2021-06-22 00:00:00",
+                "start_date": "2021-06-22 00:00:00",
+                "end_date": "2021-06-18 00:00:00",
             },
             "output": {},
         }
