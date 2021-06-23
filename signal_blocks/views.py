@@ -38,12 +38,14 @@ class PostRun(APIView):
         """
         Runs the event block
         """
+
         class EventType(enum.Enum):
             INTERSECT = "INTERSECT"
-        
+
         class EventAction(enum.Enum):
             BUY = "BUY"
             SELL = "SELL"
+
         class InputSerializer(serializers.Serializer):
             event_type = EnumField(choices=EventType)
             event_action = EnumField(choices=EventAction)
@@ -52,10 +54,17 @@ class PostRun(APIView):
 
         response = []
         InputSerializer(data=request_body["input"]).is_valid(raise_exception=True)
-        
-        if (len(request_body["output"].keys()) < 2):
-            raise serializers.ValidationError("You must pass in at least two different streams of data")
-        
+
+        if len(request_body["output"].keys()) < 2:
+            return JsonResponse(
+                {
+                    "non_field_errors": [
+                        "You must pass in at least two different streams of data"
+                    ]
+                },
+                status=400,
+            )
+
         response = run(request_body["input"], request_body["output"])
 
         return JsonResponse({"response": response})

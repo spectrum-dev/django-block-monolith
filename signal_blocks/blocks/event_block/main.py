@@ -20,9 +20,11 @@ def run(input, computational_block):
     computational_block_df = _format_request(computational_block)
 
     response_df = None
-    case = lambda x: x == input['event_type']
-    if case('INTERSECT'): response_df = handle_intersect(computational_block_df)
-    else: handle_not_implemented(input["event_type"])
+    case = lambda x: x == input["event_type"]
+    if case("INTERSECT"):
+        response_df = handle_intersect(computational_block_df)
+    else:
+        handle_not_implemented(input["event_type"])
 
     return _format_response(input["event_action"], response_df)
 
@@ -41,7 +43,7 @@ def _format_request(data):
 
 
 def _format_response(action, response_df):
-    response_df = response_df.reset_index(level='timestamp')
+    response_df = response_df.reset_index(level="timestamp")
     response_df["order"] = action
     response_df.drop(
         response_df.columns.difference(["timestamp", "order"]), 1, inplace=True

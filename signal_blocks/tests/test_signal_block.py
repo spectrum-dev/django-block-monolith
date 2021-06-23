@@ -40,10 +40,9 @@ class PostRun(TestCase):
         )
 
         self.assertDictEqual(
-            response.json(),
-            { 'response': [{"timestamp": "2020-01-02", "order": "BUY"}] }
+            response.json(), {"response": [{"timestamp": "2020-01-02", "order": "BUY"}]}
         )
-    
+
     def test_intersect_event_two_outputs_single_intersection_ok(self):
         payload = {
             "input": {"event_type": "INTERSECT", "event_action": "BUY"},
@@ -71,12 +70,17 @@ class PostRun(TestCase):
 
         self.assertDictEqual(
             response.json(),
-            { 'response': [{"timestamp": "2020-01-02", "order": "BUY"},  {'order': 'BUY', 'timestamp': '2020-01-04'}] }
+            {
+                "response": [
+                    {"timestamp": "2020-01-02", "order": "BUY"},
+                    {"order": "BUY", "timestamp": "2020-01-04"},
+                ]
+            },
         )
 
     def test_intersect_event_three_outputs_single_intersection_ok(self):
         payload = {
-            "input": {"event_type": "INTERSECT", "event_action": "BUY"},
+            "input": {"event_type": "INTERSECT", "event_action": "SELL"},
             "output": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
@@ -105,9 +109,9 @@ class PostRun(TestCase):
 
         self.assertDictEqual(
             response.json(),
-            { 'response': [{"timestamp": "2020-01-03", "order": "BUY"}] }
+            {"response": [{"timestamp": "2020-01-03", "order": "SELL"}]},
         )
-    
+
     def test_less_than_two_output_streams_error(self):
         payload = {
             "input": {"event_type": "INTERSECT", "event_action": "BUY"},
@@ -123,11 +127,15 @@ class PostRun(TestCase):
         response = self.client.post(
             "/SIGNAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
         )
-        
+
         self.assertEqual(
-            response.json(), 
-            {'non_field_errors': ['You must pass in at least two different streams of data']}
+            response.json(),
+            {
+                "non_field_errors": [
+                    "You must pass in at least two different streams of data"
+                ]
+            },
         )
-    
+
     def test_invalid_incoming_output_data_format(self):
         pass
