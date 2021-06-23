@@ -81,7 +81,9 @@ class GetDataType(TestCase):
     def test_ok(self):
         response = self.client.get("/DATA_BLOCK/1/dataType")
 
-        self.assertDictEqual(response.json(), {"response": ["intraday", "daily_adjusted"]})
+        self.assertDictEqual(
+            response.json(), {"response": ["intraday", "daily_adjusted"]}
+        )
 
 
 class GetInterval(TestCase):
@@ -123,7 +125,7 @@ class PostRun(TestCase):
                     "3. Last Refreshed": "2021-06-21 20:00:00",
                     "4. Interval": "1min",
                     "5. Output Size": "Full size",
-                    "6. Time Zone": "US/Eastern"
+                    "6. Time Zone": "US/Eastern",
                 },
                 "Time Series (1min)": {
                     "2021-06-21 20:00:00": {
@@ -131,32 +133,53 @@ class PostRun(TestCase):
                         "2. high": "132.4500",
                         "3. low": "132.3800",
                         "4. close": "132.4500",
-                        "5. volume": "7165"
+                        "5. volume": "7165",
                     },
                     "2021-06-21 19:59:00": {
                         "1. open": "132.3900",
                         "2. high": "132.4100",
                         "3. low": "132.3800",
                         "4. close": "132.4100",
-                        "5. volume": "1212"
+                        "5. volume": "1212",
                     },
                     "2021-06-21 19:58:00": {
                         "1. open": "132.4000",
                         "2. high": "132.4100",
                         "3. low": "132.4000",
                         "4. close": "132.4100",
-                        "5. volume": "1485"
+                        "5. volume": "1485",
                     },
-                }
+                },
             },
             status=200,
         )
 
-        response = self.client.post("/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json")
-        
+        response = self.client.post(
+            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+        )
+
         self.assertDictEqual(
             response.json(),
-            {'response': [{'open': 132.38, 'high': 132.45, 'low': 132.38, 'close': 132.45, 'volume': 7165.0, 'timestamp': '2021-06-21T20:00:00.000000000'}, {'open': 132.39, 'high': 132.41, 'low': 132.38, 'close': 132.41, 'volume': 1212.0, 'timestamp': '2021-06-21T19:59:00.000000000'}]}
+            {
+                "response": [
+                    {
+                        "open": 132.38,
+                        "high": 132.45,
+                        "low": 132.38,
+                        "close": 132.45,
+                        "volume": 7165.0,
+                        "timestamp": "2021-06-21T20:00:00.000000000",
+                    },
+                    {
+                        "open": 132.39,
+                        "high": 132.41,
+                        "low": 132.38,
+                        "close": 132.41,
+                        "volume": 1212.0,
+                        "timestamp": "2021-06-21T19:59:00.000000000",
+                    },
+                ]
+            },
         )
 
     @responses.activate
@@ -182,13 +205,12 @@ class PostRun(TestCase):
             status=200,
         )
 
-        response = self.client.post("/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json")
-
-        self.assertDictEqual(
-            response.json(),
-            {'response': []}
+        response = self.client.post(
+            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
         )
-    
+
+        self.assertDictEqual(response.json(), {"response": []})
+
     @responses.activate
     def test_get_daily_adjusted_data_ok(self):
         payload = {
@@ -207,12 +229,12 @@ class PostRun(TestCase):
             responses.GET,
             f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=AAPL&outputsize=full&apikey=demo&datatype=json",
             json={
-                 "Meta Data": {
+                "Meta Data": {
                     "1. Information": "Daily Prices (open, high, low, close) and Volumes",
                     "2. Symbol": "AAPL",
                     "3. Last Refreshed": "2021-06-22",
                     "4. Output Size": "Full size",
-                    "5. Time Zone": "US/Eastern"
+                    "5. Time Zone": "US/Eastern",
                 },
                 "Time Series (Daily)": {
                     "2021-06-22": {
@@ -220,32 +242,53 @@ class PostRun(TestCase):
                         "2. high": "134.0800",
                         "3. low": "131.6200",
                         "4. close": "133.9800",
-                        "5. volume": "74783618"
+                        "5. volume": "74783618",
                     },
                     "2021-06-21": {
                         "1. open": "130.3000",
                         "2. high": "132.4100",
                         "3. low": "129.2100",
                         "4. close": "132.3000",
-                        "5. volume": "79663316"
+                        "5. volume": "79663316",
                     },
                     "2021-06-18": {
                         "1. open": "130.7100",
                         "2. high": "131.5100",
                         "3. low": "130.2400",
                         "4. close": "130.4600",
-                        "5. volume": "108953309"
-                    }
-                }
+                        "5. volume": "108953309",
+                    },
+                },
             },
-            status=200
+            status=200,
         )
 
-        response = self.client.post("/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json")
+        response = self.client.post(
+            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+        )
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'open': 132.13, 'high': 134.08, 'low': 131.62, 'close': 133.98, 'volume': 74783618.0, 'timestamp': '2021-06-22T00:00:00.000000000'}, {'open': 130.3, 'high': 132.41, 'low': 129.21, 'close': 132.3, 'volume': 79663316.0, 'timestamp': '2021-06-21T00:00:00.000000000'}]}
+            {
+                "response": [
+                    {
+                        "open": 132.13,
+                        "high": 134.08,
+                        "low": 131.62,
+                        "close": 133.98,
+                        "volume": 74783618.0,
+                        "timestamp": "2021-06-22T00:00:00.000000000",
+                    },
+                    {
+                        "open": 130.3,
+                        "high": 132.41,
+                        "low": 129.21,
+                        "close": 132.3,
+                        "volume": 79663316.0,
+                        "timestamp": "2021-06-21T00:00:00.000000000",
+                    },
+                ]
+            },
         )
 
     @responses.activate
@@ -271,12 +314,11 @@ class PostRun(TestCase):
             status=200,
         )
 
-        response = self.client.post("/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json")
-
-        self.assertDictEqual(
-            response.json(),
-            {'response': []}
+        response = self.client.post(
+            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
         )
+
+        self.assertDictEqual(response.json(), {"response": []})
 
     def test_get_stock_data_end_date_preceeds_start_date(self):
         payload = {
@@ -291,9 +333,10 @@ class PostRun(TestCase):
             "output": {},
         }
 
-        response = self.client.post("/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json")
+        response = self.client.post(
+            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+        )
 
         self.assertEqual(
-            response.json(),
-            {'non_field_errors': ['finish must occur after start']}
+            response.json(), {"non_field_errors": ["finish must occur after start"]}
         )

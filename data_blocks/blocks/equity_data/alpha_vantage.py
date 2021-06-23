@@ -57,10 +57,10 @@ def get_ticker_data(
         response_dict = {"response": data.to_dict(orient="records")}
         return response_dict
     except ValueError:
-        return {'response': []}
+        return {"response": []}
     except Exception as e:
-        print ('Error: ', e)
-        return {'response': []}
+        print("Error: ", e)
+        return {"response": []}
 
 
 def search_ticker(keyword):

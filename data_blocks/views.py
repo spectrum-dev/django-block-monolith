@@ -58,20 +58,21 @@ def get_output_size(request):
 class EquityRunView(APIView):
     def post(self, request):
         """
-            Runs a data querying process against data source's API
+        Runs a data querying process against data source's API
         """
+
         class DataType(enum.Enum):
             INTRADAY = "intraday"
             DAILY_ADJUSTED = "daily_adjusted"
-        
+
         class Interval(enum.Enum):
             ONE_MINUTE = "1min"
             FIVE_MINUTES = "5min"
-        
+
         class OutputSize(enum.Enum):
             COMPACT = "compact"
             FULL = "full"
-        
+
         class InputSerializer(serializers.Serializer):
             equity_name = serializers.CharField(max_length=10, required=True)
             data_type = EnumField(choices=DataType)
@@ -81,21 +82,23 @@ class EquityRunView(APIView):
             end_date = serializers.DateTimeField(required=True)
 
             def validate(self, data):
-                if data['start_date'] > data['end_date']:
+                if data["start_date"] > data["end_date"]:
                     raise serializers.ValidationError("finish must occur after start")
                 return data
-                    
+
         request_body = json.loads(request.body)
         input = request_body["input"]
 
-        response = {'response': []}
-        if (InputSerializer(data=input).is_valid(raise_exception=True)):
+        response = {"response": []}
+        if InputSerializer(data=input).is_valid(raise_exception=True):
             response = equity_run(input)
 
         return JsonResponse(response)
 
+
 # Crypto Data (Data Block with ID 2)
 # -----------------------------------
+
 
 def post_crypto_run(request):
     """
