@@ -1,12 +1,15 @@
 import json
-from django.shortcuts import render
 
+import enum
+from django.shortcuts import render
 from django.http import JsonResponse
+from rest_framework import serializers
+from rest_framework.views import APIView
+from rest_enumfield import EnumField
 
 from data_blocks.blocks.equity_data.alpha_vantage import search_ticker
 from data_blocks.blocks.equity_data.main import run as equity_run
 from data_blocks.blocks.crypto_data.main import run as crpto_run
-
 
 # Create your views here.
 
@@ -52,20 +55,49 @@ def get_output_size(request):
     return JsonResponse({"response": response_payload})
 
 
-def post_equity_run(request):
-    """
-    Runs a data querying process against data source's API
-    """
-    request_body = json.loads(request.body)
+class EquityRunView(APIView):
+    def post(self, request):
+        """
+        Runs a data querying process against data source's API
+        """
 
-    input = request_body["input"]
+        class DataType(enum.Enum):
+            INTRADAY = "intraday"
+            DAILY_ADJUSTED = "daily_adjusted"
 
-    #  TODO: Added this for testing - should be remomved when date ranges are fixed
-    input["start_date"] = ""
-    input["end_date"] = ""
-    response = equity_run(input)
+        class Interval(enum.Enum):
+            ONE_MINUTE = "1min"
+            FIVE_MINUTES = "5min"
 
-    return JsonResponse(response)
+        class OutputSize(enum.Enum):
+            COMPACT = "compact"
+            FULL = "full"
+
+        class InputSerializer(serializers.Serializer):
+            equity_name = serializers.CharField(max_length=10, required=True)
+            data_type = EnumField(choices=DataType)
+            interval = EnumField(choices=Interval)
+            outputsize = EnumField(choices=OutputSize)
+            start_date = serializers.DateTimeField(required=True)
+            end_date = serializers.DateTimeField(required=True)
+
+            def validate(self, data):
+                if data["start_date"] > data["end_date"]:
+                    raise serializers.ValidationError("finish must occur after start")
+                return data
+
+        request_body = json.loads(request.body)
+        input = request_body["input"]
+
+        response = {"response": []}
+        if InputSerializer(data=input).is_valid(raise_exception=True):
+            response = equity_run(input)
+
+        return JsonResponse(response)
+
+
+# Crypto Data (Data Block with ID 2)
+# -----------------------------------
 
 
 def post_crypto_run(request):

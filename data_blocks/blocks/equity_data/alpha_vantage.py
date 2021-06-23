@@ -13,49 +13,54 @@ def get_ticker_data(
     start_date=None,
     end_date=None,
 ):
-    # TODO: Swap out with AlphaVantage Key
-    ts = TimeSeries(key=environ["ALPHA_VANTAGE_API_KEY"], output_format="pandas")
-    data, meta_data = None, None
-    if data_type == "intraday":
-        data, meta_data = ts.get_intraday(
-            ticker, interval=interval, outputsize=outputsize
-        )
-    elif data_type == "daily_adjusted":
-        data, meta_data = ts.get_daily(ticker, outputsize=outputsize)
-    else:
-        raise f"Data Type: {data_type}"
-
-    # Renames columns from defalt provided by AlphaVantage to more standard terms
-    data = data.rename(
-        columns={
-            "1. open": "open",
-            "2. high": "high",
-            "3. low": "low",
-            "4. close": "close",
-            "5. volume": "volume",
-        }
-    )
-
-    if start_date == "":
-        start_date = None
-
-    if end_date == "":
-        end_date = None
-
-    if start_date or end_date:
-        if start_date and end_date:
-            mask = (data.index > start_date) & (data.index <= end_date)
-        elif start_date:
-            mask = data.index > start_date
-        elif end_date:
-            mask = data.index <= end_date
+    try:
+        ts = TimeSeries(key=environ["ALPHA_VANTAGE_API_KEY"], output_format="pandas")
+        data, meta_data = None, None
+        if data_type == "intraday":
+            data, meta_data = ts.get_intraday(
+                ticker, interval=interval, outputsize=outputsize
+            )
+        elif data_type == "daily_adjusted":
+            data, meta_data = ts.get_daily(ticker, outputsize=outputsize)
         else:
-            pass
-        data = data[mask]
+            raise f"Data Type: {data_type}"
 
-    data["timestamp"] = data.index.values.astype(str)
-    response_dict = {"response": data.to_dict(orient="record")}
-    return response_dict
+        # Renames columns from defalt provided by AlphaVantage to more standard terms
+        data = data.rename(
+            columns={
+                "1. open": "open",
+                "2. high": "high",
+                "3. low": "low",
+                "4. close": "close",
+                "5. volume": "volume",
+            }
+        )
+
+        if start_date == "":
+            start_date = None
+
+        if end_date == "":
+            end_date = None
+
+        if start_date or end_date:
+            if start_date and end_date:
+                mask = (data.index > start_date) & (data.index <= end_date)
+            elif start_date:
+                mask = data.index > start_date
+            elif end_date:
+                mask = data.index <= end_date
+            else:
+                pass
+            data = data[mask]
+
+        data["timestamp"] = data.index.values.astype(str)
+        response_dict = {"response": data.to_dict(orient="records")}
+        return response_dict
+    except ValueError:
+        return {"response": []}
+    except Exception as e:
+        print("Error: ", e)
+        return {"response": []}
 
 
 def search_ticker(keyword):
