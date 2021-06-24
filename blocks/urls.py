@@ -38,5 +38,5 @@ urlpatterns = [
     path("SIGNAL_BLOCK/1/eventType", signal_blocks.views.get_event_types),
     path("SIGNAL_BLOCK/1/eventAction", signal_blocks.views.get_event_actions),
     path("SIGNAL_BLOCK/1/run", signal_blocks.views.PostRun.as_view()),
-    path("STRATEGY_BLOCK/1/run", strategy_blocks.views.post_run),
+    path("STRATEGY_BLOCK/1/run", strategy_blocks.views.PostRun.as_view()),
 ]
