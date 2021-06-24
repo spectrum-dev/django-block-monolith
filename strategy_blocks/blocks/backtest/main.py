@@ -26,7 +26,7 @@ def run(input, data_block, signal_block):
         float(input["commission"]),
         float(input["impact"]),
     )
-
+    
     # Generates Responses
     port_vals = _generate_port_vals_response(port_vals)
     trades = _generate_trades_df_response(trades_df)

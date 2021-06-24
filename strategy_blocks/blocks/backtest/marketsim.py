@@ -1,4 +1,5 @@
 import math
+from typing import final
 import numpy as np
 import pandas as pd
 
@@ -8,7 +9,7 @@ def run(orders_df, price_df, start_val, commission, impact):
         # 1. Sort by dates in order file
         #    Creates a copy of the orders df to be stored later
 
-        final_orders_df = orders_df
+        final_orders_df = orders_df.copy(deep=True)
 
         orders_df = orders_df.sort_values(["date"], ascending=True)
 
@@ -32,6 +33,8 @@ def run(orders_df, price_df, start_val, commission, impact):
         final_orders_df["shares"] = 0
         final_orders_df["cash_value"] = 0
 
+        shares = []
+        cash_value = []
         # Iterator for final_orders_df
         i = 0
         for index, order in orders_df.iterrows():
@@ -54,12 +57,14 @@ def run(orders_df, price_df, start_val, commission, impact):
                 trades_df[order["symbol"]].loc[index]
             ) + int(share_amount)
 
-            # Updates copy of orders_df to be displayed later
-            final_orders_df["shares"].loc[i] = share_amount
-            final_orders_df["cash_value"].loc[i] = abs(price) * share_amount
+            shares.append(share_amount)
+            cash_value.append(abs(price) * share_amount)
 
             i += 1
 
+        final_orders_df["shares"] = shares
+        final_orders_df["cash_value"] = cash_value
+        
         # 4. Creates holdings data frames
 
         holdings_df = trades_df.cumsum()

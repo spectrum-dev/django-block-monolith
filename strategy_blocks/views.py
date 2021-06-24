@@ -19,12 +19,12 @@ class PostRun(APIView):
         class TradeAmountUnit(enum.Enum):
             PERCENTAGE = "PERCENTAGE"
         class InputSerializer(serializers.Serializer):
-            start_value = serializers.DecimalField(decimal_places=2)
-            commission = serializers.DecimalField(decimal_places=2)
-            impact = serializers.DecimalField()
-            stop_loss = serializers.DecimalField()
-            take_profit = serializers.DecimalField()
-            trade_amount_value = serializers.DecimalField()
+            start_value = serializers.FloatField()
+            commission = serializers.FloatField()
+            impact = serializers.FloatField()
+            stop_loss = serializers.FloatField()
+            take_profit = serializers.FloatField()
+            trade_amount_value = serializers.FloatField()
             trade_amount_unit = EnumField(choices=TradeAmountUnit)
 
         request_body = json.loads(request.body)

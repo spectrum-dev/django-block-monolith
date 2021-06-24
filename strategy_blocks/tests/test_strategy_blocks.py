@@ -1,11 +1,13 @@
-from django.test import TestCase, Client
+import json
+
+from django.test import TestCase
 
 from strategy_blocks.blocks.backtest.main import run
 
 # Create your tests here.
 class BacktestBlock(TestCase):
-    def test_backtest(self):
-        request_payload = {
+    def test_backtest_ok(self):
+        payload = {
             "input": {
                 "start_value": 10000.00,
                 "commission": 4.95,
@@ -48,28 +50,12 @@ class BacktestBlock(TestCase):
                 "SIGNAL_BLOCK-1-1": [{"timestamp": "01/02/2020", "order": "BUY"}],
             },
         }
-
-        port_vals, trades = run(
-            request_payload["input"],
-            request_payload["output"]["DATA_BLOCK-1-1"],
-            request_payload["output"]["SIGNAL_BLOCK-1-1"],
+        
+        response = self.client.post(
+            "/STRATEGY_BLOCK/1/run", json.dumps(payload), content_type="application/json"
         )
 
-        assert port_vals == [
-            {"value": 10000.0, "timestamp": "01/01/2020"},
-            {"value": 8995.150000000009, "timestamp": "01/02/2020"},
-            {"value": 18085.15000000001, "timestamp": "01/03/2020"},
-        ]
-        assert trades == [
-            {
-                "date": "01/02/2020",
-                "symbol": "close",
-                "order": "BUY",
-                "monetary_amount": 100000.0,
-                "trade_id": "",
-                "stop_loss": "",
-                "take_profit": "",
-                "shares": 9090,
-                "cash_value": 100989.9,
-            }
-        ]
+        self.assertDictEqual(
+            response.json(),
+            {'response': {'portVals': [{'value': 10000.0, 'timestamp': '01/01/2020'}, {'value': 8995.150000000009, 'timestamp': '01/02/2020'}, {'value': 18085.15000000001, 'timestamp': '01/03/2020'}], 'trades': [{'date': '01/02/2020', 'symbol': 'close', 'order': 'BUY', 'monetary_amount': 100000.0, 'trade_id': '', 'stop_loss': '', 'take_profit': '', 'shares': 9090, 'cash_value': 100989.9}]}}
+        )
