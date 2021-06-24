@@ -27,12 +27,33 @@ class PostRun(APIView):
             trade_amount_value = serializers.FloatField()
             trade_amount_unit = EnumField(choices=TradeAmountUnit)
 
+            def validate(self, data):
+                if (data['start_value'] <= 0.00):
+                    raise serializers.ValidationError("Start value must be greater than 0")
+                return data
+        
+        def validate_output(output):
+            keys = output.keys()
+            if (len(output.keys()) < 2):
+                raise serializers.ValidationError({"outputs_error:": "You must have at least two output keys"})
+            
+            block_types = []
+            for key in keys:
+                block_types.append(key.split('-')[0])
+            
+            if ("DATA_BLOCK" not in block_types):
+                raise serializers.ValidationError({"outputs_error:": "You must have a DATA_BLOCK in the outputs payload"})
+            
+            if ("SIGNAL_BLOCK" not in block_types):
+                raise serializers.ValidationError({"outputs_error:": "You must have a SIGNAL_BLOCK in the outputs payload"})
+
         request_body = json.loads(request.body)
 
         input = request_body["input"]
         output = request_body["output"]
 
         InputSerializer(data=input).is_valid(raise_exception=True)
+        validate_output(output)
 
         data_block = None
         for key in output.keys():
