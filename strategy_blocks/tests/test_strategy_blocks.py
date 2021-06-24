@@ -50,14 +50,37 @@ class BacktestBlock(TestCase):
                 "SIGNAL_BLOCK-1-1": [{"timestamp": "01/02/2020", "order": "BUY"}],
             },
         }
-        
+
         response = self.client.post(
-            "/STRATEGY_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/STRATEGY_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertDictEqual(
             response.json(),
-            {'response': {'portVals': [{'value': 10000.0, 'timestamp': '01/01/2020'}, {'value': 8995.150000000009, 'timestamp': '01/02/2020'}, {'value': 18085.15000000001, 'timestamp': '01/03/2020'}], 'trades': [{'date': '01/02/2020', 'symbol': 'close', 'order': 'BUY', 'monetary_amount': 100000.0, 'trade_id': '', 'stop_loss': '', 'take_profit': '', 'shares': 9090, 'cash_value': 100989.9}]}}
+            {
+                "response": {
+                    "portVals": [
+                        {"value": 10000.0, "timestamp": "01/01/2020"},
+                        {"value": 8995.150000000009, "timestamp": "01/02/2020"},
+                        {"value": 18085.15000000001, "timestamp": "01/03/2020"},
+                    ],
+                    "trades": [
+                        {
+                            "date": "01/02/2020",
+                            "symbol": "close",
+                            "order": "BUY",
+                            "monetary_amount": 100000.0,
+                            "trade_id": "",
+                            "stop_loss": "",
+                            "take_profit": "",
+                            "shares": 9090,
+                            "cash_value": 100989.9,
+                        }
+                    ],
+                }
+            },
         )
 
     def test_backtest_zero_start_value_returns_error(self):
@@ -106,14 +129,15 @@ class BacktestBlock(TestCase):
         }
 
         response = self.client.post(
-            "/STRATEGY_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/STRATEGY_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertEqual(
             response.json(),
-            {'non_field_errors': ['Start value must be greater than 0']}
+            {"non_field_errors": ["Start value must be greater than 0"]},
         )
-
 
     def test_backtest_empty_outputs_in_payload_returns_error(self):
         payload = {
@@ -130,14 +154,15 @@ class BacktestBlock(TestCase):
         }
 
         response = self.client.post(
-            "/STRATEGY_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/STRATEGY_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertDictEqual(
-            response.json(),
-            {'outputs_error': 'You must have at least two output keys'}
+            response.json(), {"outputs_error": "You must have at least two output keys"}
         )
-    
+
     def test_backtest_missing_data_block_in_outputs_returns_error(self):
         payload = {
             "input": {
@@ -156,12 +181,14 @@ class BacktestBlock(TestCase):
         }
 
         response = self.client.post(
-            "/STRATEGY_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/STRATEGY_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertEqual(
             response.json(),
-            {"outputs_error": "You must have a DATA_BLOCK in the outputs payload"}
+            {"outputs_error": "You must have a DATA_BLOCK in the outputs payload"},
         )
 
     def test_backtest_missing_signal_block_in_outputs_returns_error(self):
@@ -182,14 +209,16 @@ class BacktestBlock(TestCase):
         }
 
         response = self.client.post(
-            "/STRATEGY_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/STRATEGY_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertEqual(
             response.json(),
-            {"outputs_error": "You must have a SIGNAL_BLOCK in the outputs payload"}
+            {"outputs_error": "You must have a SIGNAL_BLOCK in the outputs payload"},
         )
-    
+
     def test_backtest_empty_output_block_data_returns_error(self):
         payload = {
             "input": {
@@ -208,10 +237,12 @@ class BacktestBlock(TestCase):
         }
 
         response = self.client.post(
-            "/STRATEGY_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/STRATEGY_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertEqual(
             response.json(),
-            {"outputs_error": "Data for outputs must have more than one entry"}
+            {"outputs_error": "Data for outputs must have more than one entry"},
         )

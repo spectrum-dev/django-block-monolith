@@ -16,9 +16,7 @@ def run(orders_df, price_df, start_val, commission, impact):
         orders_df = orders_df.set_index("date")
 
         # 2. Build data frame prices (prices should be adjusted close)
-        price_df = _create_price_df(
-            price_df, colname="close"
-        )
+        price_df = _create_price_df(price_df, colname="close")
 
         # 3. Build data frame trades
 
@@ -61,7 +59,7 @@ def run(orders_df, price_df, start_val, commission, impact):
 
         final_orders_df["shares"] = shares
         final_orders_df["cash_value"] = cash_value
-        
+
         # 4. Creates holdings data frames
 
         holdings_df = trades_df.cumsum()
