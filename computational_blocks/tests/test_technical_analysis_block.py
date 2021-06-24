@@ -75,18 +75,26 @@ class PostRun(TestCase):
                 "lookback_period": "2",
                 "lookback_unit": "DATA_POINT",
             },
-            "output": {
-                "DATA_BLOCK-1-1": DATA_BLOCK
-            }
+            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
         response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'timestamp': '01/01/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': 10.5}, {'timestamp': '01/02/2020', 'data': 12.0}, {'timestamp': '01/03/2020', 'data': 12.5}, {'timestamp': '01/03/2020', 'data': 13.0}]}
+            {
+                "response": [
+                    {"timestamp": "01/01/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": 10.5},
+                    {"timestamp": "01/02/2020", "data": 12.0},
+                    {"timestamp": "01/03/2020", "data": 12.5},
+                    {"timestamp": "01/03/2020", "data": 13.0},
+                ]
+            },
         )
 
     def test_compute_ema(self):
@@ -96,18 +104,26 @@ class PostRun(TestCase):
                 "lookback_period": "2",
                 "lookback_unit": "DATA_POINT",
             },
-            "output": {
-                "DATA_BLOCK-1-1": DATA_BLOCK
-            }
+            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
         response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'timestamp': '01/01/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': 10.5}, {'timestamp': '01/02/2020', 'data': 12.1666666667}, {'timestamp': '01/03/2020', 'data': 12.0555555556}, {'timestamp': '01/03/2020', 'data': 13.3518518519}]}
+            {
+                "response": [
+                    {"timestamp": "01/01/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": 10.5},
+                    {"timestamp": "01/02/2020", "data": 12.1666666667},
+                    {"timestamp": "01/03/2020", "data": 12.0555555556},
+                    {"timestamp": "01/03/2020", "data": 13.3518518519},
+                ]
+            },
         )
 
     def test_compute_macd(self):
@@ -118,18 +134,26 @@ class PostRun(TestCase):
                 "lookback_period_two": "3",
                 "lookback_unit": "DATA_POINT",
             },
-            "output": {
-                "DATA_BLOCK-1-1": DATA_BLOCK
-            }
+            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
         response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'timestamp': '01/01/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': 0.8333333333}, {'timestamp': '01/03/2020', 'data': 0.3888888889}, {'timestamp': '01/03/2020', 'data': 0.5185185185}]}
+            {
+                "response": [
+                    {"timestamp": "01/01/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": 0.8333333333},
+                    {"timestamp": "01/03/2020", "data": 0.3888888889},
+                    {"timestamp": "01/03/2020", "data": 0.5185185185},
+                ]
+            },
         )
 
     def test_compute_adx(self):
@@ -139,18 +163,26 @@ class PostRun(TestCase):
                 "lookback_period": "2",
                 "lookback_unit": "DATA_POINT",
             },
-            "output": {
-                "DATA_BLOCK-1-1": DATA_BLOCK
-            }
+            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
         response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'timestamp': '01/01/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/03/2020', 'data': 55.5555555556}, {'timestamp': '01/03/2020', 'data': 61.7777777778}]}
+            {
+                "response": [
+                    {"timestamp": "01/01/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/03/2020", "data": 55.5555555556},
+                    {"timestamp": "01/03/2020", "data": 61.7777777778},
+                ]
+            },
         )
 
     def test_compute_adxr(self):
@@ -160,18 +192,26 @@ class PostRun(TestCase):
                 "lookback_period": "2",
                 "lookback_unit": "DATA_POINT",
             },
-            "output": {
-                "DATA_BLOCK-1-1": DATA_BLOCK
-            }
+            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
         response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'timestamp': '01/01/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/03/2020', 'data': None}, {'timestamp': '01/03/2020', 'data': 58.6666666667}]}
+            {
+                "response": [
+                    {"timestamp": "01/01/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/03/2020", "data": None},
+                    {"timestamp": "01/03/2020", "data": 58.6666666667},
+                ]
+            },
         )
 
     def test_compute_apo(self):
@@ -183,20 +223,28 @@ class PostRun(TestCase):
                 "ma_type": "0",
                 "lookback_unit": "DATA_POINT",
             },
-            "output": {
-                "DATA_BLOCK-1-1": DATA_BLOCK
-            }
+            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
         response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
-        
+
         self.assertDictEqual(
             response.json(),
-            {'response': [{'timestamp': '01/01/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/03/2020', 'data': 1.0}, {'timestamp': '01/03/2020', 'data': 0.5}]}
+            {
+                "response": [
+                    {"timestamp": "01/01/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/03/2020", "data": 1.0},
+                    {"timestamp": "01/03/2020", "data": 0.5},
+                ]
+            },
         )
-    
+
     def test_compute_aroon_oscillator(self):
         payload = {
             "input": {
@@ -204,18 +252,26 @@ class PostRun(TestCase):
                 "lookback_period": 3,
                 "lookback_unit": "DATA_POINT",
             },
-            "output": {
-                "DATA_BLOCK-1-1": DATA_BLOCK
-            }
+            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
         response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'timestamp': '01/01/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/03/2020', 'data': 66.6666666667}, {'timestamp': '01/03/2020', 'data': 100.0}]}
+            {
+                "response": [
+                    {"timestamp": "01/01/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/03/2020", "data": 66.6666666667},
+                    {"timestamp": "01/03/2020", "data": 100.0},
+                ]
+            },
         )
 
     def test_compute_bop(self):
@@ -223,18 +279,26 @@ class PostRun(TestCase):
             "input": {
                 "indicator_name": "BOP",
             },
-            "output": {
-                "DATA_BLOCK-1-1": DATA_BLOCK
-            }
+            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
         response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'timestamp': '01/01/2020', 'data': 0.0}, {'timestamp': '01/02/2020', 'data': 0.0}, {'timestamp': '01/02/2020', 'data': 0.0}, {'timestamp': '01/03/2020', 'data': 0.0}, {'timestamp': '01/03/2020', 'data': 0.0}]}
+            {
+                "response": [
+                    {"timestamp": "01/01/2020", "data": 0.0},
+                    {"timestamp": "01/02/2020", "data": 0.0},
+                    {"timestamp": "01/02/2020", "data": 0.0},
+                    {"timestamp": "01/03/2020", "data": 0.0},
+                    {"timestamp": "01/03/2020", "data": 0.0},
+                ]
+            },
         )
 
     def test_compute_cci(self):
@@ -244,18 +308,26 @@ class PostRun(TestCase):
                 "lookback_period": 3,
                 "lookback_unit": "DATA_POINT",
             },
-            "output": {
-                "DATA_BLOCK-1-1": DATA_BLOCK
-            }
+            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
         response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'timestamp': '01/01/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': 100.0}, {'timestamp': '01/03/2020', 'data': 0.0}, {'timestamp': '01/03/2020', 'data': 100.0}]}
+            {
+                "response": [
+                    {"timestamp": "01/01/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": 100.0},
+                    {"timestamp": "01/03/2020", "data": 0.0},
+                    {"timestamp": "01/03/2020", "data": 100.0},
+                ]
+            },
         )
 
     def test_compute_cmo(self):
@@ -265,18 +337,26 @@ class PostRun(TestCase):
                 "lookback_period": 3,
                 "lookback_unit": "DATA_POINT",
             },
-            "output": {
-                "DATA_BLOCK-1-1": DATA_BLOCK
-            }
+            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
         response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'timestamp': '01/01/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/03/2020', 'data': 50.0}, {'timestamp': '01/03/2020', 'data': 71.4285714286}]}
+            {
+                "response": [
+                    {"timestamp": "01/01/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/03/2020", "data": 50.0},
+                    {"timestamp": "01/03/2020", "data": 71.4285714286},
+                ]
+            },
         )
 
     def test_compute_dx(self):
@@ -286,18 +366,26 @@ class PostRun(TestCase):
                 "lookback_period": 3,
                 "lookback_unit": "DATA_POINT",
             },
-            "output": {
-                "DATA_BLOCK-1-1": DATA_BLOCK
-            }
+            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
         response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'timestamp': '01/01/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/03/2020', 'data': 33.3333333333}, {'timestamp': '01/03/2020', 'data': 66.6666666667}]}
+            {
+                "response": [
+                    {"timestamp": "01/01/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/03/2020", "data": 33.3333333333},
+                    {"timestamp": "01/03/2020", "data": 66.6666666667},
+                ]
+            },
         )
 
     def test_compute_rsi(self):
@@ -307,16 +395,24 @@ class PostRun(TestCase):
                 "lookback_period": 3,
                 "lookback_unit": "DATA_POINT",
             },
-            "output": {
-                "DATA_BLOCK-1-1": DATA_BLOCK
-            }
+            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
         response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
         )
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'timestamp': '01/01/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/02/2020', 'data': None}, {'timestamp': '01/03/2020', 'data': 75.0}, {'timestamp': '01/03/2020', 'data': 85.7142857143}]}
+            {
+                "response": [
+                    {"timestamp": "01/01/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/02/2020", "data": None},
+                    {"timestamp": "01/03/2020", "data": 75.0},
+                    {"timestamp": "01/03/2020", "data": 85.7142857143},
+                ]
+            },
         )
