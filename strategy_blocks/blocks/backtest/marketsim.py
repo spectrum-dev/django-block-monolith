@@ -13,14 +13,11 @@ def run(orders_df, price_df, start_val, commission, impact):
 
         orders_df = orders_df.sort_values(["date"], ascending=True)
 
-        start_date = orders_df["date"][orders_df.index[0]]
-        end_date = orders_df["date"][orders_df.index[-1]]
-
         orders_df = orders_df.set_index("date")
 
         # 2. Build data frame prices (prices should be adjusted close)
         price_df = _create_price_df(
-            price_df, pd.date_range(start_date, end_date, freq="T"), colname="close"
+            price_df, colname="close"
         )
 
         # 3. Build data frame trades
@@ -94,7 +91,7 @@ def run(orders_df, price_df, start_val, commission, impact):
         return None
 
 
-def _create_price_df(price_df, dates, colname="adjusted_close"):
+def _create_price_df(price_df, colname="adjusted_close"):
     price_df = price_df[colname].to_frame()
 
     price_df = price_df.fillna(method="bfill")
