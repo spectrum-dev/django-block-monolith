@@ -3,6 +3,7 @@ import json
 from django.shortcuts import render
 
 from django.http import JsonResponse
+from rest_framework.views import APIView
 
 from computational_blocks.blocks.technical_analysis.mappings import INDICATORS
 from computational_blocks.blocks.technical_analysis.main import run
@@ -50,20 +51,20 @@ def get_indiciator_fields(request):
     return JsonResponse({"response": response})
 
 
-# Runner
-def post_run(request):
-    request_body = json.loads(request.body)
+class TechnicalAnalysisRunView(APIView):
+    def post(self, request):
+        request_body = json.loads(request.body)
 
-    input = request_body["input"]
-    output = request_body["output"]
+        input = request_body["input"]
+        output = request_body["output"]
 
-    data_block = None
-    for key in output.keys():
-        key_breakup = key.split("-")
-        if key_breakup[0] == "DATA_BLOCK":
-            data_block = output[key]
-            break
+        data_block = None
+        for key in output.keys():
+            key_breakup = key.split("-")
+            if key_breakup[0] == "DATA_BLOCK":
+                data_block = output[key]
+                break
 
-    response = run(input, data_block)
+        response = run(input, data_block)
 
-    return JsonResponse({"response": response})
+        return JsonResponse({"response": response})

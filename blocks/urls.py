@@ -34,7 +34,10 @@ urlpatterns = [
         "COMPUTATIONAL_BLOCK/1/indicatorField",
         computational_blocks.views.get_indiciator_fields,
     ),
-    path("COMPUTATIONAL_BLOCK/1/run", computational_blocks.views.post_run),
+    path(
+        "COMPUTATIONAL_BLOCK/1/run",
+        computational_blocks.views.TechnicalAnalysisRunView.as_view(),
+    ),
     path("SIGNAL_BLOCK/1/eventType", signal_blocks.views.get_event_types),
     path("SIGNAL_BLOCK/1/eventAction", signal_blocks.views.get_event_actions),
     path("SIGNAL_BLOCK/1/run", signal_blocks.views.PostRun.as_view()),
