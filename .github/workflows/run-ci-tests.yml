@@ -38,24 +38,11 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-
-    - name: Install Dependencies
+    
+    - name: Runs tests
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        
-    - name: Run Tests
-      env:
-        DB: ${{ matrix.db }}
-        DATABASE_NAME: postgres
-        DATABASE_USER: postgres
-        DATABASE_PASSWORD: postgres
-        DATABASE_HOST: "127.0.0.1"
-        DATABASE_PORT: ${{ matrix.db_port }}
-        ALPHA_VANTAGE_API_KEY: demo
-      run: |
-        python manage.py test
-
+        docker-compose run -e DATABASE_NAME="postgres" -e DATABASE_USER="postgres" -e DATABASE_PASSWORD="postgres" -e DATABASE_HOST="127.0.0.1" -e DATABASE_PORT=${{ matrix.db_port }} -e ALPHA_VANTAGE_API_KEY=demo test
+    
     - name: Run Lint
       run: |
         python -m black . -t py38 --check
