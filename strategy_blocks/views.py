@@ -27,7 +27,8 @@ class PostRun(APIView):
             stop_loss = serializers.FloatField()
             take_profit = serializers.FloatField()
             trade_amount_value = serializers.FloatField()
-            trade_amount_unit = EnumField(choices=TradeAmountUnit)
+            # TODO: Comment this in if decide to maintain this field
+            # trade_amount_unit = EnumField(choices=TradeAmountUnit)
 
             def validate(self, data):
                 if data["start_value"] <= 0.00:

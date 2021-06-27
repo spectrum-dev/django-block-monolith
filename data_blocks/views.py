@@ -92,7 +92,7 @@ class EquityRunView(APIView):
         response = {"response": []}
         if InputSerializer(data=input).is_valid(raise_exception=True):
             response = equity_run(input)
-
+            
         return JsonResponse(response)
 
 
