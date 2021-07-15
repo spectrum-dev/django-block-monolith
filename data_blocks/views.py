@@ -78,9 +78,9 @@ class EquityRunView(APIView):
             data_type = EnumField(choices=DataType)
             interval = EnumField(choices=Interval)
             outputsize = EnumField(choices=OutputSize)
-            start_date = serializers.DateTimeField(required=True)
-            end_date = serializers.DateTimeField(required=True)
-
+            start_date = serializers.CharField(max_length=20)
+            end_date = serializers.CharField(max_length=20)
+            
             def validate(self, data):
                 if data["start_date"] > data["end_date"]:
                     raise serializers.ValidationError("finish must occur after start")
