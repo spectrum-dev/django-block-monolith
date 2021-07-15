@@ -3,7 +3,6 @@ FROM rahulvbrahmal/python-with-talib:latest
 
 # # Maintainer Info
 LABEL maintainer="Rahul Brahmal <rahul@imbue.dev>"
-LABEL maintainer="Ronak Bansal <ronak@imbue.dev>"
 
 # Environment Variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -20,3 +19,7 @@ RUN pip install black
 
 # # copy project
 COPY . .
+
+EXPOSE 8000
+
+CMD ["sh", "docker-entrypoint.sh"] 
