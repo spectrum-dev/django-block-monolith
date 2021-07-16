@@ -48,7 +48,10 @@ spec:
                 secretKeyRef:
                   name: "spectrum"
                   key: "DATABASE_PORT"
-            - name: "API_BASE_URL"
-              value: "https://api.imbue.dev"
+            - name: "ALPHA_VANTAGE_API_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: "spectrum-block-monolith"
+                  key: "ALPHA_VANTAGE_API_KEY"
       imagePullSecrets:
         - name: registry-spectrum
