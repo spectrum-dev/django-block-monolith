@@ -53,6 +53,7 @@ def get_ticker_data(
                 pass
             data = data[mask]
 
+        data = data.sort_index()
         data["timestamp"] = data.index.values.astype(str)
         response_dict = {"response": data.to_dict(orient="records")}
         return response_dict
