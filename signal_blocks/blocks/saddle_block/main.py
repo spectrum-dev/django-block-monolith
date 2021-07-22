@@ -23,8 +23,8 @@ def run(input, computational_block):
         response_df = upward_saddle(
             computational_block_df,
             input["event_action"],
-            consecutive_up=input["consecutive_up"],
-            consecutive_down=input["consecutive_down"]
+            consecutive_up=int(input["consecutive_up"]),
+            consecutive_down=int(input["consecutive_down"])
         )
     elif case("DOWNWARD"):
         response_df = downward_saddle(

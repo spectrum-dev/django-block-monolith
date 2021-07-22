@@ -73,6 +73,17 @@ class PostRun(APIView):
 
 # Saddle Block (Signal Block with ID 2)
 # ------------------------------------
+
+def get_saddle_types(request):
+    """
+    Retrieves a list of supported event types
+    """
+    print ("Getting Saddle Type")
+    response = {"response": ["DOWNWARD", "UPWARD"]}
+    print ("Response: ", response)
+
+    return JsonResponse(response)
+
 class PostSaddleRun(APIView):
     def post(self, request):
         """
