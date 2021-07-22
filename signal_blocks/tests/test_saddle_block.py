@@ -2,6 +2,7 @@ import json
 
 from django.test import TestCase
 
+
 class GetSaddleType(TestCase):
     def test_ok(self):
         response = self.client.get("/SIGNAL_BLOCK/2/saddleType")
@@ -15,6 +16,7 @@ class GetEventAction(TestCase):
 
         self.assertEqual(response.json(), {"response": ["BUY", "SELL"]})
 
+
 class PostRun(TestCase):
     def test_upward_ok(self):
         payload = {
@@ -23,7 +25,7 @@ class PostRun(TestCase):
                 "event_action": "BUY",
                 "consecutive_up": 2,
                 "consecutive_down": 1,
-                },
+            },
             "output": {
                 "DATA_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
@@ -41,10 +43,9 @@ class PostRun(TestCase):
         )
 
         self.assertDictEqual(
-            response.json(),
-            {'response': [{'timestamp': '2020-01-06', 'order': 'BUY'}]}
+            response.json(), {"response": [{"timestamp": "2020-01-06", "order": "BUY"}]}
         )
-    
+
     def test_upward_no_event(self):
         payload = {
             "input": {
@@ -52,7 +53,7 @@ class PostRun(TestCase):
                 "event_action": "BUY",
                 "consecutive_up": 2,
                 "consecutive_down": 1,
-                },
+            },
             "output": {
                 "DATA_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
@@ -69,11 +70,8 @@ class PostRun(TestCase):
             "/SIGNAL_BLOCK/2/run", json.dumps(payload), content_type="application/json"
         )
 
-        self.assertDictEqual(
-            response.json(),
-            {'response': []}
-        )
-    
+        self.assertDictEqual(response.json(), {"response": []})
+
     def test_downward_ok(self):
         payload = {
             "input": {
@@ -81,7 +79,7 @@ class PostRun(TestCase):
                 "event_action": "BUY",
                 "consecutive_down": 2,
                 "consecutive_up": 1,
-                },
+            },
             "output": {
                 "DATA_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
@@ -99,10 +97,9 @@ class PostRun(TestCase):
         )
 
         self.assertDictEqual(
-            response.json(),
-            {'response': [{'order': 'BUY', 'timestamp': '2020-01-05'}]}
+            response.json(), {"response": [{"order": "BUY", "timestamp": "2020-01-05"}]}
         )
-    
+
     def test_downward_no_event(self):
         payload = {
             "input": {
@@ -110,7 +107,7 @@ class PostRun(TestCase):
                 "event_action": "BUY",
                 "consecutive_down": 2,
                 "consecutive_up": 1,
-                },
+            },
             "output": {
                 "DATA_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
@@ -127,7 +124,4 @@ class PostRun(TestCase):
             "/SIGNAL_BLOCK/2/run", json.dumps(payload), content_type="application/json"
         )
 
-        self.assertDictEqual(
-            response.json(),
-            {'response': []}
-        )
+        self.assertDictEqual(response.json(), {"response": []})

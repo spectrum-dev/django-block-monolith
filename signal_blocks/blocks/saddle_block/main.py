@@ -2,7 +2,9 @@ import pandas as pd
 from functools import reduce
 
 from signal_blocks.blocks.saddle_block.events.upward_saddle import main as upward_saddle
-from signal_blocks.blocks.saddle_block.events.downward_saddle import main as downward_saddle
+from signal_blocks.blocks.saddle_block.events.downward_saddle import (
+    main as downward_saddle,
+)
 
 
 def run(input, computational_block):
@@ -24,7 +26,7 @@ def run(input, computational_block):
             computational_block_df,
             input["event_action"],
             consecutive_up=int(input["consecutive_up"]),
-            consecutive_down=int(input["consecutive_down"])
+            consecutive_down=int(input["consecutive_down"]),
         )
     elif case("DOWNWARD"):
         response_df = downward_saddle(

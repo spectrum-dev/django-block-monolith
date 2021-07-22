@@ -71,18 +71,21 @@ class PostRun(APIView):
 
         return JsonResponse({"response": response})
 
+
 # Saddle Block (Signal Block with ID 2)
 # ------------------------------------
+
 
 def get_saddle_types(request):
     """
     Retrieves a list of supported event types
     """
-    print ("Getting Saddle Type")
+    print("Getting Saddle Type")
     response = {"response": ["DOWNWARD", "UPWARD"]}
-    print ("Response: ", response)
+    print("Response: ", response)
 
     return JsonResponse(response)
+
 
 class PostSaddleRun(APIView):
     def post(self, request):
@@ -104,7 +107,6 @@ class PostSaddleRun(APIView):
             consecutive_up = serializers.CharField()
             consecutive_down = serializers.CharField()
 
-
         request_body = json.loads(request.body)
 
         response = []
@@ -112,11 +114,7 @@ class PostSaddleRun(APIView):
 
         if len(request_body["output"].keys()) > 1:
             return JsonResponse(
-                {
-                    "non_field_errors": [
-                        "You must pass in at most one stream of data"
-                    ]
-                },
+                {"non_field_errors": ["You must pass in at most one stream of data"]},
                 status=400,
             )
 
