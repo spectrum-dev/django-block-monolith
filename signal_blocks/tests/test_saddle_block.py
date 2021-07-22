@@ -2,6 +2,19 @@ import json
 
 from django.test import TestCase
 
+class GetSaddleType(TestCase):
+    def test_ok(self):
+        response = self.client.get("/SIGNAL_BLOCK/2/saddleType")
+
+        self.assertEqual(response.json(), {"response": ["DOWNWARD", "UPWARD"]})
+
+
+class GetEventAction(TestCase):
+    def test_ok(self):
+        response = self.client.get("/SIGNAL_BLOCK/2/eventAction")
+
+        self.assertEqual(response.json(), {"response": ["BUY", "SELL"]})
+
 class PostRun(TestCase):
     def test_upward_ok(self):
         payload = {
