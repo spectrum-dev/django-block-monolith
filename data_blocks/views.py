@@ -97,7 +97,7 @@ class EquityRunView(APIView):
 # Crypto Data (Data Block with ID 2)
 # -----------------------------------
 from data_blocks.blocks.crypto_data.supported_crypto import SUPPORTED_CRYPTO
-from data_blocks.blocks.crypto_data.main import run as crpto_run
+from data_blocks.blocks.crypto_data.main import run as crypto_run
 
 
 def get_symbol(request):
@@ -158,6 +158,6 @@ class CryptoRunView(APIView):
         request_body = json.loads(request.body)
         input = request_body["input"]
         if InputSerializer(data=input).is_valid(raise_exception=True):
-            response = crpto_run(input)
+            response = crypto_run(input)
 
         return JsonResponse(response)
