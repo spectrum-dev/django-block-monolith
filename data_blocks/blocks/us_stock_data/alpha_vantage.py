@@ -5,33 +5,36 @@ from alpha_vantage.timeseries import TimeSeries
 from alpha_vantage.fundamentaldata import FundamentalData
 
 def get_us_stock_data(symbol, data_type):
-    ts = TimeSeries(key=environ["ALPHA_VANTAGE_API_KEY"], output_format="pandas")
+    try:
+        ts = TimeSeries(key=environ["ALPHA_VANTAGE_API_KEY"], output_format="pandas")
 
-    data, metadata = None, None
-    if data_type in ["1min", "5min", "15min", "30min", "60min"]:
-        data, meta_data = ts.get_intraday(symbol, interval=data_type, outputsize="full")
-    elif data_type == "1day":
-        data, meta_data = ts.get_daily(symbol, output_size="full")
-    elif data_type == "1week":
-        data, meta_data = ts.get_weekly(symbol)
-    elif data_type == "1month":
-        data, meta_data = ts.get_monthly(symbol)
-    else:
-        raise Exception("Data type is unimplemented")
+        data, metadata = None, None
+        if data_type in ["1min", "5min", "15min", "30min", "60min"]:
+            data, meta_data = ts.get_intraday(symbol, interval=data_type, outputsize="full")
+        elif data_type == "1day":
+            data, meta_data = ts.get_daily(symbol, outputsize="full")
+        elif data_type == "1week":
+            data, meta_data = ts.get_weekly(symbol)
+        elif data_type == "1month":
+            data, meta_data = ts.get_monthly(symbol)
+        else:
+            raise Exception("Data type is unimplemented")
 
-    data = data.rename(
-        columns={
-            "1. open": "open",
-            "2. high": "high",
-            "3. low": "low",
-            "4. close": "close",
-            "5. volume": "volume",
-        }
-    )
+        data = data.rename(
+            columns={
+                "1. open": "open",
+                "2. high": "high",
+                "3. low": "low",
+                "4. close": "close",
+                "5. volume": "volume",
+            }
+        )
 
-    data = data.sort_index()
+        data = data.sort_index()
 
-    return data
+        return data
+    except ValueError:
+        return None
 
 def search_ticker(keyword):
     ts = TimeSeries(key=environ["ALPHA_VANTAGE_API_KEY"], output_format="pandas")
