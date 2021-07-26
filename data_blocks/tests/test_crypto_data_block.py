@@ -12,13 +12,13 @@ class GetSymbol(TestCase):
             response.json(),
             {
                 "response": [
-                    {"value": "BITBTC", "label": "BitBTC"},
-                    {"value": "BTC", "label": "Bitcoin"},
-                    {"value": "BTCB", "label": "Bitcoin BEP2"},
-                    {"value": "BTCD", "label": "BitcoinDark"},
-                    {"value": "BTCP", "label": "Bitcoin-Private"},
-                    {"value": "EBTC", "label": "eBTC"},
-                    {"value": "SBTC", "label": "Super-Bitcoin"},
+                    {"value": "BITBTC", "label": "BitBTC (BITBTC)"},
+                    {"value": "BTC", "label": "Bitcoin (BTC)"},
+                    {"value": "BTCB", "label": "Bitcoin BEP2 (BTCB)"},
+                    {"value": "BTCD", "label": "BitcoinDark (BTCD)"},
+                    {"value": "BTCP", "label": "Bitcoin-Private (BTCP)"},
+                    {"value": "EBTC", "label": "eBTC (EBTC)"},
+                    {"value": "SBTC", "label": "Super-Bitcoin (SBTC)"},
                 ]
             },
         )
@@ -30,9 +30,9 @@ class GetSymbol(TestCase):
             response.json(),
             {
                 "response": [
-                    {"value": "ETC", "label": "Ethereum-Classic"},
-                    {"value": "ETH", "label": "Ethereum"},
-                    {"value": "ETHD", "label": "Ethereum-Dark"},
+                    {"value": "ETC", "label": "Ethereum-Classic (ETC)"},
+                    {"value": "ETH", "label": "Ethereum (ETH)"},
+                    {"value": "ETHD", "label": "Ethereum-Dark (ETHD)"},
                 ]
             },
         )
