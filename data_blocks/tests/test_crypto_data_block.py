@@ -2,36 +2,66 @@ import json
 
 from django.test import TestCase
 
+
 class GetSymbol(TestCase):
     def test_ok(self):
-        response = self.client.get(
-            "/DATA_BLOCK/2/cryptoName?name=btc"
-        )
+        response = self.client.get("/DATA_BLOCK/2/cryptoName?name=btc")
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'value': 'BITBTC', 'label': 'BitBTC'}, {'value': 'BTC', 'label': 'Bitcoin'}, {'value': 'BTCB', 'label': 'Bitcoin BEP2'}, {'value': 'BTCD', 'label': 'BitcoinDark'}, {'value': 'BTCP', 'label': 'Bitcoin-Private'}, {'value': 'EBTC', 'label': 'eBTC'}, {'value': 'SBTC', 'label': 'Super-Bitcoin'}]}
+            {
+                "response": [
+                    {"value": "BITBTC", "label": "BitBTC"},
+                    {"value": "BTC", "label": "Bitcoin"},
+                    {"value": "BTCB", "label": "Bitcoin BEP2"},
+                    {"value": "BTCD", "label": "BitcoinDark"},
+                    {"value": "BTCP", "label": "Bitcoin-Private"},
+                    {"value": "EBTC", "label": "eBTC"},
+                    {"value": "SBTC", "label": "Super-Bitcoin"},
+                ]
+            },
         )
-    
+
     def test_case_insensitive(self):
-        response = self.client.get(
-            "/DATA_BLOCK/2/cryptoName?name=Ethereum"
-        )
+        response = self.client.get("/DATA_BLOCK/2/cryptoName?name=Ethereum")
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'value': 'ETC', 'label': 'Ethereum-Classic'}, {'value': 'ETH', 'label': 'Ethereum'}, {'value': 'ETHD', 'label': 'Ethereum-Dark'}]}
+            {
+                "response": [
+                    {"value": "ETC", "label": "Ethereum-Classic"},
+                    {"value": "ETH", "label": "Ethereum"},
+                    {"value": "ETHD", "label": "Ethereum-Dark"},
+                ]
+            },
         )
 
     def test_no_results(self):
-        response = self.client.get(
-            "/DATA_BLOCK/2/cryptoName?name=no-results"
-        )
+        response = self.client.get("/DATA_BLOCK/2/cryptoName?name=no-results")
+
+        self.assertDictEqual(response.json(), {"response": []})
+
+
+class GetCandlestick(TestCase):
+    def test_ok(self):
+        response = self.client.get("/DATA_BLOCK/2/candlestick")
 
         self.assertDictEqual(
             response.json(),
-            {'response': []}
+            {
+                "response": [
+                    "1min",
+                    "5min",
+                    "15min",
+                    "30min",
+                    "60min",
+                    "1day",
+                    "1week",
+                    "1month",
+                ]
+            },
         )
+
 
 class PostRun(TestCase):
     def test_one_minute_candlestick_ok(self):
@@ -49,7 +79,61 @@ class PostRun(TestCase):
             "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
         )
 
-        self.assertDictEqual(response.json(), {'response': [{'open': '32324.52000', 'high': '32336.75000', 'low': '32314.00000', 'close': '32332.70000', 'volume': 26, 'timestamp': '2021-07-23T10:00:00.000000000'}, {'open': '32332.71000', 'high': '32354.78000', 'low': '32323.01000', 'close': '32328.77000', 'volume': 29, 'timestamp': '2021-07-23T10:01:00.000000000'}, {'open': '32328.77000', 'high': '32332.53000', 'low': '32293.15000', 'close': '32309.62000', 'volume': 64, 'timestamp': '2021-07-23T10:02:00.000000000'}, {'open': '32309.63000', 'high': '32315.74000', 'low': '32233.24000', 'close': '32275.49000', 'volume': 122, 'timestamp': '2021-07-23T10:03:00.000000000'}, {'open': '32275.49000', 'high': '32298.02000', 'low': '32270.67000', 'close': '32290.62000', 'volume': 36, 'timestamp': '2021-07-23T10:04:00.000000000'}, {'open': '32290.61000', 'high': '32315.75000', 'low': '32288.61000', 'close': '32314.44000', 'volume': 17, 'timestamp': '2021-07-23T10:05:00.000000000'}]})
+        self.assertDictEqual(
+            response.json(),
+            {
+                "response": [
+                    {
+                        "open": "32324.52000",
+                        "high": "32336.75000",
+                        "low": "32314.00000",
+                        "close": "32332.70000",
+                        "volume": 26,
+                        "timestamp": "2021-07-23T10:00:00.000000000",
+                    },
+                    {
+                        "open": "32332.71000",
+                        "high": "32354.78000",
+                        "low": "32323.01000",
+                        "close": "32328.77000",
+                        "volume": 29,
+                        "timestamp": "2021-07-23T10:01:00.000000000",
+                    },
+                    {
+                        "open": "32328.77000",
+                        "high": "32332.53000",
+                        "low": "32293.15000",
+                        "close": "32309.62000",
+                        "volume": 64,
+                        "timestamp": "2021-07-23T10:02:00.000000000",
+                    },
+                    {
+                        "open": "32309.63000",
+                        "high": "32315.74000",
+                        "low": "32233.24000",
+                        "close": "32275.49000",
+                        "volume": 122,
+                        "timestamp": "2021-07-23T10:03:00.000000000",
+                    },
+                    {
+                        "open": "32275.49000",
+                        "high": "32298.02000",
+                        "low": "32270.67000",
+                        "close": "32290.62000",
+                        "volume": 36,
+                        "timestamp": "2021-07-23T10:04:00.000000000",
+                    },
+                    {
+                        "open": "32290.61000",
+                        "high": "32315.75000",
+                        "low": "32288.61000",
+                        "close": "32314.44000",
+                        "volume": 17,
+                        "timestamp": "2021-07-23T10:05:00.000000000",
+                    },
+                ]
+            },
+        )
 
     def test_five_minute_candlestick_ok(self):
         payload = {
@@ -66,7 +150,37 @@ class PostRun(TestCase):
             "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
         )
 
-        self.assertDictEqual(response.json(), {'response': [{'open': '32483.51000', 'high': '32497.51000', 'low': '32427.68000', 'close': '32448.15000', 'volume': 110, 'timestamp': '2021-07-23T15:00:00.000000000'}, {'open': '32448.15000', 'high': '32469.60000', 'low': '32401.83000', 'close': '32433.34000', 'volume': 110, 'timestamp': '2021-07-23T15:05:00.000000000'}, {'open': '32433.34000', 'high': '32436.10000', 'low': '32393.45000', 'close': '32397.60000', 'volume': 86, 'timestamp': '2021-07-23T15:10:00.000000000'}]})
+        self.assertDictEqual(
+            response.json(),
+            {
+                "response": [
+                    {
+                        "open": "32483.51000",
+                        "high": "32497.51000",
+                        "low": "32427.68000",
+                        "close": "32448.15000",
+                        "volume": 110,
+                        "timestamp": "2021-07-23T15:00:00.000000000",
+                    },
+                    {
+                        "open": "32448.15000",
+                        "high": "32469.60000",
+                        "low": "32401.83000",
+                        "close": "32433.34000",
+                        "volume": 110,
+                        "timestamp": "2021-07-23T15:05:00.000000000",
+                    },
+                    {
+                        "open": "32433.34000",
+                        "high": "32436.10000",
+                        "low": "32393.45000",
+                        "close": "32397.60000",
+                        "volume": 86,
+                        "timestamp": "2021-07-23T15:10:00.000000000",
+                    },
+                ]
+            },
+        )
 
     def test_fifteen_minute_candlestick_ok(self):
         payload = {
@@ -83,8 +197,37 @@ class PostRun(TestCase):
             "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
         )
 
-        self.assertDictEqual(response.json(), {'response': [{'open': '32431.97000', 'high': '32495.00000', 'low': '32382.31000', 'close': '32406.32000', 'volume': 358, 'timestamp': '2021-07-23T13:00:00.000000000'}, {'open': '32406.32000', 'high': '32457.73000', 'low': '32364.72000', 'close': '32408.91000', 'volume': 330, 'timestamp': '2021-07-23T13:15:00.000000000'}, {'open': '32408.91000', 'high': '32474.99000', 'low': '32390.04000', 'close': '32451.04000', 'volume': 331, 'timestamp': '2021-07-23T13:30:00.000000000'}]})
-
+        self.assertDictEqual(
+            response.json(),
+            {
+                "response": [
+                    {
+                        "open": "32431.97000",
+                        "high": "32495.00000",
+                        "low": "32382.31000",
+                        "close": "32406.32000",
+                        "volume": 358,
+                        "timestamp": "2021-07-23T13:00:00.000000000",
+                    },
+                    {
+                        "open": "32406.32000",
+                        "high": "32457.73000",
+                        "low": "32364.72000",
+                        "close": "32408.91000",
+                        "volume": 330,
+                        "timestamp": "2021-07-23T13:15:00.000000000",
+                    },
+                    {
+                        "open": "32408.91000",
+                        "high": "32474.99000",
+                        "low": "32390.04000",
+                        "close": "32451.04000",
+                        "volume": 331,
+                        "timestamp": "2021-07-23T13:30:00.000000000",
+                    },
+                ]
+            },
+        )
 
     def test_thirty_minute_candlestick_ok(self):
         payload = {
@@ -96,13 +239,58 @@ class PostRun(TestCase):
             },
             "output": {},
         }
-        
+
         response = self.client.post(
             "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
         )
 
-        self.assertDictEqual(response.json(), {'response': [{'open': '32431.97000', 'high': '32495.00000', 'low': '32364.72000', 'close': '32408.91000', 'volume': 689, 'timestamp': '2021-07-23T13:00:00.000000000'}, {'open': '32408.91000', 'high': '32599.86000', 'low': '32390.04000', 'close': '32546.64000', 'volume': 953, 'timestamp': '2021-07-23T13:30:00.000000000'}, {'open': '32548.57000', 'high': '32575.20000', 'low': '32472.82000', 'close': '32533.82000', 'volume': 662, 'timestamp': '2021-07-23T14:00:00.000000000'}, {'open': '32533.82000', 'high': '32552.81000', 'low': '32420.00000', 'close': '32483.51000', 'volume': 504, 'timestamp': '2021-07-23T14:30:00.000000000'}, {'open': '32483.51000', 'high': '32497.51000', 'low': '32351.65000', 'close': '32354.20000', 'volume': 782, 'timestamp': '2021-07-23T15:00:00.000000000'}]})
-
+        self.assertDictEqual(
+            response.json(),
+            {
+                "response": [
+                    {
+                        "open": "32431.97000",
+                        "high": "32495.00000",
+                        "low": "32364.72000",
+                        "close": "32408.91000",
+                        "volume": 689,
+                        "timestamp": "2021-07-23T13:00:00.000000000",
+                    },
+                    {
+                        "open": "32408.91000",
+                        "high": "32599.86000",
+                        "low": "32390.04000",
+                        "close": "32546.64000",
+                        "volume": 953,
+                        "timestamp": "2021-07-23T13:30:00.000000000",
+                    },
+                    {
+                        "open": "32548.57000",
+                        "high": "32575.20000",
+                        "low": "32472.82000",
+                        "close": "32533.82000",
+                        "volume": 662,
+                        "timestamp": "2021-07-23T14:00:00.000000000",
+                    },
+                    {
+                        "open": "32533.82000",
+                        "high": "32552.81000",
+                        "low": "32420.00000",
+                        "close": "32483.51000",
+                        "volume": 504,
+                        "timestamp": "2021-07-23T14:30:00.000000000",
+                    },
+                    {
+                        "open": "32483.51000",
+                        "high": "32497.51000",
+                        "low": "32351.65000",
+                        "close": "32354.20000",
+                        "volume": 782,
+                        "timestamp": "2021-07-23T15:00:00.000000000",
+                    },
+                ]
+            },
+        )
 
     def test_sixty_minute_candlestick_ok(self):
         payload = {
@@ -119,7 +307,37 @@ class PostRun(TestCase):
             "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
         )
 
-        self.assertDictEqual(response.json(), {'response': [{'open': '32431.97000', 'high': '32599.86000', 'low': '32364.72000', 'close': '32546.64000', 'volume': 1642, 'timestamp': '2021-07-23T13:00:00.000000000'}, {'open': '32548.57000', 'high': '32575.20000', 'low': '32420.00000', 'close': '32483.51000', 'volume': 1167, 'timestamp': '2021-07-23T14:00:00.000000000'}, {'open': '32483.51000', 'high': '32497.51000', 'low': '32276.06000', 'close': '32315.00000', 'volume': 1586, 'timestamp': '2021-07-23T15:00:00.000000000'}]})
+        self.assertDictEqual(
+            response.json(),
+            {
+                "response": [
+                    {
+                        "open": "32431.97000",
+                        "high": "32599.86000",
+                        "low": "32364.72000",
+                        "close": "32546.64000",
+                        "volume": 1642,
+                        "timestamp": "2021-07-23T13:00:00.000000000",
+                    },
+                    {
+                        "open": "32548.57000",
+                        "high": "32575.20000",
+                        "low": "32420.00000",
+                        "close": "32483.51000",
+                        "volume": 1167,
+                        "timestamp": "2021-07-23T14:00:00.000000000",
+                    },
+                    {
+                        "open": "32483.51000",
+                        "high": "32497.51000",
+                        "low": "32276.06000",
+                        "close": "32315.00000",
+                        "volume": 1586,
+                        "timestamp": "2021-07-23T15:00:00.000000000",
+                    },
+                ]
+            },
+        )
 
     def test_one_day_candlestick_ok(self):
         payload = {

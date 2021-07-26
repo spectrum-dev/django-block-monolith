@@ -105,10 +105,15 @@ def get_symbol(request):
 
     response = []
     for value in SUPPORTED_CRYPTO:
-        currency_code = value['currency_code'].lower()
-        currency_name = value['currency_name'].lower()
-        if (currency_code.find(crypto_fuzzy_name) != -1 or currency_name.find(crypto_fuzzy_name) != -1):
-            response.append({ 'value': value['currency_code'], 'label': value['currency_name'] })
+        currency_code = value["currency_code"].lower()
+        currency_name = value["currency_name"].lower()
+        if (
+            currency_code.find(crypto_fuzzy_name) != -1
+            or currency_name.find(crypto_fuzzy_name) != -1
+        ):
+            response.append(
+                {"value": value["currency_code"], "label": value["currency_name"]}
+            )
 
     return JsonResponse({"response": response})
 

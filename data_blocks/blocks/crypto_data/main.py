@@ -33,7 +33,7 @@ def run(input):
             raise Exception("Candlestick does not have a corresponding time interval")
 
     response_df = get_crypto_data(input["crypto_name"], input["candlestick"])
- 
+
     date_range = pd.date_range(
         input["start_date"],
         input["end_date"],
@@ -41,7 +41,7 @@ def run(input):
     )
 
     date_intersection = date_range.intersection(response_df.index)
-    
+
     merged_df = pd.DataFrame(response_df, index=date_intersection)
 
     # Converts to JSON

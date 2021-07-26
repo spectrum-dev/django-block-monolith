@@ -19,10 +19,10 @@ def get_crypto_data(symbol, data_type, market="USD"):
         resp = requests.get(url)
         resp = resp.json()
         resp_keys = list(resp.keys())
-        
+
         data = resp[resp_keys[1]]
 
-        data = pd.DataFrame().from_dict(data, orient='index')
+        data = pd.DataFrame().from_dict(data, orient="index")
         data.index = pd.to_datetime(data.index)
     elif data_type == "1day":
         data, metadata = crypto.get_digital_currency_daily(symbol=symbol, market=market)
@@ -37,14 +37,14 @@ def get_crypto_data(symbol, data_type, market="USD"):
     else:
         raise Exception("Data Type is unimplemented")
 
-    if (data_type in ["1min", "5min", "15min", "30min", "60min"]):
+    if data_type in ["1min", "5min", "15min", "30min", "60min"]:
         data = data.rename(
             columns={
-                '1. open': 'open',
-                '2. high': 'high',
-                '3. low': 'low',
-                '4. close': 'close',
-                '5. volume': 'volume'
+                "1. open": "open",
+                "2. high": "high",
+                "3. low": "low",
+                "4. close": "close",
+                "5. volume": "volume",
             }
         )
     else:
