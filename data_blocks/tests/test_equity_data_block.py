@@ -3,10 +3,6 @@ import responses
 
 from django.test import TestCase
 
-from data_blocks.blocks.equity_data.main import run
-
-# Create your tests here.
-
 
 class GetEquityName(TestCase):
     @responses.activate
