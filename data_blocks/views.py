@@ -28,6 +28,7 @@ def get_equity_name(request):
 
     return JsonResponse(response)
 
+
 def get_crypto_candlesticks(request):
     response_payload = [
         "1min",
@@ -40,6 +41,7 @@ def get_crypto_candlesticks(request):
         "1month",
     ]
     return JsonResponse({"response": response_payload})
+
 
 class USStockDataRunView(APIView):
     def post(self, request):

@@ -4,13 +4,16 @@ from os import environ
 from alpha_vantage.timeseries import TimeSeries
 from alpha_vantage.fundamentaldata import FundamentalData
 
+
 def get_us_stock_data(symbol, data_type):
     try:
         ts = TimeSeries(key=environ["ALPHA_VANTAGE_API_KEY"], output_format="pandas")
 
         data, metadata = None, None
         if data_type in ["1min", "5min", "15min", "30min", "60min"]:
-            data, meta_data = ts.get_intraday(symbol, interval=data_type, outputsize="full")
+            data, meta_data = ts.get_intraday(
+                symbol, interval=data_type, outputsize="full"
+            )
         elif data_type == "1day":
             data, meta_data = ts.get_daily(symbol, outputsize="full")
         elif data_type == "1week":
@@ -35,6 +38,7 @@ def get_us_stock_data(symbol, data_type):
         return data
     except ValueError:
         return None
+
 
 def search_ticker(keyword):
     ts = TimeSeries(key=environ["ALPHA_VANTAGE_API_KEY"], output_format="pandas")

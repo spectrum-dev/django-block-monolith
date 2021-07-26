@@ -5,7 +5,7 @@ from data_blocks.blocks.us_stock_data.alpha_vantage import get_us_stock_data
 def run(input):
     """
     Runs a query to get the US stock data
-    
+
     Attributes
     ----------
     input: The input payload
@@ -32,10 +32,8 @@ def run(input):
         else:
             raise Exception("Candlestick does not have a corresponding time interval")
 
-
     response_df = get_us_stock_data(
-        input["equity_name"],
-        data_type=input["candlestick"]
+        input["equity_name"], data_type=input["candlestick"]
     )
 
     if response_df is not None:
