@@ -4,7 +4,7 @@ from data_blocks.blocks.crypto_data.alpha_vantage import get_crypto_data
 
 def run(input):
     """
-    Runs a query to get the crpto data
+    Runs a query to get the crypto data
 
     Attributes
     ----------

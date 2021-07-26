@@ -5,27 +5,24 @@ from alpha_vantage.timeseries import TimeSeries
 from alpha_vantage.fundamentaldata import FundamentalData
 
 
-def get_ticker_data(
-    ticker,
-    data_type="intraday",
-    interval="1min",
-    outputsize="full",
-    start_date=None,
-    end_date=None,
-):
+def get_us_stock_data(symbol, data_type):
     try:
         ts = TimeSeries(key=environ["ALPHA_VANTAGE_API_KEY"], output_format="pandas")
-        data, meta_data = None, None
-        if data_type == "intraday":
-            data, meta_data = ts.get_intraday(
-                ticker, interval=interval, outputsize=outputsize
-            )
-        elif data_type == "daily_adjusted":
-            data, meta_data = ts.get_daily(ticker, outputsize=outputsize)
-        else:
-            raise f"Data Type: {data_type}"
 
-        # Renames columns from defalt provided by AlphaVantage to more standard terms
+        data, metadata = None, None
+        if data_type in ["1min", "5min", "15min", "30min", "60min"]:
+            data, meta_data = ts.get_intraday(
+                symbol, interval=data_type, outputsize="full"
+            )
+        elif data_type == "1day":
+            data, meta_data = ts.get_daily(symbol, outputsize="full")
+        elif data_type == "1week":
+            data, meta_data = ts.get_weekly(symbol)
+        elif data_type == "1month":
+            data, meta_data = ts.get_monthly(symbol)
+        else:
+            raise Exception("Data type is unimplemented")
+
         data = data.rename(
             columns={
                 "1. open": "open",
@@ -36,32 +33,11 @@ def get_ticker_data(
             }
         )
 
-        if start_date == "":
-            start_date = None
-
-        if end_date == "":
-            end_date = None
-
-        if start_date or end_date:
-            if start_date and end_date:
-                mask = (data.index > start_date) & (data.index <= end_date)
-            elif start_date:
-                mask = data.index > start_date
-            elif end_date:
-                mask = data.index <= end_date
-            else:
-                pass
-            data = data[mask]
-
         data = data.sort_index()
-        data["timestamp"] = data.index.values.astype(str)
-        response_dict = {"response": data.to_dict(orient="records")}
-        return response_dict
+
+        return data
     except ValueError:
-        return {"response": []}
-    except Exception as e:
-        print("Error: ", e)
-        return {"response": []}
+        return None
 
 
 def search_ticker(keyword):
