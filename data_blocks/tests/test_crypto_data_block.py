@@ -384,7 +384,7 @@ class PostRun(TestCase):
                 "crypto_name": "BTC",
                 "candlestick": "30min",
                 "start_date": "2021-07-23 13:00:00",
-                "end_date": "2021-07-23 15:00:00",
+                "end_date": "2021-07-23 14:00:00",
             },
             "output": {},
         }

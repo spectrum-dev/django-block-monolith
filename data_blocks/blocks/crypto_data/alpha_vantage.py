@@ -12,8 +12,6 @@ def get_crypto_data(symbol, data_type, market="USD"):
 
     data, metadata = None, None
     if data_type in ["1min", "5min", "15min", "30min", "60min"]:
-        # TODO: Implement the below endpoint manually
-        # https://www.alphavantage.co/query?function=CRYPTO_INTRADAY&symbol=ETH&market=USD&interval=5min&outputsize=full&apikey=demo
         url = f'https://www.alphavantage.co/query?function=CRYPTO_INTRADAY&symbol={symbol}&market={market}&interval={data_type}&outputsize=full&apikey={environ["ALPHA_VANTAGE_API_KEY"]}'
 
         resp = requests.get(url)
