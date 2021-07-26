@@ -25,12 +25,10 @@ import data_blocks.views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("DATA_BLOCK/1/equityName", data_blocks.views.get_equity_name),
-    path("DATA_BLOCK/1/dataType", data_blocks.views.get_data_type),
-    path("DATA_BLOCK/1/interval", data_blocks.views.get_interval),
-    path("DATA_BLOCK/1/outputSize", data_blocks.views.get_output_size),
-    path("DATA_BLOCK/1/run", data_blocks.views.EquityRunView.as_view()),
+    path("DATA_BLOCK/1/candlestick", data_blocks.views.get_us_stock_data_candlesticks),
+    path("DATA_BLOCK/1/run", data_blocks.views.USStockDataRunView.as_view()),
     path("DATA_BLOCK/2/cryptoName", data_blocks.views.get_symbol),
-    path("DATA_BLOCK/2/candlestick", data_blocks.views.get_candlesticks),
+    path("DATA_BLOCK/2/candlestick", data_blocks.views.get_crypto_candlesticks),
     path("DATA_BLOCK/2/run", data_blocks.views.CryptoRunView.as_view()),
     path("COMPUTATIONAL_BLOCK/1/indicator", computational_blocks.views.get_indicators),
     path(
