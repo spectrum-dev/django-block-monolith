@@ -112,7 +112,7 @@ def get_symbol(request):
             or currency_name.find(crypto_fuzzy_name) != -1
         ):
             response.append(
-                {"value": value["currency_code"], "label": value["currency_name"]}
+                {"value": value["currency_code"], "label": f'{value["currency_name"]} ({value["currency_code"]})'}
             )
 
     return JsonResponse({"response": response})
