@@ -80,7 +80,7 @@ class PostRun(TestCase):
                     "6. Last Refreshed": "2021-07-26 07:07:00",
                     "7. Interval": "1min",
                     "8. Output Size": "Full size",
-                    "9. Time Zone": "UTC"
+                    "9. Time Zone": "UTC",
                 },
                 "Time Series Crypto (1min)": {
                     "2021-07-23 10:00:00": {
@@ -103,11 +103,10 @@ class PostRun(TestCase):
                         "3. low": "32293.15000",
                         "4. close": "32309.62000",
                         "5. volume": 64,
-                    }
-                }
-
+                    },
+                },
             },
-            status=200
+            status=200,
         )
 
         payload = {
@@ -171,7 +170,7 @@ class PostRun(TestCase):
                     "6. Last Refreshed": "2021-07-26 07:07:00",
                     "7. Interval": "1min",
                     "8. Output Size": "Full size",
-                    "9. Time Zone": "UTC"
+                    "9. Time Zone": "UTC",
                 },
                 "Time Series Crypto (5min)": {
                     "2021-07-23 15:00:00": {
@@ -194,11 +193,10 @@ class PostRun(TestCase):
                         "3. low": "32293.15000",
                         "4. close": "32309.62000",
                         "5. volume": 64,
-                    }
-                }
-
+                    },
+                },
             },
-            status=200
+            status=200,
         )
 
         payload = {
@@ -246,7 +244,7 @@ class PostRun(TestCase):
                 ]
             },
         )
-    
+
     @responses.activate
     def test_fifteen_minute_candlestick_ok(self):
         responses.add(
@@ -262,7 +260,7 @@ class PostRun(TestCase):
                     "6. Last Refreshed": "2021-07-26 07:07:00",
                     "7. Interval": "1min",
                     "8. Output Size": "Full size",
-                    "9. Time Zone": "UTC"
+                    "9. Time Zone": "UTC",
                 },
                 "Time Series Crypto (15min)": {
                     "2021-07-23 13:00:00": {
@@ -285,11 +283,10 @@ class PostRun(TestCase):
                         "3. low": "32293.15000",
                         "4. close": "32309.62000",
                         "5. volume": 64,
-                    }
-                }
-
+                    },
+                },
             },
-            status=200
+            status=200,
         )
 
         payload = {
@@ -353,7 +350,7 @@ class PostRun(TestCase):
                     "6. Last Refreshed": "2021-07-26 07:07:00",
                     "7. Interval": "1min",
                     "8. Output Size": "Full size",
-                    "9. Time Zone": "UTC"
+                    "9. Time Zone": "UTC",
                 },
                 "Time Series Crypto (1min)": {
                     "2021-07-23 13:00:00": {
@@ -376,11 +373,10 @@ class PostRun(TestCase):
                         "3. low": "32293.15000",
                         "4. close": "32309.62000",
                         "5. volume": 64,
-                    }
-                }
-
+                    },
+                },
             },
-            status=200
+            status=200,
         )
 
         payload = {
@@ -444,7 +440,7 @@ class PostRun(TestCase):
                     "6. Last Refreshed": "2021-07-26 07:07:00",
                     "7. Interval": "1min",
                     "8. Output Size": "Full size",
-                    "9. Time Zone": "UTC"
+                    "9. Time Zone": "UTC",
                 },
                 "Time Series Crypto (1min)": {
                     "2021-07-23 13:00:00": {
@@ -467,11 +463,10 @@ class PostRun(TestCase):
                         "3. low": "32293.15000",
                         "4. close": "32309.62000",
                         "5. volume": 64,
-                    }
-                }
-
+                    },
+                },
             },
-            status=200
+            status=200,
         )
 
         payload = {
@@ -535,7 +530,7 @@ class PostRun(TestCase):
                     "6. Last Refreshed": "2021-07-26 07:07:00",
                     "7. Interval": "1min",
                     "8. Output Size": "Full size",
-                    "9. Time Zone": "UTC"
+                    "9. Time Zone": "UTC",
                 },
                 "Time Series (Digital Currency Daily)": {
                     "2021-06-10 00:00:00": {
@@ -573,11 +568,10 @@ class PostRun(TestCase):
                         "4b. close (USD)": "32332.70000",
                         "5. volume (USD)": 26,
                         "6. market cap (USD)": 26,
-                    }
-                }
-
+                    },
+                },
             },
-            status=200
+            status=200,
         )
 
         payload = {
@@ -596,7 +590,34 @@ class PostRun(TestCase):
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'open': 32324.52, 'high': 32336.75, 'low': 32314.0, 'close': 32332.7, '5. volume (USD)': 26.0, 'timestamp': '2021-06-10T00:00:00.000000000'}, {'open': 32324.52, 'high': 32336.75, 'low': 32314.0, 'close': 32332.7, '5. volume (USD)': 26.0, 'timestamp': '2021-06-11T00:00:00.000000000'}, {'open': 32324.52, 'high': 32336.75, 'low': 32314.0, 'close': 32332.7, '5. volume (USD)': 26.0, 'timestamp': '2021-06-12T00:00:00.000000000'}]}
+            {
+                "response": [
+                    {
+                        "open": 32324.52,
+                        "high": 32336.75,
+                        "low": 32314.0,
+                        "close": 32332.7,
+                        "5. volume (USD)": 26.0,
+                        "timestamp": "2021-06-10T00:00:00.000000000",
+                    },
+                    {
+                        "open": 32324.52,
+                        "high": 32336.75,
+                        "low": 32314.0,
+                        "close": 32332.7,
+                        "5. volume (USD)": 26.0,
+                        "timestamp": "2021-06-11T00:00:00.000000000",
+                    },
+                    {
+                        "open": 32324.52,
+                        "high": 32336.75,
+                        "low": 32314.0,
+                        "close": 32332.7,
+                        "5. volume (USD)": 26.0,
+                        "timestamp": "2021-06-12T00:00:00.000000000",
+                    },
+                ]
+            },
         )
 
     @responses.activate
@@ -614,7 +635,7 @@ class PostRun(TestCase):
                     "6. Last Refreshed": "2021-07-26 07:07:00",
                     "7. Interval": "1min",
                     "8. Output Size": "Full size",
-                    "9. Time Zone": "UTC"
+                    "9. Time Zone": "UTC",
                 },
                 "Time Series (Digital Currency Weekly)": {
                     "2021-06-13 00:00:00": {
@@ -640,11 +661,10 @@ class PostRun(TestCase):
                         "4b. close (USD)": "32332.70000",
                         "5. volume (USD)": 26,
                         "6. market cap (USD)": 26,
-                    }
-                }
-
+                    },
+                },
             },
-            status=200
+            status=200,
         )
 
         payload = {
@@ -660,10 +680,29 @@ class PostRun(TestCase):
         response = self.client.post(
             "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
         )
-        
+
         self.assertDictEqual(
             response.json(),
-            {'response': [{'open': 32324.52, 'high': 32336.75, 'low': 32314.0, 'close': 32332.7, '5. volume (USD)': 26.0, 'timestamp': '2021-06-13T00:00:00.000000000'}, {'open': 32324.52, 'high': 32336.75, 'low': 32314.0, 'close': 32332.7, '5. volume (USD)': 26.0, 'timestamp': '2021-06-20T00:00:00.000000000'}]},
+            {
+                "response": [
+                    {
+                        "open": 32324.52,
+                        "high": 32336.75,
+                        "low": 32314.0,
+                        "close": 32332.7,
+                        "5. volume (USD)": 26.0,
+                        "timestamp": "2021-06-13T00:00:00.000000000",
+                    },
+                    {
+                        "open": 32324.52,
+                        "high": 32336.75,
+                        "low": 32314.0,
+                        "close": 32332.7,
+                        "5. volume (USD)": 26.0,
+                        "timestamp": "2021-06-20T00:00:00.000000000",
+                    },
+                ]
+            },
         )
 
     @responses.activate
@@ -681,7 +720,7 @@ class PostRun(TestCase):
                     "6. Last Refreshed": "2021-07-26 07:07:00",
                     "7. Interval": "1min",
                     "8. Output Size": "Full size",
-                    "9. Time Zone": "UTC"
+                    "9. Time Zone": "UTC",
                 },
                 "Time Series (Digital Currency Monthly)": {
                     "2021-04-30 00:00:00": {
@@ -719,11 +758,10 @@ class PostRun(TestCase):
                         "4b. close (USD)": "32332.70000",
                         "5. volume (USD)": 26,
                         "6. market cap (USD)": 26,
-                    }
-                }
-
+                    },
+                },
             },
-            status=200
+            status=200,
         )
 
         payload = {
@@ -742,5 +780,32 @@ class PostRun(TestCase):
 
         self.assertDictEqual(
             response.json(),
-            {'response': [{'open': 32324.52, 'high': 32336.75, 'low': 32314.0, 'close': 32332.7, '5. volume (USD)': 26.0, 'timestamp': '2021-04-30T00:00:00.000000000'}, {'open': 32324.52, 'high': 32336.75, 'low': 32314.0, 'close': 32332.7, '5. volume (USD)': 26.0, 'timestamp': '2021-05-31T00:00:00.000000000'}, {'open': 32324.52, 'high': 32336.75, 'low': 32314.0, 'close': 32332.7, '5. volume (USD)': 26.0, 'timestamp': '2021-06-30T00:00:00.000000000'}]},
+            {
+                "response": [
+                    {
+                        "open": 32324.52,
+                        "high": 32336.75,
+                        "low": 32314.0,
+                        "close": 32332.7,
+                        "5. volume (USD)": 26.0,
+                        "timestamp": "2021-04-30T00:00:00.000000000",
+                    },
+                    {
+                        "open": 32324.52,
+                        "high": 32336.75,
+                        "low": 32314.0,
+                        "close": 32332.7,
+                        "5. volume (USD)": 26.0,
+                        "timestamp": "2021-05-31T00:00:00.000000000",
+                    },
+                    {
+                        "open": 32324.52,
+                        "high": 32336.75,
+                        "low": 32314.0,
+                        "close": 32332.7,
+                        "5. volume (USD)": 26.0,
+                        "timestamp": "2021-06-30T00:00:00.000000000",
+                    },
+                ]
+            },
         )

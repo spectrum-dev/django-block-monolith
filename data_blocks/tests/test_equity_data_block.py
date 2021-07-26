@@ -3,6 +3,7 @@ import responses
 
 from django.test import TestCase
 
+
 class GetEquityName(TestCase):
     @responses.activate
     def test_ok(self):
