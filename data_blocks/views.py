@@ -99,17 +99,34 @@ class EquityRunView(APIView):
 from data_blocks.blocks.crypto_data.supported_crypto import SUPPORTED_CRYPTO
 from data_blocks.blocks.crypto_data.main import run as crpto_run
 
+
 def get_symbol(request):
+    crypto_fuzzy_name = str(request.GET.get("name")).lower()
+
     response = []
     for value in SUPPORTED_CRYPTO:
-        response.append(value["currency_code"])
-    
+        currency_code = value['currency_code'].lower()
+        currency_name = value['currency_name'].lower()
+        if (currency_code.find(crypto_fuzzy_name) != -1 or currency_name.find(crypto_fuzzy_name) != -1):
+            response.append({ 'value': value['currency_code'], 'label': value['currency_name'] })
+
     return JsonResponse({"response": response})
 
+
 def get_candlesticks(request):
-    response_payload = ["1min", "5min", "15min", "30min", "60min", "1day", "1week", "1month"]
+    response_payload = [
+        "1min",
+        "5min",
+        "15min",
+        "30min",
+        "60min",
+        "1day",
+        "1week",
+        "1month",
+    ]
     return JsonResponse({"response": response_payload})
- 
+
+
 class CryptoRunView(APIView):
     def post(self, request):
         class Candlestick(enum.Enum):
@@ -137,5 +154,5 @@ class CryptoRunView(APIView):
         input = request_body["input"]
         if InputSerializer(data=input).is_valid(raise_exception=True):
             response = crpto_run(input)
-        
+
         return JsonResponse(response)

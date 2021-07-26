@@ -29,7 +29,7 @@ urlpatterns = [
     path("DATA_BLOCK/1/interval", data_blocks.views.get_interval),
     path("DATA_BLOCK/1/outputSize", data_blocks.views.get_output_size),
     path("DATA_BLOCK/1/run", data_blocks.views.EquityRunView.as_view()),
-    path("DATA_BLOCK/2/cryptoName?name=", data_blocks.views.get_symbol),
+    path("DATA_BLOCK/2/cryptoName", data_blocks.views.get_symbol),
     path("DATA_BLOCK/2/candlestick", data_blocks.views.get_candlesticks),
     path("DATA_BLOCK/2/run", data_blocks.views.CryptoRunView.as_view()),
     path("COMPUTATIONAL_BLOCK/1/indicator", computational_blocks.views.get_indicators),
