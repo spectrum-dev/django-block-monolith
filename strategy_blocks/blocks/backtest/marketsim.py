@@ -47,6 +47,15 @@ def run(orders_df, price_df, start_val, commission, impact):
             elif order_type == "BUY":
                 price *= -1 * (1 + impact)
                 trades_df["Cash"].loc[index] += price * share_amount - commission
+            elif order_type == "SELL_CLOSE":
+                share_amount = shares[i - 1]
+                price *= 1 - impact
+                trades_df["Cash"].loc[index] += price * share_amount - commission
+                share_amount *= -1
+            elif order_type == "BUY_CLOSE":
+                share_amount = -1 * shares[i - 1]
+                price *= -1 * (1 + impact)
+                trades_df["Cash"].loc[index] += price * share_amount - commission
 
             trades_df[order["symbol"]].loc[index] = int(
                 trades_df[order["symbol"]].loc[index]

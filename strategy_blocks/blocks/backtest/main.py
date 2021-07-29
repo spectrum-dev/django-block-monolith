@@ -58,17 +58,48 @@ def _generate_signal_block_df(signal_block):
     ----------
     signal_block: Incoming Signal Block JSON
     """
-    signal_block_df = pd.DataFrame(columns=["datetime", "buy", "sell"])
+    signal_block_df = pd.DataFrame(
+        columns=["datetime", "buy", "sell", "buy_close", "sell_close"]
+    )
 
-    for record in signal_block:
-        signal_block_df = signal_block_df.append(
-            {
-                "datetime": record["timestamp"],
-                "buy": record["order"] == "BUY",
-                "sell": record["order"] == "SELL",
-            },
-            ignore_index=True,
-        )
+    for i in range(0, len(signal_block)):
+        buy = signal_block[i]["order"] == "BUY"
+        sell = signal_block[i]["order"] == "SELL"
+
+        if i >= 1:
+            if buy and signal_block[i - 1]["order"] == "SELL":
+                signal_block_df = signal_block_df.append(
+                    {
+                        "datetime": signal_block[i]["timestamp"],
+                        "buy": False,
+                        "sell": False,
+                        "sell_close": False,
+                        "buy_close": True,
+                    },
+                    ignore_index=True,
+                )
+            elif sell and signal_block[i - 1]["order"] == "BUY":
+                signal_block_df = signal_block_df.append(
+                    {
+                        "datetime": signal_block[i]["timestamp"],
+                        "buy": False,
+                        "sell": False,
+                        "sell_close": True,
+                        "buy_close": False,
+                    },
+                    ignore_index=True,
+                )
+        else:
+            signal_block_df = signal_block_df.append(
+                {
+                    "datetime": signal_block[i]["timestamp"],
+                    "buy": buy,
+                    "sell": sell,
+                    "sell_close": False,
+                    "buy_close": False,
+                },
+                ignore_index=True,
+            )
 
     signal_block_df = signal_block_df.set_index("datetime")
 
@@ -86,23 +117,19 @@ def _generate_trades_df(input, signal_block_df):
     """
     orders = Orders()
 
-    #  TODO: Do we want a dropdown for the trade_amount_unit, and if so need to uncomment this logic
-    # if (input["trade_amount_unit"] == "PERCENTAGE"):
-    #     trade_amount = input["start_value"] * input["trade_amount_value"]
-    # elif (input["trade_amount_unit"] == "NOMINAL"):
-    #     trade_amount = input["trade_amount_value"]
-    # else:
-    #     raise ValueError(f"The unit {input['trade_amount_unit']} is not valid")
-
-    trade_amount = float(input["start_value"]) * float(input["trade_amount_value"])
+    trade_amount = float(input["trade_amount_value"])
 
     for index, row in signal_block_df.iterrows():
         if row["buy"]:
             orders.buy(index, "close", trade_amount, "", "", "")
         elif row["sell"]:
             orders.sell(index, "close", trade_amount, "", "", "")
+        elif row["buy_close"]:
+            orders.buy_close(index, "close", "", "", "")
+        elif row["sell_close"]:
+            orders.sell_close(index, "close", "", "", "")
         else:
-            raise Exception("Both the BUY and SELL are empty")
+            raise Exception("The BUY, SELL, BUY_CLOSE and SELL_CLOSE options are empty")
 
     return orders.trades_df
 
