@@ -46,12 +46,6 @@ class GetIndicatorField(TestCase):
                         "fieldType": "input",
                         "fieldVariableName": "lookback_period",
                     },
-                    {
-                        "fieldName": "Lookback Unit",
-                        "fieldType": "dropdown",
-                        "fieldVariableName": "lookback_unit",
-                        "fieldData": {"options": ["DATA_POINT"]},
-                    },
                 ]
             },
         )
@@ -73,7 +67,6 @@ class PostRun(TestCase):
             "input": {
                 "indicator_name": "MA",
                 "lookback_period": "2",
-                "lookback_unit": "DATA_POINT",
             },
             "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
@@ -102,7 +95,6 @@ class PostRun(TestCase):
             "input": {
                 "indicator_name": "EMA",
                 "lookback_period": "2",
-                "lookback_unit": "DATA_POINT",
             },
             "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
@@ -132,7 +124,6 @@ class PostRun(TestCase):
                 "indicator_name": "MACD",
                 "lookback_period_one": "2",
                 "lookback_period_two": "3",
-                "lookback_unit": "DATA_POINT",
             },
             "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
@@ -161,7 +152,6 @@ class PostRun(TestCase):
             "input": {
                 "indicator_name": "ADX",
                 "lookback_period": "2",
-                "lookback_unit": "DATA_POINT",
             },
             "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
@@ -190,7 +180,6 @@ class PostRun(TestCase):
             "input": {
                 "indicator_name": "ADXR",
                 "lookback_period": "2",
-                "lookback_unit": "DATA_POINT",
             },
             "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
@@ -221,7 +210,6 @@ class PostRun(TestCase):
                 "fast_period": "2",
                 "slow_period": "4",
                 "ma_type": "0",
-                "lookback_unit": "DATA_POINT",
             },
             "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
@@ -250,7 +238,6 @@ class PostRun(TestCase):
             "input": {
                 "indicator_name": "AROONOSC",
                 "lookback_period": 3,
-                "lookback_unit": "DATA_POINT",
             },
             "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
@@ -306,7 +293,6 @@ class PostRun(TestCase):
             "input": {
                 "indicator_name": "CCI",
                 "lookback_period": 3,
-                "lookback_unit": "DATA_POINT",
             },
             "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
@@ -335,7 +321,6 @@ class PostRun(TestCase):
             "input": {
                 "indicator_name": "CMO",
                 "lookback_period": 3,
-                "lookback_unit": "DATA_POINT",
             },
             "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
@@ -364,7 +349,6 @@ class PostRun(TestCase):
             "input": {
                 "indicator_name": "DX",
                 "lookback_period": 3,
-                "lookback_unit": "DATA_POINT",
             },
             "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
@@ -393,7 +377,6 @@ class PostRun(TestCase):
             "input": {
                 "indicator_name": "RSI",
                 "lookback_period": 3,
-                "lookback_unit": "DATA_POINT",
             },
             "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }

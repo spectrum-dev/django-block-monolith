@@ -10,15 +10,7 @@ INDICATORS = {
                 "internalName": "lookback_period",
                 "description": "",  # DESCRIPTIONS["lookbackPeriod"]
                 "default": 10,
-            },
-            {
-                "name": "Lookback Unit",
-                "internalName": "lookback_unit",
-                "description": "",  # DESCRIPTIONS["lookbackUnit"],
-                "values": [
-                    "DATA_POINT",
-                ],
-            },
+            }
         ],
     },
     "EMA": {
@@ -31,15 +23,7 @@ INDICATORS = {
                 "internalName": "lookback_period",
                 "description": "",
                 "default": 10,
-            },
-            {
-                "name": "Lookback Unit",
-                "internalName": "lookback_unit",
-                "description": "",  # DESCRIPTIONS["lookbackUnit"],
-                "values": [
-                    "DATA_POINT",
-                ],
-            },
+            }
         ],
     },
     "MACD": {
@@ -56,12 +40,6 @@ INDICATORS = {
             {
                 "name": "Lookback Period Two",
                 "internalName": "lookback_period_two",
-                "description": "",
-                "default": 10,
-            },
-            {
-                "name": "Lookback Unit",
-                "internalName": "lookback_unit",
                 "description": "",
                 "default": 10,
             },
