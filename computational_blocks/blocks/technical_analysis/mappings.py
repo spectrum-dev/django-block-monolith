@@ -42,7 +42,7 @@ INDICATORS = {
                 "internalName": "lookback_period_two",
                 "description": "",
                 "default": 10,
-            }
+            },
         ],
     },
     "ADX": {
