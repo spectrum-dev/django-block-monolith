@@ -8,7 +8,6 @@ from rest_framework.views import APIView
 from computational_blocks.blocks.technical_analysis.mappings import INDICATORS
 from computational_blocks.blocks.technical_analysis.main import run
 
-# Create your views here.
 
 # Technical Analysis (Computational Block with ID 1)
 # --------------------------------------------------

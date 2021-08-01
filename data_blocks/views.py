@@ -8,8 +8,6 @@ from rest_framework.views import APIView
 from rest_enumfield import EnumField
 
 
-# Create your views here.
-
 # US Stock Data (Data Block with ID 1)
 # -----------------------------------
 from data_blocks.blocks.us_stock_data.alpha_vantage import search_ticker
