@@ -12,15 +12,26 @@ services:
         command: python manage.py test
         environment:
             - ALPHA_VANTAGE_API_KEY=demo
+            - DJANGO_SECRET_KEY=django-public-secret-key
+            - DJANGO_DEBUG="TRUE"
     lint:
         build: .
         command: python -m black . -t py38
+        environment:
+            - ALPHA_VANTAGE_API_KEY=demo
+            - DJANGO_SECRET_KEY=django-public-secret-key
+            - DJANGO_DEBUG="TRUE"
     test-coverage:
         build: .
         command: bash -c "python -m coverage run manage.py test && python -m coverage report --fail-under 100"
         environment:
             - ALPHA_VANTAGE_API_KEY=demo
+            - DJANGO_SECRET_KEY=django-public-secret-key
+            - DJANGO_DEBUG="TRUE"
     test-lint:
         build: .
         command: python -m black . -t py38 --check
-    
+        environment:
+            - ALPHA_VANTAGE_API_KEY=demo
+            - DJANGO_SECRET_KEY=django-public-secret-key
+            - DJANGO_DEBUG="TRUE"
