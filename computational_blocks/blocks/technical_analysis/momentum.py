@@ -1,7 +1,7 @@
 import talib
 import pandas as pd
 
-from talib import EMA, ADX, ADXR, APO, AROON, AROONOSC, BOP, CCI, CMO, DX, RSI
+from talib import EMA, ADX, ADXR, APO, AROONOSC, BOP, CCI, CMO, DX, RSI
 
 """
     Documentation
@@ -117,15 +117,6 @@ def apo(
     )
 
     return response
-
-
-def aroon(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
-    aroondown, aroonup = AROON(
-        data_block["high"], data_block["low"], timeperiod=int(lookback_period)
-    )
-
-    # TODO: Determine what to return
-    return
 
 
 def aroon_oscillator(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):

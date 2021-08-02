@@ -128,8 +128,6 @@ def _generate_trades_df(input, signal_block_df):
             orders.buy_close(index, "close", "", "", "")
         elif row["sell_close"]:
             orders.sell_close(index, "close", "", "", "")
-        else:
-            raise Exception("The BUY, SELL, BUY_CLOSE and SELL_CLOSE options are empty")
 
     return orders.trades_df
 
