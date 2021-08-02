@@ -19,6 +19,7 @@ services:
         build: .
         command: |
             python -m coverage run manage.py test
+            python -m coverage report --fail-under 100
         environment:
             - ALPHA_VANTAGE_API_KEY=demo
     test-lint:
