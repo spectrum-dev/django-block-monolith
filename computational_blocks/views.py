@@ -30,23 +30,13 @@ def get_indiciator_fields(request):
 
     response = []
     for indicator in indicator_information["params"]:
-        if "values" in indicator:
-            response.append(
-                {
-                    "fieldName": indicator["name"],
-                    "fieldType": "dropdown",
-                    "fieldVariableName": indicator["internalName"],
-                    "fieldData": {"options": indicator["values"]},
-                }
-            )
-        else:
-            response.append(
-                {
-                    "fieldName": indicator["name"],
-                    "fieldType": "input",
-                    "fieldVariableName": indicator["internalName"],
-                }
-            )
+        response.append(
+            {
+                "fieldName": indicator["name"],
+                "fieldType": "input",
+                "fieldVariableName": indicator["internalName"],
+            }
+        )
 
     return JsonResponse({"response": response})
 

@@ -29,8 +29,6 @@ def run(input):
             return "W"
         elif case("1month"):
             return "M"
-        else:
-            raise Exception("Candlestick does not have a corresponding time interval")
 
     response_df = get_crypto_data(input["crypto_name"], input["candlestick"])
 
