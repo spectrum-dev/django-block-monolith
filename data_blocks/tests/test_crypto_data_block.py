@@ -809,3 +809,22 @@ class PostRun(TestCase):
                 ]
             },
         )
+
+    def test_get_stock_data_end_date_preceeds_start_date(self):
+        payload = {
+            "input": {
+                "crypto_name": "BTC",
+                "candlestick": "1min",
+                "start_date": "2021-06-22 00:00:00",
+                "end_date": "2021-06-18 00:00:00",
+            },
+            "output": {},
+        }
+
+        response = self.client.post(
+            "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
+        )
+
+        self.assertEqual(
+            response.json(), {"non_field_errors": ["finish must occur after start"]}
+        )

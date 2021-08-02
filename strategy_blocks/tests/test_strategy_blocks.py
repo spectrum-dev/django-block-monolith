@@ -522,3 +522,49 @@ class BacktestBlockRunning(TestCase):
                 }
             },
         )
+
+    def test_orders_df_empty(self):
+        payload = {
+            "input": {
+                "start_value": 10000.00,
+                "commission": 0.00,
+                "impact": 0.00,
+                "stop_loss": 0.0,
+                "take_profit": 0.0,
+                "trade_amount_value": 1000.00,
+            },
+            "output": {
+                "DATA_BLOCK-1-1": [
+                    {
+                        "timestamp": "01/01/2020",
+                        "timezone": "UTC/EST",
+                        "open": "10.00",
+                        "high": "10.00",
+                        "low": "10.00",
+                        "close": "10.00",
+                        "volume": "10.00",
+                    },
+                    {
+                        "timestamp": "01/02/2020",
+                        "timezone": "UTC/EST",
+                        "open": "11.00",
+                        "high": "11.00",
+                        "low": "11.00",
+                        "close": "11.00",
+                        "volume": "11.00",
+                    },
+                ],
+                "SIGNAL_BLOCK-1-1": [],
+            },
+        }
+
+        response = self.client.post(
+            "/STRATEGY_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
+        )
+
+        self.assertDictEqual(
+            response.json(),
+            {"outputs_error": "Data for outputs must have more than one entry"},
+        )

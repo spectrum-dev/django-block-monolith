@@ -26,11 +26,9 @@ def run(input):
         elif case("1day"):
             return "D"
         elif case("1week"):
-            return "W"
+            return "D"
         elif case("1month"):
-            return "M"
-        else:
-            raise Exception("Candlestick does not have a corresponding time interval")
+            return "D"
 
     response_df = get_us_stock_data(
         input["equity_name"], data_type=input["candlestick"]

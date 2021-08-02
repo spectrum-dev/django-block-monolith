@@ -8,6 +8,7 @@ black==21.6b0
 certifi==2021.5.30
 chardet==4.0.0
 click==8.0.1
+coverage==5.5.0
 Cython==0.29.24
 Django==3.2.5
 django-admin==2.0.1

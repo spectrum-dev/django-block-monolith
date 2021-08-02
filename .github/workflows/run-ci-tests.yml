@@ -43,6 +43,10 @@ jobs:
       run: |
         docker-compose run -e DATABASE_NAME="postgres" -e DATABASE_USER="postgres" -e DATABASE_PASSWORD="postgres" -e DATABASE_HOST="127.0.0.1" -e DATABASE_PORT=${{ matrix.db_port }} -e ALPHA_VANTAGE_API_KEY=demo test
     
+    - name: Runs coverage
+      run: |
+        docker-compose run -e DATABASE_NAME="postgres" -e DATABASE_USER="postgres" -e DATABASE_PASSWORD="postgres" -e DATABASE_HOST="127.0.0.1" -e DATABASE_PORT=${{ matrix.db_port }} -e ALPHA_VANTAGE_API_KEY=demo test-coverage
+
     - name: Run Lint
       run: |
         docker-compose run test-lint

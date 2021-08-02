@@ -32,8 +32,6 @@ def get_crypto_data(symbol, data_type, market="USD"):
         data, metadata = crypto.get_digital_currency_monthly(
             symbol=symbol, market=market
         )
-    else:
-        raise Exception("Data Type is unimplemented")
 
     if data_type in ["1min", "5min", "15min", "30min", "60min"]:
         data = data.rename(
