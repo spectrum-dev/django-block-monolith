@@ -17,9 +17,8 @@ services:
         command: python -m black . -t py38
     test-coverage:
         build: .
-        command: >
+        command: |
             python -m coverage run manage.py test
-            && python -m coverage report
         environment:
             - ALPHA_VANTAGE_API_KEY=demo
     test-lint:
