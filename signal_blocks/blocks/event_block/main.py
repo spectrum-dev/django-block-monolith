@@ -3,7 +3,6 @@ from functools import reduce
 
 from signal_blocks.blocks.event_block.events.main import (
     handle_intersect,
-    handle_not_implemented,
 )
 
 
@@ -23,9 +22,6 @@ def run(input, computational_block):
     case = lambda x: x == input["event_type"]
     if case("INTERSECT"):
         response_df = handle_intersect(computational_block_df)
-    
-    if response_df is None:
-        return None
     
     return _format_response(input["event_action"], response_df)
 
