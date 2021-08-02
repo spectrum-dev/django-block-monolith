@@ -355,7 +355,7 @@ class PostRun(TestCase):
                 ]
             },
         )
-    
+
     @responses.activate
     def test_get_intraday_30min_data_ok(self):
         payload = {
@@ -442,7 +442,7 @@ class PostRun(TestCase):
                 ]
             },
         )
-    
+
     @responses.activate
     def test_get_intraday_60min_data_ok(self):
         payload = {
@@ -663,7 +663,7 @@ class PostRun(TestCase):
                     "1. Information": "Weekly Prices (open, high, low, close) and Volumes",
                     "2. Symbol": "IBM",
                     "3. Last Refreshed": "2021-07-30",
-                    "4. Time Zone": "US/Eastern"
+                    "4. Time Zone": "US/Eastern",
                 },
                 "Weekly Time Series": {
                     "2021-07-30": {
@@ -671,21 +671,21 @@ class PostRun(TestCase):
                         "2. high": "143.6400",
                         "3. low": "140.7900",
                         "4. close": "140.9600",
-                        "5. volume": "16120616"
+                        "5. volume": "16120616",
                     },
                     "2021-07-23": {
                         "1. open": "136.4500",
                         "2. high": "144.9200",
                         "3. low": "136.2089",
                         "4. close": "141.3400",
-                        "5. volume": "34786264"
+                        "5. volume": "34786264",
                     },
                     "2021-07-16": {
                         "1. open": "141.4300",
                         "2. high": "141.9599",
                         "3. low": "138.5900",
                         "4. close": "138.9000",
-                        "5. volume": "18659679"
+                        "5. volume": "18659679",
                     },
                 },
             },
@@ -696,7 +696,37 @@ class PostRun(TestCase):
             "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
         )
 
-        self.assertDictEqual(response.json(), {'response': [{'open': 141.43, 'high': 141.9599, 'low': 138.59, 'close': 138.9, 'volume': 18659679.0, 'timestamp': '2021-07-16T00:00:00.000000000'}, {'open': 136.45, 'high': 144.92, 'low': 136.2089, 'close': 141.34, 'volume': 34786264.0, 'timestamp': '2021-07-23T00:00:00.000000000'}, {'open': 141.39, 'high': 143.64, 'low': 140.79, 'close': 140.96, 'volume': 16120616.0, 'timestamp': '2021-07-30T00:00:00.000000000'}]})
+        self.assertDictEqual(
+            response.json(),
+            {
+                "response": [
+                    {
+                        "open": 141.43,
+                        "high": 141.9599,
+                        "low": 138.59,
+                        "close": 138.9,
+                        "volume": 18659679.0,
+                        "timestamp": "2021-07-16T00:00:00.000000000",
+                    },
+                    {
+                        "open": 136.45,
+                        "high": 144.92,
+                        "low": 136.2089,
+                        "close": 141.34,
+                        "volume": 34786264.0,
+                        "timestamp": "2021-07-23T00:00:00.000000000",
+                    },
+                    {
+                        "open": 141.39,
+                        "high": 143.64,
+                        "low": 140.79,
+                        "close": 140.96,
+                        "volume": 16120616.0,
+                        "timestamp": "2021-07-30T00:00:00.000000000",
+                    },
+                ]
+            },
+        )
 
     @responses.activate
     def test_get_monthly_data_ok(self):
@@ -718,7 +748,7 @@ class PostRun(TestCase):
                     "1. Information": "Monthly Prices (open, high, low, close) and Volumes",
                     "2. Symbol": "IBM",
                     "3. Last Refreshed": "2021-07-30",
-                    "4. Time Zone": "US/Eastern"
+                    "4. Time Zone": "US/Eastern",
                 },
                 "Monthly Time Series": {
                     "2021-07-30": {
@@ -726,21 +756,21 @@ class PostRun(TestCase):
                         "2. high": "147.5000",
                         "3. low": "136.2089",
                         "4. close": "140.9600",
-                        "5. volume": "110625907"
+                        "5. volume": "110625907",
                     },
                     "2021-06-30": {
                         "1. open": "145.0000",
                         "2. high": "152.8400",
                         "3. low": "143.0400",
                         "4. close": "146.5900",
-                        "5. volume": "84365220"
+                        "5. volume": "84365220",
                     },
                     "2021-05-28": {
                         "1. open": "143.8100",
                         "2. high": "148.5150",
                         "3. low": "140.9200",
                         "4. close": "143.7400",
-                        "5. volume": "98036425"
+                        "5. volume": "98036425",
                     },
                 },
             },
@@ -751,8 +781,37 @@ class PostRun(TestCase):
             "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
         )
 
-        self.assertDictEqual(response.json(), {'response': [{'open': 143.81, 'high': 148.515, 'low': 140.92, 'close': 143.74, 'volume': 98036425.0, 'timestamp': '2021-05-28T00:00:00.000000000'}, {'open': 145.0, 'high': 152.84, 'low': 143.04, 'close': 146.59, 'volume': 84365220.0, 'timestamp': '2021-06-30T00:00:00.000000000'}, {'open': 146.96, 'high': 147.5, 'low': 136.2089, 'close': 140.96, 'volume': 110625907.0, 'timestamp': '2021-07-30T00:00:00.000000000'}]})
-
+        self.assertDictEqual(
+            response.json(),
+            {
+                "response": [
+                    {
+                        "open": 143.81,
+                        "high": 148.515,
+                        "low": 140.92,
+                        "close": 143.74,
+                        "volume": 98036425.0,
+                        "timestamp": "2021-05-28T00:00:00.000000000",
+                    },
+                    {
+                        "open": 145.0,
+                        "high": 152.84,
+                        "low": 143.04,
+                        "close": 146.59,
+                        "volume": 84365220.0,
+                        "timestamp": "2021-06-30T00:00:00.000000000",
+                    },
+                    {
+                        "open": 146.96,
+                        "high": 147.5,
+                        "low": 136.2089,
+                        "close": 140.96,
+                        "volume": 110625907.0,
+                        "timestamp": "2021-07-30T00:00:00.000000000",
+                    },
+                ]
+            },
+        )
 
     @responses.activate
     def test_get_daily_adjusted_data_error_cannot_find_ticker(self):

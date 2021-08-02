@@ -3,6 +3,7 @@ from datetime import datetime
 
 # NOTE: Exempted from coverage as this function was lifted from an external source
 
+
 def main(df):
     response = []
 

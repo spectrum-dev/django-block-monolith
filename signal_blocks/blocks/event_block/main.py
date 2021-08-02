@@ -22,7 +22,7 @@ def run(input, computational_block):
     case = lambda x: x == input["event_type"]
     if case("INTERSECT"):
         response_df = handle_intersect(computational_block_df)
-    
+
     return _format_response(input["event_action"], response_df)
 
 

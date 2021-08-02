@@ -150,7 +150,7 @@ class PostRun(TestCase):
                     {"timestamp": "2020-01-04", "data": 7.00},
                     {"timestamp": "2020-01-05", "data": 6.00},
                     {"timestamp": "2020-01-06", "data": 5.00},
-                ]
+                ],
             },
         }
 
@@ -158,4 +158,7 @@ class PostRun(TestCase):
             "/SIGNAL_BLOCK/2/run", json.dumps(payload), content_type="application/json"
         )
 
-        self.assertDictEqual(response.json(), {"non_field_errors": ["You must pass in at most one stream of data"]})
+        self.assertDictEqual(
+            response.json(),
+            {"non_field_errors": ["You must pass in at most one stream of data"]},
+        )

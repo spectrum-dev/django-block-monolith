@@ -33,7 +33,7 @@ def run(input):
     response_df = get_us_stock_data(
         input["equity_name"], data_type=input["candlestick"]
     )
-    
+
     if response_df is not None:
         date_range = pd.date_range(
             input["start_date"],

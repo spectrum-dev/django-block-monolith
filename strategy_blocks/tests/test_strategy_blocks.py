@@ -564,4 +564,7 @@ class BacktestBlockRunning(TestCase):
             content_type="application/json",
         )
 
-        self.assertDictEqual(response.json(), {'outputs_error': 'Data for outputs must have more than one entry'})
+        self.assertDictEqual(
+            response.json(),
+            {"outputs_error": "Data for outputs must have more than one entry"},
+        )

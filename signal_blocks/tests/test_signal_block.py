@@ -153,7 +153,10 @@ class PostRun(TestCase):
             "/SIGNAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
         )
 
-        self.assertDictEqual(response.json(), {'event_type': ['"UNHANDLED_EVENT" is not a valid choice.']})
+        self.assertDictEqual(
+            response.json(),
+            {"event_type": ['"UNHANDLED_EVENT" is not a valid choice.']},
+        )
 
     def test_invalid_incoming_output_data_format(self):
         pass
