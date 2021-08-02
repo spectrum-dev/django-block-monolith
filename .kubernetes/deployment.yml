@@ -53,5 +53,15 @@ spec:
                 secretKeyRef:
                   name: "spectrum-block-monolith"
                   key: "ALPHA_VANTAGE_API_KEY"
+            - name: "DJANGO_SECRET_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: "spectrum-block-monolith"
+                  key: "DJANGO_SECRET_KEY"
+            - name: "DJANGO_DEBUG"
+              valueFrom:
+                secretKeyRef:
+                  name: "spectrum-block-monolith"
+                  key: "DJANGO_DEBUG"
       imagePullSecrets:
         - name: registry-spectrum
