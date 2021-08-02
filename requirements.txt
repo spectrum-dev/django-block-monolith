@@ -90,7 +90,7 @@ nibabel==3.0.1
 nipype==1.4.2
 notebook==6.0.3
 numpy==1.19.5
-opencv-python==4.2.0.32
+opencv-python==4.5.3.56
 packaging==20.1
 pamqp==2.3.0
 pandas==1.0.0
