@@ -18,7 +18,8 @@ services:
     test-coverage:
         build: .
         command: |
-            coverage run --omit='*/venv/*' manage.py test &&
+            coverage run manage.py test &&
+            coverage report
         environment:
             - ALPHA_VANTAGE_API_KEY=demo
     test-lint:
