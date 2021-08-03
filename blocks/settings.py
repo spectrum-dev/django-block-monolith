@@ -40,6 +40,7 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "data_blocks",
+    "logical_blocks",
     "computational_blocks",
     "signal_blocks",
     "strategy_blocks",
