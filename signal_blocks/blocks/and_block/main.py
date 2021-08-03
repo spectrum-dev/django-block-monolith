@@ -2,7 +2,7 @@ import pandas as pd
 
 from functools import reduce
 
-def main(outputs):
+def run(outputs):
     df_list = []
     for _, value in outputs.items():
         df = _create_orders_df(value)

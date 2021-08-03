@@ -13,7 +13,7 @@ class TestAndRun(TestCase):
         }
         
         response = self.client.post(
-            "/LOGICAL_BLOCK/1/run",
+            "/SIGNAL_BLOCK/3/run",
             json.dumps(payload),
             content_type="application/json",
         )
@@ -52,7 +52,7 @@ class TestAndRun(TestCase):
         }
         
         response = self.client.post(
-            "/LOGICAL_BLOCK/1/run",
+             "/SIGNAL_BLOCK/3/run",
             json.dumps(payload),
             content_type="application/json",
         )
@@ -73,7 +73,7 @@ class TestAndRun(TestCase):
         }
 
         response = self.client.post(
-            "/LOGICAL_BLOCK/1/run",
+            "/SIGNAL_BLOCK/3/run",
             json.dumps(payload),
             content_type="application/json",
         )

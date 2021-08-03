@@ -9,6 +9,7 @@ from rest_enumfield import EnumField
 
 from signal_blocks.blocks.event_block.main import run as signal_block_run
 from signal_blocks.blocks.saddle_block.main import run as saddle_block_run
+from signal_blocks.blocks.and_block.main import run as and_run
 
 
 # Create your views here.
@@ -119,5 +120,19 @@ class PostSaddleRun(APIView):
             )
 
         response = saddle_block_run(request_body["input"], request_body["output"])
+
+        return JsonResponse({"response": response})
+
+class PostAndRunView(APIView):
+    def post(self, request):
+        request_body = json.loads(request.body)
+
+        if len(request_body["output"].keys()) < 2:
+            return JsonResponse(
+                {"non_field_errors": ["You must pass in at least two streams of data"]},
+                status=400,
+            )
+
+        response = and_run(request_body['output'])
 
         return JsonResponse({"response": response})
