@@ -6,7 +6,7 @@ def main(df, action, crossover_value):
     while i < df.shape[0]:
         prev_value = df["data"][i - 1]
         current_value = df["data"][i]
-        
+
         # If current indicator value is below crossover point and is not a consecutive crossover, then place action
         if current_value < crossover_value and prev_value >= crossover_value:
             df["order"][i] = action
