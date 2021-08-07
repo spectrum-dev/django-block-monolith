@@ -35,3 +35,19 @@ services:
             - ALPHA_VANTAGE_API_KEY=demo
             - DJANGO_SECRET_KEY=django-public-secret-key
             - DJANGO_DEBUG="TRUE"
+
+    block-monolith:
+        build:
+            context: .
+        ports:
+            - 8000:8000
+        environment:
+            - ALPHA_VANTAGE_API_KEY="demo"
+            - DJANGO_SECRET_KEY=django-public-secret-key
+            - DJANGO_DEBUG="TRUE"
+        volumes:
+            - .:/usr/src/app/
+        entrypoint: ''
+        command: './docker-entrypoint.sh'
+        networks:
+            - default
