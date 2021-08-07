@@ -2,7 +2,6 @@ import json
 
 from django.test import TestCase
 
-# Create your tests here.
 class GetCrossoverType(TestCase):
     def test_ok(self):
         response = self.client.get("/SIGNAL_BLOCK/4/crossoverType")

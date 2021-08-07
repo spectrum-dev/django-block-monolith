@@ -21,7 +21,6 @@ def run(input, computational_block):
     """
     computational_block_df = _format_request(computational_block)
 
-    response_df = None
     _crossover_func = None
     case = lambda x: x == input["event_type"]
 
@@ -36,10 +35,9 @@ def run(input, computational_block):
             input["event_action"],
             crossover_value=float(input["event_value"]),
         )
-    else:
-        pass
+        return _format_response(response_df)
 
-    return _format_response(response_df)
+    return None
 
 
 def _format_request(data):

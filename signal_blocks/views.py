@@ -132,9 +132,7 @@ def get_crossover_types(request):
     """
     Retrieves a list of supported crossover types
     """
-    print("Getting Crossover Type")
     response = {"response": ["ABOVE", "BELOW"]}
-    print("Response: ", response)
 
     return JsonResponse(response)
 
