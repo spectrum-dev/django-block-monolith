@@ -29,15 +29,12 @@ def run(input, computational_block):
     elif case("BELOW"):
         _crossover_func = crossover_below
 
-    if _crossover_func is not None:
-        response_df = _crossover_func(
-            computational_block_df,
-            input["event_action"],
-            crossover_value=float(input["event_value"]),
-        )
-        return _format_response(response_df)
-
-    return None
+    response_df = _crossover_func(
+        computational_block_df,
+        input["event_action"],
+        crossover_value=float(input["event_value"]),
+    )
+    return _format_response(response_df)
 
 
 def _format_request(data):
