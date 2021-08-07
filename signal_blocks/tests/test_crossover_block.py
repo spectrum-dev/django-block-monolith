@@ -20,7 +20,11 @@ class GetEventAction(TestCase):
 class PostRun(TestCase):
     def test_crossover_above_event_single_action_ok(self):
         payload = {
-            "input": {"event_type": "ABOVE", "event_action": "BUY", "event_value": "15"},
+            "input": {
+                "event_type": "ABOVE",
+                "event_action": "BUY",
+                "event_value": "15",
+            },
             "output": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
@@ -42,7 +46,11 @@ class PostRun(TestCase):
 
     def test_crossover_below_event_single_action_ok(self):
         payload = {
-            "input": {"event_type": "BELOW", "event_action": "SELL", "event_value": "15"},
+            "input": {
+                "event_type": "BELOW",
+                "event_action": "SELL",
+                "event_value": "15",
+            },
             "output": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
@@ -61,12 +69,17 @@ class PostRun(TestCase):
         )
 
         self.assertDictEqual(
-            response.json(), {"response": [{"timestamp": "2020-01-05", "order": "SELL"}]}
+            response.json(),
+            {"response": [{"timestamp": "2020-01-05", "order": "SELL"}]},
         )
 
     def test_crossover_below_event_multiple_actions_ok(self):
         payload = {
-            "input": {"event_type": "BELOW", "event_action": "BUY", "event_value": "15"},
+            "input": {
+                "event_type": "BELOW",
+                "event_action": "BUY",
+                "event_value": "15",
+            },
             "output": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 20.00},
@@ -89,16 +102,23 @@ class PostRun(TestCase):
         )
 
         self.assertDictEqual(
-            response.json(), {"response": [
-                {"timestamp": "2020-01-03", "order": "BUY"},
-                {"timestamp": "2020-01-08", "order": "BUY"},
-                {"timestamp": "2020-01-10", "order": "BUY"},
-            ]}
+            response.json(),
+            {
+                "response": [
+                    {"timestamp": "2020-01-03", "order": "BUY"},
+                    {"timestamp": "2020-01-08", "order": "BUY"},
+                    {"timestamp": "2020-01-10", "order": "BUY"},
+                ]
+            },
         )
-    
+
     def test_crossover_below_begin_below_threshold_ok(self):
         payload = {
-            "input": {"event_type": "BELOW", "event_action": "BUY", "event_value": "15"},
+            "input": {
+                "event_type": "BELOW",
+                "event_action": "BUY",
+                "event_value": "15",
+            },
             "output": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
@@ -118,14 +138,21 @@ class PostRun(TestCase):
         )
 
         self.assertDictEqual(
-            response.json(), {"response": [
-                {"timestamp": "2020-01-07", "order": "BUY"},
-            ]}
+            response.json(),
+            {
+                "response": [
+                    {"timestamp": "2020-01-07", "order": "BUY"},
+                ]
+            },
         )
 
     def test_more_than_one_output_stream_data_error(self):
         payload = {
-            "input": {"event_type": "ABOVE", "event_action": "BUY", "event_value": "15"},
+            "input": {
+                "event_type": "ABOVE",
+                "event_action": "BUY",
+                "event_value": "15",
+            },
             "output": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
@@ -136,7 +163,7 @@ class PostRun(TestCase):
                     {"timestamp": "2020-01-01", "data": 10.00},
                     {"timestamp": "2020-01-02", "data": 11.00},
                     {"timestamp": "2020-01-03", "data": 13.00},
-                ]
+                ],
             },
         }
 
@@ -146,9 +173,5 @@ class PostRun(TestCase):
 
         self.assertEqual(
             response.json(),
-            {
-                "non_field_errors": [
-                    "You must pass in at most one stream of data"
-                ]
-            },
+            {"non_field_errors": ["You must pass in at most one stream of data"]},
         )

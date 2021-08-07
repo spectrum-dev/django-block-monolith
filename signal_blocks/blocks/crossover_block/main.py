@@ -1,7 +1,9 @@
 import pandas as pd
 from functools import reduce
 
-from signal_blocks.blocks.crossover_block.events.crossover_above import main as crossover_above
+from signal_blocks.blocks.crossover_block.events.crossover_above import (
+    main as crossover_above,
+)
 from signal_blocks.blocks.crossover_block.events.crossover_below import (
     main as crossover_below,
 )
