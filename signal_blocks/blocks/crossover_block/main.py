@@ -22,15 +22,16 @@ def run(input, computational_block):
     computational_block_df = _format_request(computational_block)
 
     response_df = None
+    _crossover_func = None
     case = lambda x: x == input["event_type"]
+
     if case("ABOVE"):
-        response_df = crossover_above(
-            computational_block_df,
-            input["event_action"],
-            crossover_value=float(input["event_value"]),
-        )
+        _crossover_func = crossover_above
     elif case("BELOW"):
-        response_df = crossover_below(
+        _crossover_func = crossover_below
+
+    if _crossover_func is not None:
+        response_df = _crossover_func(
             computational_block_df,
             input["event_action"],
             crossover_value=float(input["event_value"]),
