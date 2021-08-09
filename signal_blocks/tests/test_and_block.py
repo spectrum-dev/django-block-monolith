@@ -35,9 +35,12 @@ class TestAndRun(TestCase):
                 "SIGNAL_BLOCK-1-1": [
                     {"timestamp": "01/02/2020", "order": "BUY"},
                     {"timestamp": "01/07/2020", "order": "BUY"},
-                    {"timestamp": "01/32/2020", "order": "BUY"},
+                    {"timestamp": "01/31/2020", "order": "SELL"},
                 ],
-                "SIGNAL_BLOCK-1-2": [{"timestamp": "01/07/2020", "order": "BUY"}],
+                "SIGNAL_BLOCK-1-2": [
+                    {"timestamp": "01/07/2020", "order": "BUY"},
+                    {"timestamp": "01/31/2020", "order": "SELL"},
+                ],
             },
         }
 
@@ -48,7 +51,13 @@ class TestAndRun(TestCase):
         )
 
         self.assertDictEqual(
-            response.json(), {"response": [{"timestamp": "01/07/2020", "order": "BUY"}]}
+            response.json(),
+            {
+                "response": [
+                    {"timestamp": "01/07/2020", "order": "BUY"},
+                    {"timestamp": "01/31/2020", "order": "SELL"},
+                ]
+            },
         )
 
     def test_simple_three_param_and(self):
@@ -102,3 +111,43 @@ class TestAndRun(TestCase):
         )
 
         self.assertDictEqual(response.json(), {"response": []})
+
+    def test_multiple_timestamp_trigger_multiple_intersect(self):
+        payload = {
+            "input": {},
+            "output": {
+                "SIGNAL_BLOCK-1-1": [
+                    {"timestamp": "01/02/2020", "order": "BUY"},
+                    {"timestamp": "01/07/2020", "order": "SELL"},
+                    {"timestamp": "01/21/2020", "order": "BUY"},
+                    {"timestamp": "01/31/2020", "order": "BUY"},
+                ],
+                "SIGNAL_BLOCK-1-2": [
+                    {"timestamp": "01/07/2020", "order": "SELL"},
+                    {"timestamp": "01/14/2020", "order": "BUY"},
+                    {"timestamp": "01/31/2020", "order": "BUY"},
+                ],
+                "SIGNAL_BLOCK-1-3": [
+                    {"timestamp": "01/02/2020", "order": "BUY"},
+                    {"timestamp": "01/07/2020", "order": "SELL"},
+                    {"timestamp": "01/23/2020", "order": "BUY"},
+                    {"timestamp": "01/31/2020", "order": "BUY"},
+                ],
+            },
+        }
+
+        response = self.client.post(
+            "/SIGNAL_BLOCK/3/run",
+            json.dumps(payload),
+            content_type="application/json",
+        )
+
+        self.assertDictEqual(
+            response.json(),
+            {
+                "response": [
+                    {"timestamp": "01/07/2020", "order": "SELL"},
+                    {"timestamp": "01/31/2020", "order": "BUY"},
+                ]
+            },
+        )
