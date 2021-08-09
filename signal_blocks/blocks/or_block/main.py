@@ -16,9 +16,9 @@ def run(input, outputs):
         lambda left, right: pd.merge(left, right, on=["timestamp"], how="outer"),
         df_list,
     )
-    df_merged = df_merged.dropna()
 
     df_merged = df_merged.set_index("timestamp")
+    df_merged.sort_index(inplace=True)
 
     # Checks if any orders is same as what is being checked
     df_merged = df_merged[df_merged.eq(event_action).any(1)]

@@ -3,10 +3,17 @@ import json
 from django.test.testcases import TestCase
 
 
+class GetEventAction(TestCase):
+    def test_ok(self):
+        response = self.client.get("/SIGNAL_BLOCK/5/eventAction")
+
+        self.assertEqual(response.json(), {"response": ["BUY", "SELL"]})
+
+
 class TestOrRun(TestCase):
     def test_only_one_param_passed_in(self):
         payload = {
-            "input": {},
+            "input": {"event_action": "SELL"},
             "output": {
                 "SIGNAL_BLOCK-1-1": [
                     {"timestamp": "01/02/2020", "order": "BUY"},
@@ -36,12 +43,14 @@ class TestOrRun(TestCase):
                     {"timestamp": "01/07/2020", "order": "BUY"},
                     {"timestamp": "01/32/2020", "order": "BUY"},
                 ],
-                "SIGNAL_BLOCK-1-2": [{"timestamp": "01/07/2020", "order": "SELL"}],
+                "SIGNAL_BLOCK-1-2": [
+                    {"timestamp": "01/07/2020", "order": "SELL"},
+                ],
             },
         }
 
         response = self.client.post(
-            "/LOGICAL_BLOCK/5/run",
+            "/SIGNAL_BLOCK/5/run",
             json.dumps(payload),
             content_type="application/json",
         )
@@ -58,14 +67,16 @@ class TestOrRun(TestCase):
                 "SIGNAL_BLOCK-1-1": [
                     {"timestamp": "01/02/2020", "order": "SELL"},
                     {"timestamp": "01/07/2020", "order": "BUY"},
-                    {"timestamp": "01/32/2020", "order": "BUY"},
+                    {"timestamp": "01/31/2020", "order": "BUY"},
                 ],
-                "SIGNAL_BLOCK-1-2": [{"timestamp": "01/08/2020", "order": "SELL"}],
+                "SIGNAL_BLOCK-1-2": [
+                    {"timestamp": "01/08/2020", "order": "SELL"},
+                ],
             },
         }
 
         response = self.client.post(
-            "/LOGICAL_BLOCK/5/run",
+            "/SIGNAL_BLOCK/5/run",
             json.dumps(payload),
             content_type="application/json",
         )
