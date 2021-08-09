@@ -123,6 +123,7 @@ class PostSaddleRun(APIView):
 
         return JsonResponse({"response": response})
 
+
 class PostAndRunView(APIView):
     def post(self, request):
         request_body = json.loads(request.body)
@@ -133,6 +134,6 @@ class PostAndRunView(APIView):
                 status=400,
             )
 
-        response = and_run(request_body['output'])
+        response = and_run(request_body["output"])
 
         return JsonResponse({"response": response})
