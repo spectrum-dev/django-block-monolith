@@ -22,7 +22,6 @@ class TestAndRun(TestCase):
             content_type="application/json",
         )
 
-        # TODO: Determine expected response
         self.assertDictEqual(
             response.json(),
             {"non_field_errors": ["You must pass in at least two streams of data"]},
