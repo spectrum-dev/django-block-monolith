@@ -10,6 +10,8 @@ from rest_enumfield import EnumField
 from signal_blocks.blocks.event_block.main import run as signal_block_run
 from signal_blocks.blocks.saddle_block.main import run as saddle_block_run
 from signal_blocks.blocks.and_block.main import run as and_run
+from signal_blocks.blocks.crossover_block.main import run as crossover_block_run
+
 
 
 # Create your views here.
@@ -123,6 +125,10 @@ class PostSaddleRun(APIView):
 
         return JsonResponse({"response": response})
 
+      
+# And Block (Signal Block with ID 3)
+# ------------------------------------
+
 
 class PostAndRunView(APIView):
     def post(self, request):
@@ -135,5 +141,51 @@ class PostAndRunView(APIView):
             )
 
         response = and_run(request_body["output"])
+        
+        
+# Cross-Over Block (Signal Block with ID 4)
+# ------------------------------------
+
+
+def get_crossover_types(request):
+    """
+    Retrieves a list of supported crossover types
+    """
+    response = {"response": ["ABOVE", "BELOW"]}
+
+    return JsonResponse(response)
+
+
+class PostCrossoverRun(APIView):
+    def post(self, request):
+        """
+        Runs the event block
+        """
+
+        class EventType(enum.Enum):
+            ABOVE = "ABOVE"
+            BELOW = "BELOW"
+
+        class EventAction(enum.Enum):
+            BUY = "BUY"
+            SELL = "SELL"
+
+        class InputSerializer(serializers.Serializer):
+            event_type = EnumField(choices=EventType)
+            event_value = serializers.CharField()
+            event_action = EnumField(choices=EventAction)
+
+        request_body = json.loads(request.body)
+
+        response = []
+        InputSerializer(data=request_body["input"]).is_valid(raise_exception=True)
+
+        if len(request_body["output"].keys()) > 1:
+            return JsonResponse(
+                {"non_field_errors": ["You must pass in at most one stream of data"]},
+                status=400,
+            )
+
+        response = crossover_block_run(request_body["input"], request_body["output"])
 
         return JsonResponse({"response": response})
