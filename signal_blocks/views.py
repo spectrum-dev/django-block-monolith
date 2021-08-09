@@ -124,6 +124,7 @@ class PostSaddleRun(APIView):
 
         return JsonResponse({"response": response})
 
+
 class PostAndRunView(APIView):
     def post(self, request):
         request_body = json.loads(request.body)
@@ -134,7 +135,7 @@ class PostAndRunView(APIView):
                 status=400,
             )
 
-        response = and_run(request_body['output'])
+        response = and_run(request_body["output"])
 
         return JsonResponse({"response": response})
 
@@ -143,11 +144,12 @@ class PostOrRunView(APIView):
     """
     Runs an OR logic on output of 2 or more Signal Blocks
     """
+
     def post(self, request):
         class EventAction(enum.Enum):
             BUY = "BUY"
             SELL = "SELL"
-        
+
         class InputSerializer(serializers.Serializer):
             event_action = EnumField(choices=EventAction)
 
@@ -162,6 +164,6 @@ class PostOrRunView(APIView):
                 status=400,
             )
 
-        response = or_run(request_body['input'], request_body['output'])
+        response = or_run(request_body["input"], request_body["output"])
 
         return JsonResponse({"response": response})
