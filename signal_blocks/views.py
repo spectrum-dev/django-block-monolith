@@ -13,7 +13,6 @@ from signal_blocks.blocks.and_block.main import run as and_run
 from signal_blocks.blocks.crossover_block.main import run as crossover_block_run
 
 
-
 # Create your views here.
 
 # Event Block (Signal Block with ID 1)
@@ -125,7 +124,7 @@ class PostSaddleRun(APIView):
 
         return JsonResponse({"response": response})
 
-      
+
 # And Block (Signal Block with ID 3)
 # ------------------------------------
 
@@ -141,10 +140,10 @@ class PostAndRunView(APIView):
             )
 
         response = and_run(request_body["output"])
-        
+
         return JsonResponse({"response": response})
-        
-        
+
+
 # Cross-Over Block (Signal Block with ID 4)
 # ------------------------------------
 
