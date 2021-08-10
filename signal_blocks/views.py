@@ -9,6 +9,8 @@ from rest_enumfield import EnumField
 
 from signal_blocks.blocks.event_block.main import run as signal_block_run
 from signal_blocks.blocks.saddle_block.main import run as saddle_block_run
+from signal_blocks.blocks.and_block.main import run as and_run
+from signal_blocks.blocks.or_block.main import run as or_run
 from signal_blocks.blocks.crossover_block.main import run as crossover_block_run
 
 
@@ -124,6 +126,25 @@ class PostSaddleRun(APIView):
         return JsonResponse({"response": response})
 
 
+# And Block (Signal Block with ID 3)
+# ------------------------------------
+
+
+class PostAndRunView(APIView):
+    def post(self, request):
+        request_body = json.loads(request.body)
+
+        if len(request_body["output"].keys()) < 2:
+            return JsonResponse(
+                {"non_field_errors": ["You must pass in at least two streams of data"]},
+                status=400,
+            )
+
+        response = and_run(request_body["output"])
+
+        return JsonResponse({"response": response})
+
+
 # Cross-Over Block (Signal Block with ID 4)
 # ------------------------------------
 
@@ -168,5 +189,29 @@ class PostCrossoverRun(APIView):
             )
 
         response = crossover_block_run(request_body["input"], request_body["output"])
+
+        return JsonResponse({"response": response})
+
+
+# Or Block (Signal Block with ID 5)
+# ------------------------------------
+
+
+class PostOrRunView(APIView):
+    """
+    Runs an OR logic on output of 2 or more Signal Blocks
+    """
+
+    def post(self, request):
+
+        request_body = json.loads(request.body)
+
+        if len(request_body["output"].keys()) < 2:
+            return JsonResponse(
+                {"non_field_errors": ["You must pass in at least two streams of data"]},
+                status=400,
+            )
+
+        response = or_run(request_body["output"])
 
         return JsonResponse({"response": response})
