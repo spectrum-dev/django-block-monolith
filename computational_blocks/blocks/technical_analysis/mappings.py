@@ -167,4 +167,52 @@ INDICATORS = {
             }
         ],
     },
+    "BB": {
+        "shortName": "BB",
+        "longName": "Bollinger Bands %B (<0 is below lower bound and >1 is above upper bound)",
+        "functionName": "bb",
+        "params": [],
+    },
+    "DB": {
+        "shortName": "DB",
+        "longName": "Donchian Bands %B (similar to BB but uses low and high of period)",
+        "functionName": "db",
+        "params": [],
+    },
+    "KAMA": {
+        "shortName": "KAMA",
+        "longName": "KAMA Indicator",
+        "functionName": "kama",
+        "params": [],
+    },
+    "KC": {
+        "shortName": "KC",
+        "longName": "Keltner Channel",
+        "functionName": "kc",
+        "params": [],
+    },
+    "MI": {
+        "shortName": "MI",
+        "longName": "Mass Index (fluctuates around 20)",
+        "functionName": "mi",
+        "params": [],
+    },
+    "STOC_OSCI": {
+        "shortName": "STOC_OSCI",
+        "longName": "Stochastic Oscillator",
+        "functionName": "stoc_osci",
+        "params": [],
+    },
+    "TRIX": {
+        "shortName": "TRIX",
+        "longName": "Triple Smoothed SMA Rate of Change",
+        "functionName": "trix",
+        "params": [],
+    },
+    "TSI": {
+        "shortName": "TSI",
+        "longName": "True Strength Index",
+        "functionName": "tsi",
+        "params": [],
+    },
 }
