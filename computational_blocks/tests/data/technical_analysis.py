@@ -27,7 +27,7 @@ DATA_BLOCK = [
         "volume": "12.00",
     },
     {
-        "timestamp": "01/02/2020",
+        "timestamp": "01/04/2020",
         "timezone": "UTC/EST",
         "open": "13.00",
         "high": "13.00",
@@ -36,7 +36,7 @@ DATA_BLOCK = [
         "volume": "13.00",
     },
     {
-        "timestamp": "01/03/2020",
+        "timestamp": "01/05/2020",
         "timezone": "UTC/EST",
         "open": "14.00",
         "high": "14.00",

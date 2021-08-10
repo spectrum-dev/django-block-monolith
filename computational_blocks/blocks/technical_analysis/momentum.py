@@ -2,6 +2,7 @@ import talib
 import pandas as pd
 
 from talib import EMA, ADX, ADXR, APO, AROONOSC, BOP, CCI, CMO, DX, RSI
+import ta
 
 """
     Documentation
@@ -165,5 +166,53 @@ def dx(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
 
 def rsi(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
     response = RSI(data_block["close"], timeperiod=int(lookback_period))
+
+    return response
+
+
+def bb(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
+    response = ta.volatility.bollinger_pband(close=data_block["close"],fillna=True)
+
+    return response
+
+
+def db(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
+    response = ta.volatility.donchian_channel_pband(high=data_block["high"],low=data_block["low"],close=data_block["close"],fillna=True)
+
+    return response
+
+
+def kama(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
+    response = ta.momentum.kama(close=data_block["close"],fillna=True)
+
+    return response
+
+
+def kc(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
+    response = ta.volatility.keltner_channel_pband(high=data_block["high"],low=data_block["low"],close=data_block["close"],fillna=True,ov=False)
+
+    return response
+
+
+def mi(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
+    response = ta.trend.mass_index(high=data_block["high"],low=data_block["low"],fillna=True)
+
+    return response
+
+
+def stoch_osci(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
+    response = ta.momentum.stoch(close=data_block["close"],high=data_block["high"],low=data_block["low"])
+
+    return response
+
+
+def trix(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
+    response = ta.trend.trix(close=data_block["close"],fillna=True)
+
+    return response
+
+
+def tsi(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
+    response = ta.momentum.tsi(close=data_block["close"],fillna=True)
 
     return response
