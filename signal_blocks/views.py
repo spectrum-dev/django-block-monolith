@@ -192,7 +192,7 @@ class PostCrossoverRun(APIView):
 
         return JsonResponse({"response": response})
 
-      
+
 # Or Block (Signal Block with ID 5)
 # ------------------------------------
 
@@ -213,5 +213,5 @@ class PostOrRunView(APIView):
             )
 
         response = or_run(request_body["output"])
-        
+
         return JsonResponse({"response": response})
