@@ -160,7 +160,7 @@ class TestOrRun(TestCase):
 
         self.assertDictEqual(response.json(), {"response": []})
 
-    def test_buy_multiple_timestamp_trigger_multiple_intersect(self):
+    def test_multiple_timestamp_trigger_multiple_intersect(self):
         payload = {
             "input": {},
             "output": {
