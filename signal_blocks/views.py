@@ -146,17 +146,8 @@ class PostOrRunView(APIView):
     """
 
     def post(self, request):
-        class EventAction(enum.Enum):
-            BUY = "BUY"
-            SELL = "SELL"
-
-        class InputSerializer(serializers.Serializer):
-            event_action = EnumField(choices=EventAction)
 
         request_body = json.loads(request.body)
-
-        response = []
-        InputSerializer(data=request_body["input"]).is_valid(raise_exception=True)
 
         if len(request_body["output"].keys()) < 2:
             return JsonResponse(
@@ -164,6 +155,6 @@ class PostOrRunView(APIView):
                 status=400,
             )
 
-        response = or_run(request_body["input"], request_body["output"])
+        response = or_run(request_body["output"])
 
         return JsonResponse({"response": response})
