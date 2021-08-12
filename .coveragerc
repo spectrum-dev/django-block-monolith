@@ -4,4 +4,4 @@ omit =
     */distutils/*
     */tests/*
     manage.py
-    signal_blocks/blocks/event_block/events/intersect.py
+    signal_blocks/blocks/intersect_block/events/intersect.py

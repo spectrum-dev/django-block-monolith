@@ -2,13 +2,6 @@ import json
 
 from django.test import TestCase
 
-# Create your tests here.
-class GetEventType(TestCase):
-    def test_ok(self):
-        response = self.client.get("/SIGNAL_BLOCK/1/eventType")
-
-        self.assertEqual(response.json(), {"response": ["INTERSECT"]})
-
 
 class GetEventAction(TestCase):
     def test_ok(self):
@@ -20,7 +13,7 @@ class GetEventAction(TestCase):
 class PostRun(TestCase):
     def test_intersect_event_two_outputs_single_intersection_ok(self):
         payload = {
-            "input": {"event_type": "INTERSECT", "event_action": "BUY"},
+            "input": {"event_action": "BUY"},
             "output": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
@@ -45,7 +38,7 @@ class PostRun(TestCase):
 
     def test_intersect_event_two_outputs_single_intersection_ok(self):
         payload = {
-            "input": {"event_type": "INTERSECT", "event_action": "BUY"},
+            "input": {"event_action": "BUY"},
             "output": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
@@ -80,7 +73,7 @@ class PostRun(TestCase):
 
     def test_intersect_event_three_outputs_single_intersection_ok(self):
         payload = {
-            "input": {"event_type": "INTERSECT", "event_action": "SELL"},
+            "input": {"event_action": "SELL"},
             "output": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
@@ -114,7 +107,7 @@ class PostRun(TestCase):
 
     def test_less_than_two_output_streams_error(self):
         payload = {
-            "input": {"event_type": "INTERSECT", "event_action": "BUY"},
+            "input": {"event_action": "BUY"},
             "output": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
@@ -136,27 +129,3 @@ class PostRun(TestCase):
                 ]
             },
         )
-
-    def test_unhandled_event(self):
-        payload = {
-            "input": {"event_type": "UNHANDLED_EVENT", "event_action": "BUY"},
-            "output": {
-                "COMPUTATIONAL_BLOCK-1-1": [
-                    {"timestamp": "2020-01-01", "data": 10.00},
-                    {"timestamp": "2020-01-02", "data": 11.00},
-                    {"timestamp": "2020-01-03", "data": 13.00},
-                ]
-            },
-        }
-
-        response = self.client.post(
-            "/SIGNAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
-
-        self.assertDictEqual(
-            response.json(),
-            {"event_type": ['"UNHANDLED_EVENT" is not a valid choice.']},
-        )
-
-    def test_invalid_incoming_output_data_format(self):
-        pass
