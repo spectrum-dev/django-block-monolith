@@ -3,13 +3,6 @@ import json
 from django.test.testcases import TestCase
 
 
-class GetEventAction(TestCase):
-    def test_ok(self):
-        response = self.client.get("/SIGNAL_BLOCK/5/eventAction")
-
-        self.assertEqual(response.json(), {"response": ["BUY", "SELL"]})
-
-
 class TestOrRun(TestCase):
     def test_only_one_param_passed_in(self):
         payload = {
