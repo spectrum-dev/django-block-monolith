@@ -12,6 +12,7 @@ from signal_blocks.blocks.saddle_block.main import run as saddle_block_run
 from signal_blocks.blocks.and_block.main import run as and_run
 from signal_blocks.blocks.or_block.main import run as or_run
 from signal_blocks.blocks.crossover_block.main import run as crossover_block_run
+from signal_blocks.blocks.candle_close_block.main import run as candle_close_run
 
 
 # Create your views here.
@@ -213,5 +214,49 @@ class PostOrRunView(APIView):
             )
 
         response = or_run(request_body["output"])
+
+        return JsonResponse({"response": response})
+
+
+
+# Candle Close Green Block (Signal Block with ID 6)
+# ------------------------------------
+
+
+class PostCandleCloseRunView(APIView):
+    """
+    Checks that the candle's close is above or below some point
+    """
+
+    def post(self, request):
+
+        class EventType(enum.Enum):
+            CLOSE_ABOVE_OPEN = "CLOSE_ABOVE_OPEN"
+            CLOSE_BELOW_OPEN = "CLOSE_BELOW_OPEN"
+            CLOSE_EQ_HIGH = "CLOSE_EQ_HIGH"
+            CLOSE_BELOW_HIGH = "CLOSE_BELOW_HIGH"
+            CLOSE_ABOVE_LOW = "CLOSE_ABOVE_LOW"
+            CLOSE_EQ_LOW = "CLOSE_EQ_LOW"
+
+        class EventAction(enum.Enum):
+            BUY = "BUY"
+            SELL = "SELL"
+
+        class InputSerializer(serializers.Serializer):
+            event_type = EnumField(choices=EventType)
+            event_action = EnumField(choices=EventAction)
+
+        request_body = json.loads(request.body)
+
+        response = []
+        InputSerializer(data=request_body["input"]).is_valid(raise_exception=True)
+
+        if len(request_body["output"].keys()) > 1:
+            return JsonResponse(
+                {"non_field_errors": ["You must pass in at most one stream of data"]},
+                status=400,
+            )
+
+        response = candle_close_run(request_body["input"], request_body["output"])
 
         return JsonResponse({"response": response})

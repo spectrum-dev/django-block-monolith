@@ -50,5 +50,6 @@ urlpatterns = [
     path("SIGNAL_BLOCK/4/crossoverType", signal_blocks.views.get_crossover_types),
     path("SIGNAL_BLOCK/4/run", signal_blocks.views.PostCrossoverRun.as_view()),
     path("SIGNAL_BLOCK/5/run", signal_blocks.views.PostOrRunView.as_view()),
+    path("SIGNAL_BLOCK/6/run", signal_blocks.views.PostCandleCloseRunView.as_view()),
     path("STRATEGY_BLOCK/1/run", strategy_blocks.views.PostRun.as_view()),
 ]
