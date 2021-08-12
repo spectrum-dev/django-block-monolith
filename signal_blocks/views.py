@@ -20,15 +20,6 @@ from signal_blocks.blocks.crossover_block.main import run as crossover_block_run
 # ------------------------------------
 
 
-def get_event_types(request):
-    """
-    Retrieves a list of supported event types
-    """
-    response = {"response": ["INTERSECT"]}
-
-    return JsonResponse(response)
-
-
 def get_event_actions(request):
     """
     Retrieves a list of supported event actions
@@ -43,16 +34,12 @@ class PostRun(APIView):
         """
         Runs the event block
         """
-
-        class EventType(enum.Enum):
-            INTERSECT = "INTERSECT"
-
+        
         class EventAction(enum.Enum):
             BUY = "BUY"
             SELL = "SELL"
 
         class InputSerializer(serializers.Serializer):
-            event_type = EnumField(choices=EventType)
             event_action = EnumField(choices=EventAction)
 
         request_body = json.loads(request.body)
