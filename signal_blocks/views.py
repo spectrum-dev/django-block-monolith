@@ -223,6 +223,14 @@ class PostOrRunView(APIView):
 # ------------------------------------
 
 
+def get_candle_close_types(request):
+    """
+    Retrieves a list of supported crossover types
+    """
+    response = {"response": ["CLOSE_ABOVE_OPEN", "CLOSE_BELOW_OPEN", "CLOSE_EQ_HIGH", "CLOSE_BELOW_HIGH", "CLOSE_ABOVE_LOW", "CLOSE_EQ_LOW"]}
+
+    return JsonResponse(response)
+
 class PostCandleCloseRunView(APIView):
     """
     Checks that the candle's close is above or below some point
@@ -247,9 +255,11 @@ class PostCandleCloseRunView(APIView):
             event_action = EnumField(choices=EventAction)
 
         request_body = json.loads(request.body)
+        input = request_body["input"]
+        output = request_body["output"]
 
         response = []
-        InputSerializer(data=request_body["input"]).is_valid(raise_exception=True)
+        InputSerializer(data=input).is_valid(raise_exception=True)
 
         if len(request_body["output"].keys()) > 1:
             return JsonResponse(
@@ -257,6 +267,13 @@ class PostCandleCloseRunView(APIView):
                 status=400,
             )
 
-        response = candle_close_run(request_body["input"], request_body["output"])
+        data_block = None
+        for key in output.keys():
+            key_breakup = key.split("-")
+            if key_breakup[0] == "DATA_BLOCK":
+                data_block = output[key]
+                break
+
+        response = candle_close_run(input, data_block)
 
         return JsonResponse({"response": response})

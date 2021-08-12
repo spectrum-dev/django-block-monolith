@@ -62,6 +62,7 @@ def _format_request(request_json):
     Helper method to format request
     """
     request_df = pd.DataFrame(request_json)
+    print(request_df)
     request_df = request_df.sort_values(by="timestamp")
     request_df = request_df.set_index("timestamp")
 
@@ -69,12 +70,10 @@ def _format_request(request_json):
 
 
 def _format_response(response_df):
-    """
-    Helper method to format response
-    """
-    response_df.index.name = "timestamp"
-    response_df.name = "data"
-    response_json = response_df.reset_index().to_json(orient="records")
-    response_json = json.loads(response_json)
-
+    response_df = response_df.reset_index(level="timestamp")
+    response_df.drop(
+        response_df.columns.difference(["timestamp", "order"]), 1, inplace=True
+    )
+    response_df = response_df.dropna()
+    response_json = response_df.to_dict(orient="records")
     return response_json
