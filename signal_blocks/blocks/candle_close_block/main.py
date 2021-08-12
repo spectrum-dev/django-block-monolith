@@ -1,25 +1,5 @@
 import pandas as pd
-from functools import reduce
-import json
-
-from signal_blocks.blocks.candle_close_block.events.close_above_open import (
-    main as close_above_open,
-)
-from signal_blocks.blocks.candle_close_block.events.close_below_open import (
-    main as close_below_open,
-)
-from signal_blocks.blocks.candle_close_block.events.close_eq_high import (
-    main as close_eq_high,
-)
-from signal_blocks.blocks.candle_close_block.events.close_below_high import (
-    main as close_below_high,
-)
-from signal_blocks.blocks.candle_close_block.events.close_above_low import (
-    main as close_above_low,
-)
-from signal_blocks.blocks.candle_close_block.events.close_eq_low import (
-    main as close_eq_low,
-)
+from signal_blocks.blocks.candle_close_block.events.close_above_events import *
 
 
 def run(input, data_block):
@@ -62,7 +42,6 @@ def _format_request(request_json):
     Helper method to format request
     """
     request_df = pd.DataFrame(request_json)
-    print(request_df)
     request_df = request_df.sort_values(by="timestamp")
     request_df = request_df.set_index("timestamp")
 
