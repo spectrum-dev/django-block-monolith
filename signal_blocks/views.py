@@ -224,7 +224,7 @@ class PostOrRunView(APIView):
 
 def get_candle_close_types(request):
     """
-    Retrieves a list of supported crossover types
+    Retrieves a list of supported candle close condition types
     """
     response = {
         "response": [
