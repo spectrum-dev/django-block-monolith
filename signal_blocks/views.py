@@ -7,7 +7,7 @@ from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_enumfield import EnumField
 
-from signal_blocks.blocks.event_block.main import run as signal_block_run
+from signal_blocks.blocks.intersect_block.main import run as signal_block_run
 from signal_blocks.blocks.saddle_block.main import run as saddle_block_run
 from signal_blocks.blocks.and_block.main import run as and_run
 from signal_blocks.blocks.or_block.main import run as or_run
@@ -34,7 +34,7 @@ class PostRun(APIView):
         """
         Runs the event block
         """
-        
+
         class EventAction(enum.Enum):
             BUY = "BUY"
             SELL = "SELL"
