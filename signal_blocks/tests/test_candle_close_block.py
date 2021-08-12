@@ -13,7 +13,8 @@ class GetEventAction(TestCase):
             response.json(),
             {
                 "response": [
-                    "BUY", "SELL",
+                    "BUY",
+                    "SELL",
                 ]
             },
         )
@@ -26,7 +27,14 @@ class GetEventType(TestCase):
         self.assertEqual(
             response.json(),
             {
-                "response": ["CLOSE_ABOVE_OPEN", "CLOSE_BELOW_OPEN", "CLOSE_EQ_HIGH", "CLOSE_BELOW_HIGH", "CLOSE_ABOVE_LOW", "CLOSE_EQ_LOW",]
+                "response": [
+                    "CLOSE_ABOVE_OPEN",
+                    "CLOSE_BELOW_OPEN",
+                    "CLOSE_EQ_HIGH",
+                    "CLOSE_BELOW_HIGH",
+                    "CLOSE_ABOVE_LOW",
+                    "CLOSE_EQ_LOW",
+                ]
             },
         )
 
@@ -58,7 +66,9 @@ class PostRun(TestCase):
                 "event_action": "BUY",
                 "event_type": "CLOSE_ABOVE_LOW",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK,},
+            "output": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
         }
 
         response = self.client.post(
@@ -84,7 +94,9 @@ class PostRun(TestCase):
                 "event_action": "BUY",
                 "event_type": "CLOSE_ABOVE_OPEN",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK,},
+            "output": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
         }
 
         response = self.client.post(
@@ -109,7 +121,9 @@ class PostRun(TestCase):
                 "event_action": "BUY",
                 "event_type": "CLOSE_BELOW_HIGH",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK,},
+            "output": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
         }
 
         response = self.client.post(
@@ -128,14 +142,16 @@ class PostRun(TestCase):
                 ]
             },
         )
-    
+
     def test_close_below_open(self):
         payload = {
             "input": {
                 "event_action": "BUY",
                 "event_type": "CLOSE_BELOW_OPEN",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK,},
+            "output": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
         }
 
         response = self.client.post(
@@ -160,7 +176,9 @@ class PostRun(TestCase):
                 "event_action": "BUY",
                 "event_type": "CLOSE_EQ_HIGH",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK,},
+            "output": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
         }
 
         response = self.client.post(
@@ -178,14 +196,16 @@ class PostRun(TestCase):
                 ]
             },
         )
-    
+
     def test_close_eq_low(self):
         payload = {
             "input": {
                 "event_action": "BUY",
                 "event_type": "CLOSE_EQ_LOW",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK,},
+            "output": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
         }
 
         response = self.client.post(
@@ -210,7 +230,9 @@ class PostRun(TestCase):
                 "event_action": "SELL",
                 "event_type": "CLOSE_EQ_LOW",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK,},
+            "output": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
         }
 
         response = self.client.post(
@@ -228,5 +250,3 @@ class PostRun(TestCase):
                 ]
             },
         )
-    
-    

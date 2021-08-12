@@ -218,7 +218,6 @@ class PostOrRunView(APIView):
         return JsonResponse({"response": response})
 
 
-
 # Candle Close Green Block (Signal Block with ID 6)
 # ------------------------------------
 
@@ -227,9 +226,19 @@ def get_candle_close_types(request):
     """
     Retrieves a list of supported crossover types
     """
-    response = {"response": ["CLOSE_ABOVE_OPEN", "CLOSE_BELOW_OPEN", "CLOSE_EQ_HIGH", "CLOSE_BELOW_HIGH", "CLOSE_ABOVE_LOW", "CLOSE_EQ_LOW"]}
+    response = {
+        "response": [
+            "CLOSE_ABOVE_OPEN",
+            "CLOSE_BELOW_OPEN",
+            "CLOSE_EQ_HIGH",
+            "CLOSE_BELOW_HIGH",
+            "CLOSE_ABOVE_LOW",
+            "CLOSE_EQ_LOW",
+        ]
+    }
 
     return JsonResponse(response)
+
 
 class PostCandleCloseRunView(APIView):
     """
@@ -237,7 +246,6 @@ class PostCandleCloseRunView(APIView):
     """
 
     def post(self, request):
-
         class EventType(enum.Enum):
             CLOSE_ABOVE_OPEN = "CLOSE_ABOVE_OPEN"
             CLOSE_BELOW_OPEN = "CLOSE_BELOW_OPEN"
