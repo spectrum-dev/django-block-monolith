@@ -89,9 +89,9 @@ class PostRun(TestCase):
                 "response": [
                     {"timestamp": "01/01/2020", "data": None},
                     {"timestamp": "01/02/2020", "data": 10.5},
-                    {"timestamp": "01/02/2020", "data": 12.0},
-                    {"timestamp": "01/03/2020", "data": 12.5},
-                    {"timestamp": "01/03/2020", "data": 13.0},
+                    {"timestamp": "01/03/2020", "data": 12.0},
+                    {"timestamp": "01/04/2020", "data": 12.5},
+                    {"timestamp": "01/05/2020", "data": 13.0},
                 ]
             },
         )
@@ -117,9 +117,9 @@ class PostRun(TestCase):
                 "response": [
                     {"timestamp": "01/01/2020", "data": None},
                     {"timestamp": "01/02/2020", "data": 10.5},
-                    {"timestamp": "01/02/2020", "data": 12.1666666667},
-                    {"timestamp": "01/03/2020", "data": 12.0555555556},
-                    {"timestamp": "01/03/2020", "data": 13.3518518519},
+                    {"timestamp": "01/03/2020", "data": 12.1666666667},
+                    {"timestamp": "01/04/2020", "data": 12.0555555556},
+                    {"timestamp": "01/05/2020", "data": 13.3518518519},
                 ]
             },
         )
@@ -146,9 +146,9 @@ class PostRun(TestCase):
                 "response": [
                     {"timestamp": "01/01/2020", "data": None},
                     {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/02/2020", "data": 0.8333333333},
-                    {"timestamp": "01/03/2020", "data": 0.3888888889},
-                    {"timestamp": "01/03/2020", "data": 0.5185185185},
+                    {"timestamp": "01/03/2020", "data": 0.8333333333},
+                    {"timestamp": "01/04/2020", "data": 0.3888888889},
+                    {"timestamp": "01/05/2020", "data": 0.5185185185},
                 ]
             },
         )
@@ -174,9 +174,9 @@ class PostRun(TestCase):
                 "response": [
                     {"timestamp": "01/01/2020", "data": None},
                     {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/03/2020", "data": 55.5555555556},
-                    {"timestamp": "01/03/2020", "data": 61.7777777778},
+                    {"timestamp": "01/03/2020", "data": None},
+                    {"timestamp": "01/04/2020", "data": 55.5555555556},
+                    {"timestamp": "01/05/2020", "data": 61.7777777778},
                 ]
             },
         )
@@ -202,9 +202,9 @@ class PostRun(TestCase):
                 "response": [
                     {"timestamp": "01/01/2020", "data": None},
                     {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/02/2020", "data": None},
                     {"timestamp": "01/03/2020", "data": None},
-                    {"timestamp": "01/03/2020", "data": 58.6666666667},
+                    {"timestamp": "01/04/2020", "data": None},
+                    {"timestamp": "01/05/2020", "data": 58.6666666667},
                 ]
             },
         )
@@ -232,9 +232,9 @@ class PostRun(TestCase):
                 "response": [
                     {"timestamp": "01/01/2020", "data": None},
                     {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/03/2020", "data": 1.0},
-                    {"timestamp": "01/03/2020", "data": 0.5},
+                    {"timestamp": "01/03/2020", "data": None},
+                    {"timestamp": "01/04/2020", "data": 1.0},
+                    {"timestamp": "01/05/2020", "data": 0.5},
                 ]
             },
         )
@@ -260,9 +260,9 @@ class PostRun(TestCase):
                 "response": [
                     {"timestamp": "01/01/2020", "data": None},
                     {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/03/2020", "data": 66.6666666667},
-                    {"timestamp": "01/03/2020", "data": 100.0},
+                    {"timestamp": "01/03/2020", "data": None},
+                    {"timestamp": "01/04/2020", "data": 66.6666666667},
+                    {"timestamp": "01/05/2020", "data": 100.0},
                 ]
             },
         )
@@ -287,9 +287,9 @@ class PostRun(TestCase):
                 "response": [
                     {"timestamp": "01/01/2020", "data": 0.0},
                     {"timestamp": "01/02/2020", "data": 0.0},
-                    {"timestamp": "01/02/2020", "data": 0.0},
                     {"timestamp": "01/03/2020", "data": 0.0},
-                    {"timestamp": "01/03/2020", "data": 0.0},
+                    {"timestamp": "01/04/2020", "data": 0.0},
+                    {"timestamp": "01/05/2020", "data": 0.0},
                 ]
             },
         )
@@ -315,9 +315,9 @@ class PostRun(TestCase):
                 "response": [
                     {"timestamp": "01/01/2020", "data": None},
                     {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/02/2020", "data": 100.0},
-                    {"timestamp": "01/03/2020", "data": 0.0},
                     {"timestamp": "01/03/2020", "data": 100.0},
+                    {"timestamp": "01/04/2020", "data": 0.0},
+                    {"timestamp": "01/05/2020", "data": 100.0},
                 ]
             },
         )
@@ -343,9 +343,9 @@ class PostRun(TestCase):
                 "response": [
                     {"timestamp": "01/01/2020", "data": None},
                     {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/03/2020", "data": 50.0},
-                    {"timestamp": "01/03/2020", "data": 71.4285714286},
+                    {"timestamp": "01/03/2020", "data": None},
+                    {"timestamp": "01/04/2020", "data": 50.0},
+                    {"timestamp": "01/05/2020", "data": 71.4285714286},
                 ]
             },
         )
@@ -371,9 +371,9 @@ class PostRun(TestCase):
                 "response": [
                     {"timestamp": "01/01/2020", "data": None},
                     {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/03/2020", "data": 33.3333333333},
-                    {"timestamp": "01/03/2020", "data": 66.6666666667},
+                    {"timestamp": "01/03/2020", "data": None},
+                    {"timestamp": "01/04/2020", "data": 33.3333333333},
+                    {"timestamp": "01/05/2020", "data": 66.6666666667},
                 ]
             },
         )
@@ -399,9 +399,9 @@ class PostRun(TestCase):
                 "response": [
                     {"timestamp": "01/01/2020", "data": None},
                     {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/03/2020", "data": 75.0},
-                    {"timestamp": "01/03/2020", "data": 85.7142857143},
+                    {"timestamp": "01/03/2020", "data": None},
+                    {"timestamp": "01/04/2020", "data": 100.0},
+                    {"timestamp": "01/05/2020", "data": 100.0},
                 ]
             },
         )
