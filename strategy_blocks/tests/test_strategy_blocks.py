@@ -211,14 +211,10 @@ class BacktestBlockRunning(TestCase):
                     "trades": [
                         {
                             "timestamp": "01/02/2020",
-                            "symbol": "close",
                             "order": "BUY",
-                            "monetary_amount": 1000.0,
-                            "trade_id": "",
-                            "stop_loss": "",
-                            "take_profit": "",
+                            "cash_allocated": 1000.0,
                             "shares": 90,
-                            "cash_value": 990.0,
+                            "amount_invested": 990.0,
                         }
                     ],
                 }
@@ -287,14 +283,10 @@ class BacktestBlockRunning(TestCase):
                     "trades": [
                         {
                             "timestamp": "01/02/2020",
-                            "symbol": "close",
                             "order": "SELL",
-                            "monetary_amount": 1000.0,
-                            "trade_id": "",
-                            "stop_loss": "",
-                            "take_profit": "",
+                            "cash_allocated": 1000.0,
                             "shares": -90,
-                            "cash_value": -990.0,
+                            "amount_invested": -990.0,
                         }
                     ],
                 }
@@ -388,25 +380,17 @@ class BacktestBlockRunning(TestCase):
                     "trades": [
                         {
                             "timestamp": "01/02/2020",
-                            "symbol": "close",
                             "order": "BUY",
-                            "monetary_amount": 1000.0,
-                            "trade_id": "",
-                            "stop_loss": "",
-                            "take_profit": "",
+                            "cash_allocated": 1000.0,
                             "shares": 90,
-                            "cash_value": 990.0,
+                            "amount_invested": 990.0,
                         },
                         {
                             "timestamp": "01/04/2020",
-                            "symbol": "close",
                             "order": "SELL_CLOSE",
-                            "monetary_amount": 0.0,
-                            "trade_id": "",
-                            "stop_loss": "",
-                            "take_profit": "",
+                            "cash_allocated": 0.0,
                             "shares": -90,
-                            "cash_value": -1170.0,
+                            "amount_invested": -1170.0,
                         },
                     ],
                 }
@@ -498,25 +482,221 @@ class BacktestBlockRunning(TestCase):
                     "trades": [
                         {
                             "timestamp": "01/02/2020",
-                            "symbol": "close",
                             "order": "SELL",
-                            "monetary_amount": 1000.0,
-                            "trade_id": "",
-                            "stop_loss": "",
-                            "take_profit": "",
+                            "cash_allocated": 1000.0,
                             "shares": -90,
-                            "cash_value": -990.0,
+                            "amount_invested": -990.0,
                         },
                         {
                             "timestamp": "01/04/2020",
-                            "symbol": "close",
                             "order": "BUY_CLOSE",
-                            "monetary_amount": 0.0,
-                            "trade_id": "",
-                            "stop_loss": "",
-                            "take_profit": "",
+                            "cash_allocated": 0.0,
                             "shares": 90,
-                            "cash_value": 1170.0,
+                            "amount_invested": 1170.0,
+                        },
+                    ],
+                }
+            },
+        )
+
+    def test_consecutive_sell_ok(self):
+        payload = {
+            "input": {
+                "start_value": 10000.00,
+                "commission": 0.00,
+                "impact": 0.00,
+                "stop_loss": 0.0,
+                "take_profit": 0.0,
+                "trade_amount_value": 1000.00,
+            },
+            "output": {
+                "DATA_BLOCK-1-1": [
+                    {
+                        "timestamp": "01/01/2020",
+                        "timezone": "UTC/EST",
+                        "open": "10.00",
+                        "high": "10.00",
+                        "low": "10.00",
+                        "close": "10.00",
+                        "volume": "10.00",
+                    },
+                    {
+                        "timestamp": "01/02/2020",
+                        "timezone": "UTC/EST",
+                        "open": "11.00",
+                        "high": "11.00",
+                        "low": "11.00",
+                        "close": "11.00",
+                        "volume": "11.00",
+                    },
+                    {
+                        "timestamp": "01/03/2020",
+                        "timezone": "UTC/EST",
+                        "open": "12.00",
+                        "high": "12.00",
+                        "low": "12.00",
+                        "close": "12.00",
+                        "volume": "12.00",
+                    },
+                    {
+                        "timestamp": "01/04/2020",
+                        "timezone": "UTC/EST",
+                        "open": "13.00",
+                        "high": "13.00",
+                        "low": "13.00",
+                        "close": "13.00",
+                        "volume": "13.00",
+                    },
+                    {
+                        "timestamp": "01/05/2020",
+                        "timezone": "UTC/EST",
+                        "open": "14.00",
+                        "high": "14.00",
+                        "low": "14.00",
+                        "close": "14.00",
+                        "volume": "14.00",
+                    },
+                ],
+                "SIGNAL_BLOCK-1-1": [
+                    {"timestamp": "01/02/2020", "order": "SELL"},
+                    {"timestamp": "01/04/2020", "order": "SELL"},
+                ],
+            },
+        }
+
+        response = self.client.post(
+            "/STRATEGY_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
+        )
+
+        self.assertDictEqual(
+            response.json(),
+            {
+                "response": {
+                    "portVals": [
+                        {"value": 10000.0, "timestamp": "01/01/2020"},
+                        {"value": 10000.0, "timestamp": "01/02/2020"},
+                        {"value": 9910.0, "timestamp": "01/03/2020"},
+                        {"value": 9820.0, "timestamp": "01/04/2020"},
+                        {"value": 9654.0, "timestamp": "01/05/2020"},
+                    ],
+                    "trades": [
+                        {
+                            "timestamp": "01/02/2020",
+                            "order": "SELL",
+                            "cash_allocated": 1000.0,
+                            "shares": -90,
+                            "amount_invested": -990.0,
+                        },
+                        {
+                            "timestamp": "01/04/2020",
+                            "order": "SELL",
+                            "cash_allocated": 1000.0,
+                            "shares": -76,
+                            "amount_invested": -988.0,
+                        },
+                    ],
+                }
+            },
+        )
+
+    def test_consecutive_buy_ok(self):
+        payload = {
+            "input": {
+                "start_value": 10000.00,
+                "commission": 0.00,
+                "impact": 0.00,
+                "stop_loss": 0.0,
+                "take_profit": 0.0,
+                "trade_amount_value": 1000.00,
+            },
+            "output": {
+                "DATA_BLOCK-1-1": [
+                    {
+                        "timestamp": "01/01/2020",
+                        "timezone": "UTC/EST",
+                        "open": "10.00",
+                        "high": "10.00",
+                        "low": "10.00",
+                        "close": "10.00",
+                        "volume": "10.00",
+                    },
+                    {
+                        "timestamp": "01/02/2020",
+                        "timezone": "UTC/EST",
+                        "open": "11.00",
+                        "high": "11.00",
+                        "low": "11.00",
+                        "close": "11.00",
+                        "volume": "11.00",
+                    },
+                    {
+                        "timestamp": "01/03/2020",
+                        "timezone": "UTC/EST",
+                        "open": "12.00",
+                        "high": "12.00",
+                        "low": "12.00",
+                        "close": "12.00",
+                        "volume": "12.00",
+                    },
+                    {
+                        "timestamp": "01/04/2020",
+                        "timezone": "UTC/EST",
+                        "open": "13.00",
+                        "high": "13.00",
+                        "low": "13.00",
+                        "close": "13.00",
+                        "volume": "13.00",
+                    },
+                    {
+                        "timestamp": "01/05/2020",
+                        "timezone": "UTC/EST",
+                        "open": "14.00",
+                        "high": "14.00",
+                        "low": "14.00",
+                        "close": "14.00",
+                        "volume": "14.00",
+                    },
+                ],
+                "SIGNAL_BLOCK-1-1": [
+                    {"timestamp": "01/02/2020", "order": "BUY"},
+                    {"timestamp": "01/04/2020", "order": "BUY"},
+                ],
+            },
+        }
+
+        response = self.client.post(
+            "/STRATEGY_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
+        )
+
+        self.assertDictEqual(
+            response.json(),
+            {
+                "response": {
+                    "portVals": [
+                        {"value": 10000.0, "timestamp": "01/01/2020"},
+                        {"value": 10000.0, "timestamp": "01/02/2020"},
+                        {"value": 10090.0, "timestamp": "01/03/2020"},
+                        {"value": 10180.0, "timestamp": "01/04/2020"},
+                        {"value": 10346.0, "timestamp": "01/05/2020"},
+                    ],
+                    "trades": [
+                        {
+                            "timestamp": "01/02/2020",
+                            "order": "BUY",
+                            "cash_allocated": 1000.0,
+                            "shares": 90,
+                            "amount_invested": 990.0,
+                        },
+                        {
+                            "timestamp": "01/04/2020",
+                            "order": "BUY",
+                            "cash_allocated": 1000.0,
+                            "shares": 76,
+                            "amount_invested": 988.0,
                         },
                     ],
                 }
