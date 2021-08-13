@@ -92,7 +92,7 @@ class PostRun(APIView):
             if key_breakup[0] == "SIGNAL_BLOCK":
                 signal_block = output[key]
                 break
-    
+
         port_vals, trades = run(input, data_block, signal_block)
 
         response = {"response": {"portVals": port_vals, "trades": trades}}

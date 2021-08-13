@@ -31,7 +31,6 @@ def run(input, data_block, signal_block):
     port_vals = _generate_port_vals_response(port_vals)
     trades = _generate_trades_df_response(trades_df)
 
-    print ('Trades: ', trades)
     return port_vals, trades
 
 
@@ -69,6 +68,7 @@ def _generate_signal_block_df(signal_block):
         buy = signal_block[i]["order"] == "BUY"
         sell = signal_block[i]["order"] == "SELL"
 
+        not_purchased = True
         if i >= 1:
             if buy and signal_block[i - 1]["order"] == "SELL":
                 signal_block_df = signal_block_df.append(
@@ -81,6 +81,7 @@ def _generate_signal_block_df(signal_block):
                     },
                     ignore_index=True,
                 )
+                not_purchased = False
             elif sell and signal_block[i - 1]["order"] == "BUY":
                 signal_block_df = signal_block_df.append(
                     {
@@ -92,17 +93,19 @@ def _generate_signal_block_df(signal_block):
                     },
                     ignore_index=True,
                 )
+                not_purchased = False
 
-        signal_block_df = signal_block_df.append(
-            {
-                "timestamp": signal_block[i]["timestamp"],
-                "buy": buy,
-                "sell": sell,
-                "sell_close": False,
-                "buy_close": False,
-            },
-            ignore_index=True,
-        )
+        if not_purchased:
+            signal_block_df = signal_block_df.append(
+                {
+                    "timestamp": signal_block[i]["timestamp"],
+                    "buy": buy,
+                    "sell": sell,
+                    "sell_close": False,
+                    "buy_close": False,
+                },
+                ignore_index=True,
+            )
 
     signal_block_df = signal_block_df.set_index("timestamp")
     return signal_block_df
@@ -160,16 +163,17 @@ def _generate_trades_df_response(trades_df):
     trades_df: DataFrame of Trades
     """
     trades_df = trades_df.drop(
-        columns=[
-            "symbol",
-            "trade_id",
-            "stop_loss",
-            "take_profit"
-        ]
+        columns=["symbol", "trade_id", "stop_loss", "take_profit"]
+    )
+
+    trades_df = trades_df.rename(
+        columns={
+            "cash_value": "amount_invested",
+            "monetary_amount": "cash_allocated",
+        }
     )
 
     trades_df = trades_df.round(2)
-
     trades = trades_df.to_dict(orient="records")
 
     return trades
