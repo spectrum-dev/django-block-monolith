@@ -5,7 +5,7 @@ class Orders:
     def __init__(self):
         self.trades_df = pd.DataFrame(
             columns=[
-                "date",
+                "timestamp",
                 "symbol",
                 "order",
                 "monetary_amount",
@@ -15,13 +15,13 @@ class Orders:
             ]
         )
 
-    def buy(self, date, symbol, monetary_amount, trade_id, stop_loss, take_profit):
+    def buy(self, timestamp, symbol, monetary_amount, trade_id, stop_loss, take_profit):
         """
         Processes a BUY Request
 
         Attributes
         ----------
-        date            :       Date New Trade is Placed
+        timestamp       :       Datetime New Trade is Placed
         symbol          :       Ticker of stock purchased
         amount          :       Number of Shares Purchased
         trade_id        :       Unique ID of Each Trade
@@ -31,7 +31,7 @@ class Orders:
 
         self.trades_df = self.trades_df.append(
             {
-                "date": date,
+                "timestamp": timestamp,
                 "symbol": symbol,
                 "order": "BUY",
                 "monetary_amount": monetary_amount,
@@ -42,13 +42,13 @@ class Orders:
             ignore_index=True,
         )
 
-    def sell(self, date, symbol, monetary_amount, trade_id, stop_loss, take_profit):
+    def sell(self, timestamp, symbol, monetary_amount, trade_id, stop_loss, take_profit):
         """
         Processes a SELL Request
 
         Attributes
         ----------
-        date            :       Date New Trade is Placed
+        timestamp       :       Datetime New Trade is Placed
         symbol          :       Ticker of stock purchased
         amount          :       Number of Shares Purchased
         trade_id        :       Unique ID of Each Trade
@@ -58,7 +58,7 @@ class Orders:
 
         self.trades_df = self.trades_df.append(
             {
-                "date": date,
+                "timestamp": timestamp,
                 "symbol": symbol,
                 "order": "SELL",
                 "monetary_amount": monetary_amount,
@@ -69,13 +69,13 @@ class Orders:
             ignore_index=True,
         )
 
-    def buy_close(self, date, symbol, trade_id, stop_loss, take_profit):
+    def buy_close(self, timestamp, symbol, trade_id, stop_loss, take_profit):
         """
         Processes a BUY CLOSE Request
 
         Attributes
         ----------
-        date            :       Date New Trade is Placed
+        timestamp       :       Datetime New Trade is Placed
         symbol          :       Ticker of stock purchased
         amount          :       Number of Shares Purchased
         trade_id        :       Unique ID of Each Trade
@@ -85,7 +85,7 @@ class Orders:
 
         self.trades_df = self.trades_df.append(
             {
-                "date": date,
+                "timestamp": timestamp,
                 "symbol": symbol,
                 "order": "BUY_CLOSE",
                 "monetary_amount": 0,
@@ -96,13 +96,13 @@ class Orders:
             ignore_index=True,
         )
 
-    def sell_close(self, date, symbol, trade_id, stop_loss, take_profit):
+    def sell_close(self, timestamp, symbol, trade_id, stop_loss, take_profit):
         """
         Processes a SELL Request
 
         Attributes
         ----------
-        date            :       Date New Trade is Placed
+        timestamp       :       Datetime New Trade is Placed
         symbol          :       Ticker of stock purchased
         amount          :       Number of Shares Purchased
         trade_id        :       Unique ID of Each Trade
@@ -112,7 +112,7 @@ class Orders:
 
         self.trades_df = self.trades_df.append(
             {
-                "date": date,
+                "timestamp": timestamp,
                 "symbol": symbol,
                 "order": "SELL_CLOSE",
                 "monetary_amount": 0,
