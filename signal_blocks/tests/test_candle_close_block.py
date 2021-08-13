@@ -1,8 +1,7 @@
 import json
 from django.test import TestCase
 
-from computational_blocks.blocks.technical_analysis.main import run
-from signal_blocks.tests.data.data_block import DATA_BLOCK
+from signal_blocks.tests.data.data_block import DATA_BLOCK, DATA_BLOCK_2
 
 
 class GetEventAction(TestCase):
@@ -249,4 +248,26 @@ class PostRun(TestCase):
                     {"timestamp": "01/05/2020", "order": "SELL"},
                 ]
             },
+        )
+
+    def test_no_results(self):
+        payload = {
+            "input": {
+                "event_action": "BUY",
+                "event_type": "CLOSE_ABOVE_OPEN",
+            },
+            "output": {
+                "DATA_BLOCK-1-1": DATA_BLOCK_2,
+            },
+        }
+
+        response = self.client.post(
+            "/SIGNAL_BLOCK/6/run",
+            json.dumps(payload),
+            content_type="application/json",
+        )
+
+        self.assertDictEqual(
+            response.json(),
+            {"response": []},
         )
