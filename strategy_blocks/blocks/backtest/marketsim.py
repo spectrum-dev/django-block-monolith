@@ -10,9 +10,9 @@ def run(orders_df, price_df, start_val, commission, impact):
 
     final_orders_df = orders_df.copy(deep=True)
 
-    orders_df = orders_df.sort_values(["date"], ascending=True)
+    orders_df = orders_df.sort_values(["timestamp"], ascending=True)
 
-    orders_df = orders_df.set_index("date")
+    orders_df = orders_df.set_index("timestamp")
 
     # 2. Build data frame prices (prices should be adjusted close)
     price_df = _create_price_df(price_df, colname="close")

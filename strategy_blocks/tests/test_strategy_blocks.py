@@ -210,7 +210,7 @@ class BacktestBlockRunning(TestCase):
                     ],
                     "trades": [
                         {
-                            "date": "01/02/2020",
+                            "timestamp": "01/02/2020",
                             "symbol": "close",
                             "order": "BUY",
                             "monetary_amount": 1000.0,
@@ -286,7 +286,7 @@ class BacktestBlockRunning(TestCase):
                     ],
                     "trades": [
                         {
-                            "date": "01/02/2020",
+                            "timestamp": "01/02/2020",
                             "symbol": "close",
                             "order": "SELL",
                             "monetary_amount": 1000.0,
@@ -387,7 +387,7 @@ class BacktestBlockRunning(TestCase):
                     ],
                     "trades": [
                         {
-                            "date": "01/02/2020",
+                            "timestamp": "01/02/2020",
                             "symbol": "close",
                             "order": "BUY",
                             "monetary_amount": 1000.0,
@@ -398,7 +398,7 @@ class BacktestBlockRunning(TestCase):
                             "cash_value": 990.0,
                         },
                         {
-                            "date": "01/04/2020",
+                            "timestamp": "01/04/2020",
                             "symbol": "close",
                             "order": "SELL_CLOSE",
                             "monetary_amount": 0.0,
@@ -497,7 +497,7 @@ class BacktestBlockRunning(TestCase):
                     ],
                     "trades": [
                         {
-                            "date": "01/02/2020",
+                            "timestamp": "01/02/2020",
                             "symbol": "close",
                             "order": "SELL",
                             "monetary_amount": 1000.0,
@@ -508,7 +508,7 @@ class BacktestBlockRunning(TestCase):
                             "cash_value": -990.0,
                         },
                         {
-                            "date": "01/04/2020",
+                            "timestamp": "01/04/2020",
                             "symbol": "close",
                             "order": "BUY_CLOSE",
                             "monetary_amount": 0.0,
