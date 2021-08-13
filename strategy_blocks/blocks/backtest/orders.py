@@ -42,7 +42,9 @@ class Orders:
             ignore_index=True,
         )
 
-    def sell(self, timestamp, symbol, monetary_amount, trade_id, stop_loss, take_profit):
+    def sell(
+        self, timestamp, symbol, monetary_amount, trade_id, stop_loss, take_profit
+    ):
         """
         Processes a SELL Request
 
