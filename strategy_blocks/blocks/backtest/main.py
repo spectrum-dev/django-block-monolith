@@ -24,7 +24,6 @@ def run(input, data_block, signal_block):
         data_block_df,
         float(input["start_value"]),
         float(input["commission"]),
-        float(input["impact"]),
     )
 
     # Generates Responses
