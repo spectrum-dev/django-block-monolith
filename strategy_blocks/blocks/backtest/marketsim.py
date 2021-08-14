@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 
-def run(orders_df, price_df, start_val, commission, impact):
+def run(orders_df, price_df, start_val, commission, impact=0):
     # 1. Sort by dates in order file
     #    Creates a copy of the orders df to be stored later
 
