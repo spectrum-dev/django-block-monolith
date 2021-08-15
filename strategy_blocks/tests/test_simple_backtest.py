@@ -2,7 +2,7 @@ import json
 
 from django.test import TestCase
 
-from strategy_blocks.blocks.backtest.main import run
+from strategy_blocks.blocks.simple_backtest.main import run
 
 # Create your tests here.
 class BacktestBlockValidation(TestCase):
