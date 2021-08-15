@@ -6,7 +6,7 @@ from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_enumfield import EnumField
 
-from strategy_blocks.blocks.backtest.main import run
+from strategy_blocks.blocks.simple_backtest.main import run
 
 
 # Create your views here.

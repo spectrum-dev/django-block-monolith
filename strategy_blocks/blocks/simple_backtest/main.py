@@ -1,7 +1,7 @@
 import pandas as pd
 
-from strategy_blocks.blocks.backtest.orders import Orders
-from strategy_blocks.blocks.backtest.marketsim import run as run_marketsim
+from strategy_blocks.blocks.simple_backtest.orders import Orders
+from strategy_blocks.blocks.simple_backtest.marketsim import run as run_marketsim
 
 
 def run(input, data_block, signal_block):
