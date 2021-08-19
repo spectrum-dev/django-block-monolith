@@ -5,13 +5,15 @@ asgiref==3.4.1
 async-timeout==3.0.1
 attrs==21.2.0
 black==21.6b0
+celery==5.1.2
 certifi==2021.5.30
 chardet==4.0.0
-click==8.0.1
+click==7.1.2
 coverage==5.5.0
 Cython==0.29.24
 Django==3.2.6
 django-admin==2.0.1
+django-celery-results==2.2.0
 django-environ==0.4.5
 django-excel-base==1.0.4
 django-excel-response2==3.0.2
@@ -19,6 +21,7 @@ django-rest-enumfield==0.2.0
 django-six==1.0.4
 djangorestframework==3.12.4
 idna==2.10
+kombu==5.1.0
 multidict==5.1.0
 mypy-extensions==0.4.3
 numpy==1.21.1
