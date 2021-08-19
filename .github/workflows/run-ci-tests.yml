@@ -40,6 +40,15 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Runs tests
+      env:
+        DB: ${{ matrix.db }}
+        DATABASE_NAME: postgres
+        DATABASE_USER: postgres
+        DATABASE_PASSWORD: postgres
+        DATABASE_HOST: "127.0.0.1"
+        DATABASE_PORT: ${{ matrix.db_port }}
+        CELERY_BACKEND_DATABASE_NAME: "celery-backend"
+        RABBIT_MQ_URL: "amqp://guest:guest@rabbitmq:5672"
       run: |
         docker-compose run -e DATABASE_NAME="postgres" -e DATABASE_USER="postgres" -e DATABASE_PASSWORD="postgres" -e DATABASE_HOST="127.0.0.1" -e DATABASE_PORT=${{ matrix.db_port }} -e ALPHA_VANTAGE_API_KEY=demo -e DJANGO_SECRET_KEY=test-secret-key -e DJANGO_DEBUG="FALSE" test
     

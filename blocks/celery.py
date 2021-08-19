@@ -14,9 +14,3 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # load tasks.py in django apps
 app.autodiscover_tasks()
-
-@app.task(name="block.processing", queue="test_queue")
-def block_processing(payload):
-    print ("Processing Here")
-    print (payload)
-    return {"status": "OK"}

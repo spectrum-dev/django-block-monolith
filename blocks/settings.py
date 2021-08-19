@@ -141,7 +141,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Celery
 
-CELERY_RESULT_BACKEND = 'django-db'
+CELERY_RESULT_BACKEND = f'db+postgresql://{environ["DATABASE_USER"]}:{environ["DATABASE_PASSWORD"]}@{environ["DATABASE_HOST"]}:{environ["DATABASE_PORT"]}/{environ["CELERY_BACKEND_DATABASE_NAME"]}'
 CELERY_CACHE_BACKEND = 'django-cache'
 CELERY_BROKER_URL = environ["RABBIT_MQ_URL"]
 
