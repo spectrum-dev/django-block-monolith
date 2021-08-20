@@ -39,18 +39,6 @@ def get_indiciator_fields(request):
 
     return JsonResponse({"response": response})
 
-
-def process_technical_analysis_run(input, output):
-    data_block = None
-    for key in output.keys():
-        key_breakup = key.split("-")
-        if key_breakup[0] == "DATA_BLOCK":
-            data_block = output[key]
-            break
-
-    return run(input, data_block)
-
-
 class TechnicalAnalysisRunView(APIView):
     def post(self, request):
         request_body = json.loads(request.body)
@@ -58,6 +46,6 @@ class TechnicalAnalysisRunView(APIView):
         input = request_body["input"]
         output = request_body["output"]
 
-        response = process_technical_analysis_run(input, output)
+        response = run(input, output)
 
         return JsonResponse({"response": response})

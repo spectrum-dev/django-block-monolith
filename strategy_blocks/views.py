@@ -14,27 +14,6 @@ from strategy_blocks.blocks.simple_backtest.main import run
 # Backtest (Strategy Block with ID 1)
 # ------------------------------------
 
-
-def process_post_run(input, output):
-    data_block = None
-    for key in output.keys():
-        key_breakup = key.split("-")
-        if key_breakup[0] == "DATA_BLOCK":
-            data_block = output[key]
-            break
-
-    signal_block = None
-    for key in output.keys():
-        key_breakup = key.split("-")
-        if key_breakup[0] == "SIGNAL_BLOCK":
-            signal_block = output[key]
-            break
-
-    port_vals, trades = run(input, data_block, signal_block)
-
-    return {"response": {"portVals": port_vals, "trades": trades}}
-
-
 class PostRun(APIView):
     def post(self, request):
         class TradeAmountUnit(enum.Enum):
@@ -96,6 +75,6 @@ class PostRun(APIView):
         InputSerializer(data=input).is_valid(raise_exception=True)
         validate_output(output)
 
-        response = process_post_run(input, output)
+        response = run(input, output)
 
         return JsonResponse(response)

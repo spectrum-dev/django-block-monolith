@@ -4,16 +4,32 @@ from strategy_blocks.blocks.simple_backtest.orders import Orders
 from strategy_blocks.blocks.simple_backtest.marketsim import run as run_marketsim
 
 
-def run(input, data_block, signal_block):
+def run(input, output):
     """
     Runs the backtest
 
     Attributes
     ----------
     input: Form Input Values
-    data_block: Data Block from output
-    signal_block: Signal Block from output
+    output: Output Cache Values
     """
+    data_block = None
+    for key in output.keys():
+        key_breakup = key.split("-")
+        if key_breakup[0] == "DATA_BLOCK":
+            data_block = output[key]
+            break
+
+    signal_block = None
+    for key in output.keys():
+        key_breakup = key.split("-")
+        if key_breakup[0] == "SIGNAL_BLOCK":
+            signal_block = output[key]
+            break
+    
+    if len(signal_block) <= 0 or len(data_block) <= 0:
+        return {"response": {"portVals": [], "trades": [] }}
+    
     data_block_df = _generate_data_block_df(data_block)
     signal_block_df = _generate_signal_block_df(signal_block)
     trades_df = _generate_trades_df(input, signal_block_df)
@@ -30,7 +46,7 @@ def run(input, data_block, signal_block):
     port_vals = _generate_port_vals_response(port_vals)
     trades = _generate_trades_df_response(trades_df)
 
-    return port_vals, trades
+    return {"response": {"portVals": port_vals, "trades": trades}}
 
 
 def _generate_data_block_df(data_block):
