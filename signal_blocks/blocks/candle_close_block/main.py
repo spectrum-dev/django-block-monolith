@@ -2,7 +2,7 @@ import pandas as pd
 from signal_blocks.blocks.candle_close_block.events.close_above_events import *
 
 
-def run(input, data_block):
+def run(input, output):
     """
     Takes in elements from the form input and a single COMPUTATIONAL_BLOCK
     to generates a series of events associated with that block
@@ -12,6 +12,13 @@ def run(input, data_block):
     input: Form Inputs
     computational_block: Time series data from a computational block
     """
+    data_block = None
+    for key in output.keys():
+        key_breakup = key.split("-")
+        if key_breakup[0] == "DATA_BLOCK":
+            data_block = output[key]
+            break
+    
     data_block_df = _format_request(data_block)
 
     _candle_close_func = None
@@ -34,7 +41,9 @@ def run(input, data_block):
         data_block_df,
         input["event_action"],
     )
-    return _format_response(response_df)
+    
+    response = _format_response(response_df)
+    return {"response": response}
 
 
 def _format_request(request_json):
