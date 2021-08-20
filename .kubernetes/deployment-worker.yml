@@ -19,7 +19,7 @@ spec:
         - name: spectrum-block-monolith-worker
           image: <CONTAINER_IMAGE_URL>
           imagePullPolicy: Always
-          command: ['celery', '-A', 'blocks', 'worker', '-l', 'INFO']
+          command: ['celery', '-A', 'blocks', 'worker', '-Q', 'blocks', '-l', 'INFO']
           ports:
             - containerPort: 8000
               name: http

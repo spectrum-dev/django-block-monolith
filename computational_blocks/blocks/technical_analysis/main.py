@@ -4,7 +4,7 @@ from computational_blocks.blocks.technical_analysis.momentum import *
 from computational_blocks.blocks.technical_analysis.mappings import INDICATORS
 
 
-def run(input, data_block):
+def run(input, output):
     """
     Takes in elements from the form input, and a DATA_BLOCK to create a technical analysis signal
 
@@ -13,6 +13,13 @@ def run(input, data_block):
     input: Form inputs provided in metadata
     data_block: Data from a data_block stream
     """
+    data_block = None
+    for key in output.keys():
+        key_breakup = key.split("-")
+        if key_breakup[0] == "DATA_BLOCK":
+            data_block = output[key]
+            break
+
     data_block_df = _format_request(data_block)
     response = calculate_indicator(input, data_block_df)
     return _format_response(response)

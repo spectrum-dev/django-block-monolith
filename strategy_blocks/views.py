@@ -76,22 +76,6 @@ class PostRun(APIView):
         InputSerializer(data=input).is_valid(raise_exception=True)
         validate_output(output)
 
-        data_block = None
-        for key in output.keys():
-            key_breakup = key.split("-")
-            if key_breakup[0] == "DATA_BLOCK":
-                data_block = output[key]
-                break
-
-        signal_block = None
-        for key in output.keys():
-            key_breakup = key.split("-")
-            if key_breakup[0] == "SIGNAL_BLOCK":
-                signal_block = output[key]
-                break
-
-        port_vals, trades = run(input, data_block, signal_block)
-
-        response = {"response": {"portVals": port_vals, "trades": trades}}
+        response = run(input, output)
 
         return JsonResponse(response)

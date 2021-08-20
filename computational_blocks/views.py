@@ -47,13 +47,6 @@ class TechnicalAnalysisRunView(APIView):
         input = request_body["input"]
         output = request_body["output"]
 
-        data_block = None
-        for key in output.keys():
-            key_breakup = key.split("-")
-            if key_breakup[0] == "DATA_BLOCK":
-                data_block = output[key]
-                break
-
-        response = run(input, data_block)
+        response = run(input, output)
 
         return JsonResponse({"response": response})

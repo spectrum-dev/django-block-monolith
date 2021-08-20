@@ -1,5 +1,10 @@
+from __future__ import absolute_import
+
 import os
 from celery import Celery
+
+# Ingests block run events
+from blocks.event import event_ingestor as event_ingestor_run
 
 # this code copied from manage.py
 # set the default Django settings module for the 'celery' app.
@@ -14,3 +19,8 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 
 # load tasks.py in django apps
 app.autodiscover_tasks()
+
+
+@app.task
+def event_ingestor(payload):
+    return event_ingestor_run(payload)
