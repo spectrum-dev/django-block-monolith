@@ -63,5 +63,15 @@ spec:
                 secretKeyRef:
                   name: "spectrum-block-monolith"
                   key: "DJANGO_DEBUG"
+            - name: "RABBIT_MQ_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: "spectrum"
+                  key: "RABBIT_MQ_URL"
+            - name: "CELERY_BACKEND_DATABASE_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: "spectrum"
+                  key: "CELERY_BACKEND_DATABASE_NAME"
       imagePullSecrets:
         - name: registry-spectrum
