@@ -3,20 +3,21 @@ import signal_blocks.views
 import strategy_blocks.views
 import data_blocks.views
 
+
 def event_ingestor(payload):
     """
-        Takes in a payload resembling:
-            
-        {
-            "blockType": "",
-            "blockId": "",
-            "inputs": { ... },
-            "outputs": { ... }
-        }
+    Takes in a payload resembling:
+
+    {
+        "blockType": "",
+        "blockId": "",
+        "inputs": { ... },
+        "outputs": { ... }
+    }
     """
     block_type = payload.get("blockType", "DNE")
     block_id = payload.get("blockId", -1)
-    
+
     input = payload.get("input", {})
     output = payload.get("output", {})
 
@@ -27,10 +28,12 @@ def event_ingestor(payload):
             return data_blocks.views.us_stock_data_run(input)
         elif block_id == 2:
             return data_blocks.views.crypto_run(input)
-    
+
     elif case("COMPUTATIONAL_BLOCK"):
         if block_id == 1:
-            return computational_blocks.views.process_technical_analysis_run(input, output)
+            return computational_blocks.views.process_technical_analysis_run(
+                input, output
+            )
 
     elif case("SIGNAL_BLOCK"):
         if block_id == 1:
@@ -44,11 +47,11 @@ def event_ingestor(payload):
         elif block_id == 5:
             return signal_blocks.views.or_run(output)
         elif block_id == 6:
-            pass 
+            pass
 
     elif case("STRATEGY_BLOCK"):
         if block_id == 1:
             return strategy_blocks.views.process_post_run(input, output)
-    
+
     else:
         pass

@@ -50,6 +50,7 @@ def process_technical_analysis_run(input, output):
 
     return run(input, data_block)
 
+
 class TechnicalAnalysisRunView(APIView):
     def post(self, request):
         request_body = json.loads(request.body)

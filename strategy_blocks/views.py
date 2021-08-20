@@ -34,6 +34,7 @@ def process_post_run(input, output):
 
     return {"response": {"portVals": port_vals, "trades": trades}}
 
+
 class PostRun(APIView):
     def post(self, request):
         class TradeAmountUnit(enum.Enum):
@@ -96,5 +97,5 @@ class PostRun(APIView):
         validate_output(output)
 
         response = process_post_run(input, output)
-        
+
         return JsonResponse(response)

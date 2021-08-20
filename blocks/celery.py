@@ -21,6 +21,7 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 # load tasks.py in django apps
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
+
 @app.task
 def event_ingestor(payload):
     return event_ingestor(payload)
