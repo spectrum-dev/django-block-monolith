@@ -18,7 +18,7 @@ def run(input, output):
         if key_breakup[0] == "DATA_BLOCK":
             data_block = output[key]
             break
-    
+
     data_block_df = _format_request(data_block)
 
     _candle_close_func = None
@@ -41,7 +41,7 @@ def run(input, output):
         data_block_df,
         input["event_action"],
     )
-    
+
     response = _format_response(response_df)
     return {"response": response}
 

@@ -786,7 +786,4 @@ class BacktestBlockRunning(TestCase):
 
         response = run(payload["input"], payload["output"])
 
-        self.assertDictEqual(
-            response,
-            {"response": {"portVals": [], "trades": [] }}
-        )
+        self.assertDictEqual(response, {"response": {"portVals": [], "trades": []}})

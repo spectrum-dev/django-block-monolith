@@ -26,10 +26,10 @@ def run(input, output):
         if key_breakup[0] == "SIGNAL_BLOCK":
             signal_block = output[key]
             break
-    
+
     if len(signal_block) <= 0 or len(data_block) <= 0:
-        return {"response": {"portVals": [], "trades": [] }}
-    
+        return {"response": {"portVals": [], "trades": []}}
+
     data_block_df = _generate_data_block_df(data_block)
     signal_block_df = _generate_signal_block_df(signal_block)
     trades_df = _generate_trades_df(input, signal_block_df)

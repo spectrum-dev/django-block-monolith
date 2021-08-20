@@ -14,6 +14,7 @@ from strategy_blocks.blocks.simple_backtest.main import run
 # Backtest (Strategy Block with ID 1)
 # ------------------------------------
 
+
 class PostRun(APIView):
     def post(self, request):
         class TradeAmountUnit(enum.Enum):

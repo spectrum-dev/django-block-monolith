@@ -39,6 +39,7 @@ def get_indiciator_fields(request):
 
     return JsonResponse({"response": response})
 
+
 class TechnicalAnalysisRunView(APIView):
     def post(self, request):
         request_body = json.loads(request.body)
