@@ -6,6 +6,13 @@ INDICATORS = {
         "functionName": "moving_average",
         "params": [
             {
+                "name": "Calculation Field",
+                "internalName": "calc_field",
+                "description": "Field used within TA calculation, defaults to 'close' for candle close price.",  # DESCRIPTIONS["lookbackPeriod"]
+                "default": 'close',
+                "choices": ["open", "close", "volume"],
+            },
+            {
                 "name": "Lookback Period",
                 "internalName": "lookback_period",
                 "description": "",  # DESCRIPTIONS["lookbackPeriod"]
