@@ -5,11 +5,6 @@ INDICATORS = {
         "functionName": "moving_average",
         "params": [
             {
-                "fieldName": "Data Field",
-                "fieldVariableName": "calc_field",
-                "fieldType": "input",
-            },
-            {
                 "fieldName": "Lookback Period",
                 "fieldVariableName": "lookback_period",
                 "fieldType": "input",
