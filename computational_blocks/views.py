@@ -27,17 +27,7 @@ def get_indiciator_fields(request):
     if not indicator_information:
         return JsonResponse({"error": f"The indicator {indicator_name} was not found"})
 
-    response = []
-    for indicator in indicator_information["params"]:
-        response.append(
-            {
-                "fieldName": indicator["name"],
-                "fieldType": "input",
-                "fieldVariableName": indicator["internalName"],
-            }
-        )
-
-    return JsonResponse({"response": response})
+    return JsonResponse({"response": indicator_information["params"]})
 
 
 class TechnicalAnalysisRunView(APIView):
