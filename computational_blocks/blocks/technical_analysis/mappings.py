@@ -1,4 +1,3 @@
-# TODO: Talk with Ronak to see if we should start putting these things in the database
 INDICATORS = {
     "MA": {
         "shortName": "MA",
@@ -6,10 +5,9 @@ INDICATORS = {
         "functionName": "moving_average",
         "params": [
             {
-                "name": "Lookback Period",
-                "internalName": "lookback_period",
-                "description": "",  # DESCRIPTIONS["lookbackPeriod"]
-                "default": 10,
+                "fieldName": "Lookback Period",
+                "fieldVariableName": "lookback_period",
+                "fieldType": "input",
             }
         ],
     },
@@ -19,10 +17,9 @@ INDICATORS = {
         "functionName": "exponential_moving_average",
         "params": [
             {
-                "name": "Lookback Period",
-                "internalName": "lookback_period",
-                "description": "",
-                "default": 10,
+                "fieldName": "Lookback Period",
+                "fieldVariableName": "lookback_period",
+                "fieldType": "input",
             }
         ],
     },
@@ -32,16 +29,14 @@ INDICATORS = {
         "functionName": "macd",
         "params": [
             {
-                "name": "Lookback Period One",
-                "internalName": "lookback_period_one",
-                "description": "",
-                "default": 10,
+                "fieldName": "Lookback Period One",
+                "fieldVariableName": "lookback_period_one",
+                "fieldType": "input",
             },
             {
-                "name": "Lookback Period Two",
-                "internalName": "lookback_period_two",
-                "description": "",
-                "default": 10,
+                "fieldName": "Lookback Period Two",
+                "fieldVariableName": "lookback_period_two",
+                "fieldType": "input",
             },
         ],
     },
@@ -51,10 +46,9 @@ INDICATORS = {
         "functionName": "adx",
         "params": [
             {
-                "name": "Lookback Period",
-                "internalName": "lookback_period",
-                "description": "",
-                "default": 10,
+                "fieldName": "Lookback Period",
+                "fieldVariableName": "lookback_period",
+                "fieldType": "input",
             }
         ],
     },
@@ -64,10 +58,9 @@ INDICATORS = {
         "functionName": "adxr",
         "params": [
             {
-                "name": "Lookback Period",
-                "internalName": "lookback_period",
-                "description": "",
-                "default": 10,
+                "fieldName": "Lookback Period",
+                "fieldVariableName": "lookback_period",
+                "fieldType": "input",
             }
         ],
     },
@@ -77,22 +70,19 @@ INDICATORS = {
         "functionName": "apo",
         "params": [
             {
-                "name": "Fast Period",
-                "internalName": "fast_period",
-                "description": "",
-                "default": 10,
+                "fieldName": "Fast Period",
+                "fieldVariableName": "fast_period",
+                "fieldType": "input",
             },
             {
-                "name": "Slow Period",
-                "internalName": "slow_period",
-                "description": "",
-                "default": 10,
+                "fieldName": "Slow Period",
+                "fieldVariableName": "slow_period",
+                "fieldType": "input",
             },
             {
-                "name": "MA Type",
-                "internalName": "ma_type",
-                "description": "",
-                "default": 10,
+                "fieldName": "MA Type",
+                "fieldVariableName": "ma_type",
+                "fieldType": "input",
             },
         ],
     },
@@ -102,10 +92,9 @@ INDICATORS = {
         "functionName": "aroon_oscillator",
         "params": [
             {
-                "name": "Lookback Period",
-                "internalName": "lookback_period",
-                "description": "",
-                "default": 10,
+                "fieldName": "Lookback Period",
+                "fieldVariableName": "lookback_period",
+                "fieldType": "input",
             }
         ],
     },
@@ -121,10 +110,9 @@ INDICATORS = {
         "functionName": "cci",
         "params": [
             {
-                "name": "Lookback Period",
-                "internalName": "lookback_period",
-                "description": "",
-                "default": 10,
+                "fieldName": "Lookback Period",
+                "fieldVariableName": "lookback_period",
+                "fieldType": "input",
             }
         ],
     },
@@ -134,10 +122,9 @@ INDICATORS = {
         "functionName": "cmo",
         "params": [
             {
-                "name": "Lookback Period",
-                "internalName": "lookback_period",
-                "description": "",
-                "default": 10,
+                "fieldName": "Lookback Period",
+                "fieldVariableName": "lookback_period",
+                "fieldType": "input",
             }
         ],
     },
@@ -147,10 +134,9 @@ INDICATORS = {
         "functionName": "dx",
         "params": [
             {
-                "name": "Lookback Period",
-                "internalName": "lookback_period",
-                "description": "",
-                "default": 10,
+                "fieldName": "Lookback Period",
+                "fieldVariableName": "lookback_period",
+                "fieldType": "input",
             }
         ],
     },
@@ -160,10 +146,9 @@ INDICATORS = {
         "functionName": "rsi",
         "params": [
             {
-                "name": "Lookback Period",
-                "internalName": "lookback_period",
-                "description": "",
-                "default": 10,
+                "fieldName": "Lookback Period",
+                "fieldVariableName": "lookback_period",
+                "fieldType": "input",
             }
         ],
     },
