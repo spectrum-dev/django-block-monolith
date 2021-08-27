@@ -12,7 +12,7 @@ from talib import EMA, ADX, ADXR, APO, AROONOSC, BOP, CCI, CMO, DX, RSI
 
 def moving_average(
     data_block=None,
-    lookback_data_type="close",
+    incoming_data="close",
     lookback_period="20",
     lookback_unit="DATA_POINT",
 ):
@@ -25,7 +25,7 @@ def moving_average(
     lookback_unit       :   Unit of How Looking Back
     """
     rolling_average = (
-        data_block[lookback_data_type].rolling(window=int(lookback_period)).mean()
+        data_block[incoming_data].rolling(window=int(lookback_period)).mean()
     )
 
     return rolling_average
