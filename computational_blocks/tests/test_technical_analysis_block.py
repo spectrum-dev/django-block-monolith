@@ -42,9 +42,15 @@ class GetIndicatorField(TestCase):
             {
                 "response": [
                     {
+                        "fieldName": "Incoming Data",
+                        "fieldVariableName": "incoming_data",
+                        "fieldType": "inputs_from_connection",
+                        "fieldDefaultValue": "close",
+                    },
+                    {
                         "fieldName": "Lookback Period",
-                        "fieldType": "input",
                         "fieldVariableName": "lookback_period",
+                        "fieldType": "input",
                     },
                 ]
             },
