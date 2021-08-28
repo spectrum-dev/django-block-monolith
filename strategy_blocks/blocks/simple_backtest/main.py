@@ -1,19 +1,35 @@
 import pandas as pd
 
-from strategy_blocks.blocks.backtest.orders import Orders
-from strategy_blocks.blocks.backtest.marketsim import run as run_marketsim
+from strategy_blocks.blocks.simple_backtest.orders import Orders
+from strategy_blocks.blocks.simple_backtest.marketsim import run as run_marketsim
 
 
-def run(input, data_block, signal_block):
+def run(input, output):
     """
     Runs the backtest
 
     Attributes
     ----------
     input: Form Input Values
-    data_block: Data Block from output
-    signal_block: Signal Block from output
+    output: Output Cache Values
     """
+    data_block = None
+    for key in output.keys():
+        key_breakup = key.split("-")
+        if key_breakup[0] == "DATA_BLOCK":
+            data_block = output[key]
+            break
+
+    signal_block = None
+    for key in output.keys():
+        key_breakup = key.split("-")
+        if key_breakup[0] == "SIGNAL_BLOCK":
+            signal_block = output[key]
+            break
+
+    if len(signal_block) <= 0 or len(data_block) <= 0:
+        return {"response": {"portVals": [], "trades": []}}
+
     data_block_df = _generate_data_block_df(data_block)
     signal_block_df = _generate_signal_block_df(signal_block)
     trades_df = _generate_trades_df(input, signal_block_df)
@@ -24,14 +40,13 @@ def run(input, data_block, signal_block):
         data_block_df,
         float(input["start_value"]),
         float(input["commission"]),
-        float(input["impact"]),
     )
 
     # Generates Responses
     port_vals = _generate_port_vals_response(port_vals)
     trades = _generate_trades_df_response(trades_df)
 
-    return port_vals, trades
+    return {"response": {"portVals": port_vals, "trades": trades}}
 
 
 def _generate_data_block_df(data_block):
@@ -59,18 +74,21 @@ def _generate_signal_block_df(signal_block):
     signal_block: Incoming Signal Block JSON
     """
     signal_block_df = pd.DataFrame(
-        columns=["datetime", "buy", "sell", "buy_close", "sell_close"]
+        columns=["timestamp", "buy", "sell", "buy_close", "sell_close"],
     )
+    signal_block_df = signal_block_df.set_index("timestamp")
 
     for i in range(0, len(signal_block)):
+        # Returns boolean of whether should BUY or SELL
         buy = signal_block[i]["order"] == "BUY"
         sell = signal_block[i]["order"] == "SELL"
 
+        not_purchased = True
         if i >= 1:
             if buy and signal_block[i - 1]["order"] == "SELL":
                 signal_block_df = signal_block_df.append(
                     {
-                        "datetime": signal_block[i]["timestamp"],
+                        "timestamp": signal_block[i]["timestamp"],
                         "buy": False,
                         "sell": False,
                         "sell_close": False,
@@ -78,10 +96,11 @@ def _generate_signal_block_df(signal_block):
                     },
                     ignore_index=True,
                 )
+                not_purchased = False
             elif sell and signal_block[i - 1]["order"] == "BUY":
                 signal_block_df = signal_block_df.append(
                     {
-                        "datetime": signal_block[i]["timestamp"],
+                        "timestamp": signal_block[i]["timestamp"],
                         "buy": False,
                         "sell": False,
                         "sell_close": True,
@@ -89,10 +108,12 @@ def _generate_signal_block_df(signal_block):
                     },
                     ignore_index=True,
                 )
-        else:
+                not_purchased = False
+
+        if not_purchased:
             signal_block_df = signal_block_df.append(
                 {
-                    "datetime": signal_block[i]["timestamp"],
+                    "timestamp": signal_block[i]["timestamp"],
                     "buy": buy,
                     "sell": sell,
                     "sell_close": False,
@@ -101,8 +122,7 @@ def _generate_signal_block_df(signal_block):
                 ignore_index=True,
             )
 
-    signal_block_df = signal_block_df.set_index("datetime")
-
+    signal_block_df = signal_block_df.set_index("timestamp")
     return signal_block_df
 
 
@@ -157,6 +177,18 @@ def _generate_trades_df_response(trades_df):
     ----------
     trades_df: DataFrame of Trades
     """
+    trades_df = trades_df.drop(
+        columns=["symbol", "trade_id", "stop_loss", "take_profit"]
+    )
+
+    trades_df = trades_df.rename(
+        columns={
+            "cash_value": "amount_invested",
+            "monetary_amount": "cash_allocated",
+        }
+    )
+
+    trades_df = trades_df.round(2)
     trades = trades_df.to_dict(orient="records")
 
     return trades

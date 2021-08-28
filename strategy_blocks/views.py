@@ -6,7 +6,7 @@ from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_enumfield import EnumField
 
-from strategy_blocks.blocks.backtest.main import run
+from strategy_blocks.blocks.simple_backtest.main import run
 
 
 # Create your views here.
@@ -23,9 +23,6 @@ class PostRun(APIView):
         class InputSerializer(serializers.Serializer):
             start_value = serializers.FloatField()
             commission = serializers.FloatField()
-            impact = serializers.FloatField()
-            stop_loss = serializers.FloatField()
-            take_profit = serializers.FloatField()
             trade_amount_value = serializers.FloatField()
             # TODO: Comment this in if decide to maintain this field
             # trade_amount_unit = EnumField(choices=TradeAmountUnit)
@@ -79,22 +76,6 @@ class PostRun(APIView):
         InputSerializer(data=input).is_valid(raise_exception=True)
         validate_output(output)
 
-        data_block = None
-        for key in output.keys():
-            key_breakup = key.split("-")
-            if key_breakup[0] == "DATA_BLOCK":
-                data_block = output[key]
-                break
-
-        signal_block = None
-        for key in output.keys():
-            key_breakup = key.split("-")
-            if key_breakup[0] == "SIGNAL_BLOCK":
-                signal_block = output[key]
-                break
-
-        port_vals, trades = run(input, data_block, signal_block)
-
-        response = {"response": {"portVals": port_vals, "trades": trades}}
+        response = run(input, output)
 
         return JsonResponse(response)

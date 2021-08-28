@@ -39,7 +39,6 @@ urlpatterns = [
         "COMPUTATIONAL_BLOCK/1/run",
         computational_blocks.views.TechnicalAnalysisRunView.as_view(),
     ),
-    path("SIGNAL_BLOCK/1/eventType", signal_blocks.views.get_event_types),
     path("SIGNAL_BLOCK/1/eventAction", signal_blocks.views.get_event_actions),
     path("SIGNAL_BLOCK/1/run", signal_blocks.views.PostRun.as_view()),
     path("SIGNAL_BLOCK/2/eventAction", signal_blocks.views.get_event_actions),
@@ -49,7 +48,9 @@ urlpatterns = [
     path("SIGNAL_BLOCK/4/eventAction", signal_blocks.views.get_event_actions),
     path("SIGNAL_BLOCK/4/crossoverType", signal_blocks.views.get_crossover_types),
     path("SIGNAL_BLOCK/4/run", signal_blocks.views.PostCrossoverRun.as_view()),
-    path("SIGNAL_BLOCK/5/eventAction", signal_blocks.views.get_event_actions),
     path("SIGNAL_BLOCK/5/run", signal_blocks.views.PostOrRunView.as_view()),
+    path("SIGNAL_BLOCK/6/eventAction", signal_blocks.views.get_event_actions),
+    path("SIGNAL_BLOCK/6/candleCloseType", signal_blocks.views.get_candle_close_types),
+    path("SIGNAL_BLOCK/6/run", signal_blocks.views.PostCandleCloseRunView.as_view()),
     path("STRATEGY_BLOCK/1/run", strategy_blocks.views.PostRun.as_view()),
 ]
