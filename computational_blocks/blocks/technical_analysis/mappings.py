@@ -14,7 +14,7 @@ INDICATORS = {
                 "fieldName": "Lookback Period",
                 "fieldVariableName": "lookback_period",
                 "fieldType": "input",
-            }
+            },
         ],
     },
     "EMA": {
