@@ -19,11 +19,15 @@ def run(input, output):
 
     input_block_1 = _format_request(output[input_block_1_name])
     input_block_1 = input_block_1[["timestamp"][input_block_1_field]]
-    input_block_1 = input_block_1.rename(columns={input_block_1_field: "comparison_field_1"})
+    input_block_1 = input_block_1.rename(
+        columns={input_block_1_field: "comparison_field_1"}
+    )
 
     input_block_2 = _format_request(output[input_block_2_name])
     input_block_2 = input_block_2[["timestamp"][input_block_2_field]]
-    input_block_2 = input_block_2.rename(columns={input_block_2_field: "comparison_field_2"})
+    input_block_2 = input_block_2.rename(
+        columns={input_block_2_field: "comparison_field_2"}
+    )
 
     df_merged = pd.merge(input_block_1, input_block_2, on=["timestamp"], how="outer")
     df_merged = df_merged.set_index("timestamp")
