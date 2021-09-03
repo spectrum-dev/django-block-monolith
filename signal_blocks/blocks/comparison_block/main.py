@@ -12,19 +12,42 @@ def run(input, output):
     input: Form Inputs
     input_blocks: Time series data from 2 blocks (either can be computational or data)
     """
-    input_block_1_name = input["input_block_1_name"]
-    input_block_1_field = input["input_block_1_field"]
-    input_block_2_name = input["input_block_2_name"]
-    input_block_2_field = input["input_block_2_field"]
+    input_block_1_name = input.get("input_block_1_name")
+    input_block_1_field = input.get("input_block_1_field")
+    input_block_2_name = input.get("input_block_2_name")
+    input_block_2_field = input.get("input_block_2_field")
+    comparison_type = input.get("comparison_type")
+    event_action = input.get("event_action")
+
+    if any(x is None for x in [input_block_1_name, input_block_1_field, input_block_2_name, input_block_2_field, comparison_type, event_action]):
+        # TODO: validation to check that all required fields are populated
+        # Possibly can be redundant if serializer takes care of this
+        pass
+
+    if input_block_1_name not in output.keys():
+        # TODO: validation for block not available as part of data
+        pass
+    
+    if any(x in ["timestamp", input_block_1_field] for x in output[input_block_1_name][0].keys()):
+        # TODO: validation for field not present in dataset
+        pass
+
+    if input_block_2_name not in output.keys():
+        # TODO: validation for block not available as part of data
+        pass
+    
+    if any(x in ["timestamp", input_block_2_field] for x in output[input_block_2_name][0].keys()):
+        # TODO: validation for field not present in dataset
+        pass
 
     input_block_1 = _format_request(output[input_block_1_name])
-    input_block_1 = input_block_1[["timestamp"][input_block_1_field]]
+    input_block_1 = input_block_1[["timestamp", input_block_1_field]]
     input_block_1 = input_block_1.rename(
         columns={input_block_1_field: "comparison_field_1"}
     )
 
     input_block_2 = _format_request(output[input_block_2_name])
-    input_block_2 = input_block_2[["timestamp"][input_block_2_field]]
+    input_block_2 = input_block_2[["timestamp", input_block_2_field]]
     input_block_2 = input_block_2.rename(
         columns={input_block_2_field: "comparison_field_2"}
     )
@@ -34,7 +57,7 @@ def run(input, output):
     df_merged.sort_index(inplace=True)
 
     _comparison_func = None
-    case = lambda x: x == input["comparison_type"]
+    case = lambda x: x == comparison_type
 
     if case("LESS_THAN"):
         _comparison_func = less_than
@@ -47,7 +70,7 @@ def run(input, output):
 
     response_df = _comparison_func(
         df_merged,
-        input["event_action"],
+        event_action,
     )
 
     response = _format_response(response_df)
