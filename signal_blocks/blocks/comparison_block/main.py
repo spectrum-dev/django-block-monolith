@@ -19,7 +19,17 @@ def run(input, output):
     comparison_type = input.get("comparison_type")
     event_action = input.get("event_action")
 
-    if any(x is None for x in [input_block_1_name, input_block_1_field, input_block_2_name, input_block_2_field, comparison_type, event_action]):
+    if any(
+        x is None
+        for x in [
+            input_block_1_name,
+            input_block_1_field,
+            input_block_2_name,
+            input_block_2_field,
+            comparison_type,
+            event_action,
+        ]
+    ):
         # TODO: validation to check that all required fields are populated
         # Possibly can be redundant if serializer takes care of this
         pass
@@ -27,16 +37,22 @@ def run(input, output):
     if input_block_1_name not in output.keys():
         # TODO: validation for block not available as part of data
         pass
-    
-    if any(x in ["timestamp", input_block_1_field] for x in output[input_block_1_name][0].keys()):
+
+    if any(
+        x in ["timestamp", input_block_1_field]
+        for x in output[input_block_1_name][0].keys()
+    ):
         # TODO: validation for field not present in dataset
         pass
 
     if input_block_2_name not in output.keys():
         # TODO: validation for block not available as part of data
         pass
-    
-    if any(x in ["timestamp", input_block_2_field] for x in output[input_block_2_name][0].keys()):
+
+    if any(
+        x in ["timestamp", input_block_2_field]
+        for x in output[input_block_2_name][0].keys()
+    ):
         # TODO: validation for field not present in dataset
         pass
 
