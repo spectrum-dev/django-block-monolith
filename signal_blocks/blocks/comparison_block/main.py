@@ -13,7 +13,7 @@ def run(input, output):
     input_blocks: Time series data from 2 blocks (either can be computational or data)
     """
     # Data comes in as BlockIDInFlow, we have to parse the available outputs to get the right dataset name
-    # E.g. Flow BlockID 2 means COMPUTATIONAL_BLOCK-1-2 
+    # E.g. Flow BlockID 2 means COMPUTATIONAL_BLOCK-1-2
     input_block_1_name = input.get("input_block_1_name")
     input_block_1_name = [x for x in output.keys() if x.endswith(input_block_1_name)][0]
     input_block_2_name = input.get("input_block_2_name")
