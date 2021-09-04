@@ -12,9 +12,14 @@ def run(input, output):
     input: Form Inputs
     input_blocks: Time series data from 2 blocks (either can be computational or data)
     """
+    # Data comes in as BlockIDInFlow, we have to parse the available outputs to get the right dataset name
+    # E.g. Flow BlockID 2 means COMPUTATIONAL_BLOCK-1-2 
     input_block_1_name = input.get("input_block_1_name")
-    input_block_1_field = input.get("input_block_1_field")
+    input_block_1_name = [x for x in output.keys() if x.endswith(input_block_1_name)][0]
     input_block_2_name = input.get("input_block_2_name")
+    input_block_2_name = [x for x in output.keys() if x.endswith(input_block_2_name)][0]
+
+    input_block_1_field = input.get("input_block_1_field")
     input_block_2_field = input.get("input_block_2_field")
     comparison_type = input.get("comparison_type")
     event_action = input.get("event_action")
