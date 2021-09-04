@@ -14,10 +14,10 @@ def run(input, output):
     """
     # Data comes in as BlockIDInFlow, we have to parse the available outputs to get the right dataset name
     # E.g. Flow BlockID 2 means COMPUTATIONAL_BLOCK-1-2
-    input_block_1_name = input.get("input_block_1_name")
-    input_block_1_name = [x for x in output.keys() if x.endswith(input_block_1_name)][0]
-    input_block_2_name = input.get("input_block_2_name")
-    input_block_2_name = [x for x in output.keys() if x.endswith(input_block_2_name)][0]
+    input_block_1_id = input.get("input_block_1_id")
+    input_block_1_name = [x for x in output.keys() if x.endswith(input_block_1_id)][0]
+    input_block_2_id = input.get("input_block_2_id")
+    input_block_2_name = [x for x in output.keys() if x.endswith(input_block_2_id)][0]
 
     input_block_1_field = input.get("input_block_1_field")
     input_block_2_field = input.get("input_block_2_field")
