@@ -82,11 +82,9 @@ class TriggerEvent(TestCase):
             "blockType": "SIGNAL_BLOCK",
             "blockId": 7,
             "inputs": {
-                "input_block_1_id": "1",
-                "input_block_1_field": "volume",
+                "incoming_data_one": "1-volume",
+                "incoming_data_two": "2-data",
                 "comparison_type": "LESS_THAN",
-                "input_block_2_id": "2",
-                "input_block_2_field": "data",
                 "event_action": "BUY",
             },
             "outputs": {
@@ -117,10 +115,6 @@ class TriggerEvent(TestCase):
             "blockType": "SIGNAL_BLOCK",
             "blockId": 7,
             "inputs": {
-                "input_block_1_id": "1",
-                "input_block_1_field": "volume",
-                "input_block_2_id": "2",
-                "input_block_2_field": "data",
                 "incoming_data_one": "1-volume",
                 "incoming_data_two": "2-data",
                 "comparison_type": "LESS_THAN_EQUAL",
@@ -155,11 +149,9 @@ class TriggerEvent(TestCase):
             "blockType": "SIGNAL_BLOCK",
             "blockId": 7,
             "inputs": {
-                "input_block_1_id": "1",
-                "input_block_1_field": "volume",
+                "incoming_data_one": "1-volume",
+                "incoming_data_two": "2-data",
                 "comparison_type": "MORE_THAN",
-                "input_block_2_id": "2",
-                "input_block_2_field": "data",
                 "event_action": "BUY",
             },
             "outputs": {
@@ -188,11 +180,9 @@ class TriggerEvent(TestCase):
             "blockType": "SIGNAL_BLOCK",
             "blockId": 7,
             "inputs": {
-                "input_block_1_id": "1",
-                "input_block_1_field": "volume",
+                "incoming_data_one": "1-volume",
+                "incoming_data_two": "2-data",
                 "comparison_type": "MORE_THAN_EQUAL",
-                "input_block_2_id": "2",
-                "input_block_2_field": "data",
                 "event_action": "BUY",
             },
             "outputs": {
@@ -222,11 +212,9 @@ class TriggerEvent(TestCase):
             "blockType": "SIGNAL_BLOCK",
             "blockId": 7,
             "inputs": {
-                "input_block_1_id": "1",
-                "input_block_1_field": "data",
+                "incoming_data_one": "1-data",
+                "incoming_data_two": "2-data",
                 "comparison_type": "MORE_THAN_EQUAL",
-                "input_block_2_id": "2",
-                "input_block_2_field": "data",
                 "event_action": "BUY",
             },
             "outputs": {
@@ -263,11 +251,9 @@ class TriggerEvent(TestCase):
             "blockType": "SIGNAL_BLOCK",
             "blockId": 7,
             "inputs": {
-                "input_block_1_id": "1",
-                "input_block_1_field": "value",
+                "incoming_data_one": "1-value",
+                "incoming_data_two": "2-field",
                 "comparison_type": "MORE_THAN_EQUAL",
-                "input_block_2_id": "2",
-                "input_block_2_field": "field",
                 "event_action": "BUY",
             },
             "outputs": {

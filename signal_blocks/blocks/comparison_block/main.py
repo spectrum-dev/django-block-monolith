@@ -13,23 +13,18 @@ def run(input, output):
     input_blocks: Time series data from 2 blocks (either can be computational or data)
     """
     # Data comes in as BlockIDInFlow, we have to parse the available outputs to get the right dataset name
+    # Field name and block ID also comes in as 1 variable split by '-'
     # E.g. Flow BlockID 2 means COMPUTATIONAL_BLOCK-1-2
-    # input_block_1_id = input.get("input_block_1_id")
-    # input_block_1_name = [x for x in output.keys() if x.endswith(input_block_1_id)][0]
-    # input_block_2_id = input.get("input_block_2_id")
-    # input_block_2_name = [x for x in output.keys() if x.endswith(input_block_2_id)][0]
-
-    # input_block_1_field = input.get("input_block_1_field")
-    # input_block_2_field = input.get("input_block_2_field")
-
-    # New Implementation
-    input_block_1_id, input_block_1_field = input.get("incoming_data_one", "").split("-")
-    input_block_2_id, input_block_2_field = input.get("incoming_data_two", "").split("-")
+    input_block_1_id, input_block_1_field = input.get("incoming_data_one", "").split(
+        "-"
+    )
+    input_block_2_id, input_block_2_field = input.get("incoming_data_two", "").split(
+        "-"
+    )
 
     # Extracts Block Name from Block ID in Flow
     input_block_1_name = [x for x in output.keys() if x.endswith(input_block_1_id)][0]
     input_block_2_name = [x for x in output.keys() if x.endswith(input_block_2_id)][0]
-
 
     comparison_type = input.get("comparison_type")
     event_action = input.get("event_action")
