@@ -119,9 +119,11 @@ class TriggerEvent(TestCase):
             "inputs": {
                 "input_block_1_id": "1",
                 "input_block_1_field": "volume",
-                "comparison_type": "LESS_THAN_EQUAL",
                 "input_block_2_id": "2",
                 "input_block_2_field": "data",
+                "incoming_data_one": "1-volume",
+                "incoming_data_two": "2-data",
+                "comparison_type": "LESS_THAN_EQUAL",
                 "event_action": "BUY",
             },
             "outputs": {
