@@ -50,6 +50,54 @@ DATA_BLOCK = [
     },
 ]
 
+POWER_DATA_BLOCK = [
+    {
+        "timestamp": "01/01/2020",
+        "timezone": "UTC/EST",
+        "open": "100.00",
+        "high": "100.00",
+        "low": "100.00",
+        "close": "100.00",
+        "volume": "100.00",
+    },
+    {
+        "timestamp": "01/02/2020",
+        "timezone": "UTC/EST",
+        "open": "1000.00",
+        "high": "1000.00",
+        "low": "1000.00",
+        "close": "1000.00",
+        "volume": "1000.00",
+    },
+    {
+        "timestamp": "01/03/2020",
+        "timezone": "UTC/EST",
+        "open": "10000.00",
+        "high": "10000.00",
+        "low": "10000.00",
+        "close": "10000.00",
+        "volume": "10000.00",
+    },
+    {
+        "timestamp": "01/04/2020",
+        "timezone": "UTC/EST",
+        "open": "100000.00",
+        "high": "100000.00",
+        "low": "100000.00",
+        "close": "100000.00",
+        "volume": "100000.00",
+    },
+    {
+        "timestamp": "01/05/2020",
+        "timezone": "UTC/EST",
+        "open": "1000000.00",
+        "high": "1000000.00",
+        "low": "1000000.00",
+        "close": "1000000.00",
+        "volume": "1000000.00",
+    },
+]
+
 
 class GetOperationType(TestCase):
     def test_ok(self):

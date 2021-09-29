@@ -15,7 +15,7 @@ services:
         environment:
             - ALPHA_VANTAGE_API_KEY=demo
             - DJANGO_SECRET_KEY=django-public-secret-key
-            - DJANGO_DEBUG="TRUE"
+            - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
             - DATABASE_USER=root
             - DATABASE_PASSWORD=password
@@ -33,7 +33,7 @@ services:
         environment:
             - ALPHA_VANTAGE_API_KEY=demo
             - DJANGO_SECRET_KEY=django-public-secret-key
-            - DJANGO_DEBUG="TRUE"
+            - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
             - DATABASE_USER=root
             - DATABASE_PASSWORD=password
@@ -51,7 +51,7 @@ services:
         environment:
             - ALPHA_VANTAGE_API_KEY=demo
             - DJANGO_SECRET_KEY=django-public-secret-key
-            - DJANGO_DEBUG="TRUE"
+            - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
             - DATABASE_USER=root
             - DATABASE_PASSWORD=password
@@ -69,7 +69,7 @@ services:
         environment:
             - ALPHA_VANTAGE_API_KEY=demo
             - DJANGO_SECRET_KEY=django-public-secret-key
-            - DJANGO_DEBUG="TRUE"
+            - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
             - DATABASE_USER=root
             - DATABASE_PASSWORD=password
@@ -89,7 +89,7 @@ services:
         environment:
             - ALPHA_VANTAGE_API_KEY="demo"
             - DJANGO_SECRET_KEY=django-public-secret-key
-            - DJANGO_DEBUG="TRUE"
+            - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
             - DATABASE_USER=root
             - DATABASE_PASSWORD=password
@@ -105,7 +105,7 @@ services:
         command: './docker-entrypoint.sh'
         networks:
             - default
-    
+
     rabbitmq:
         image: "rabbitmq:3-management"
         ports:
