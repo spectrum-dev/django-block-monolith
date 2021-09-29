@@ -40,3 +40,20 @@ class TechnicalAnalysisRunView(APIView):
         response = run(input, output)
 
         return JsonResponse({"response": response})
+
+
+# Operation Block (Computational Block with ID 2)
+# --------------------------------------------------
+
+# Dropdowns
+def get_operation_types(request):
+    response = {
+        "response": [
+            "PLUS",
+            "SUBTRACT",
+            "MULTIPLY",
+            "DIVIDE",
+            "POWER/EXPONENT",
+        ]
+    }
+    return JsonResponse(response)
