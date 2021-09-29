@@ -23,7 +23,7 @@ def run(input, output):
     data_field = input["data_field"]
     operation_value = input["operation_value"]
     case = lambda x: x == input["operation_type"]
-    if case("PLUS"):
+    if case("ADD"):
         operator_func = operator.add
     elif case("SUBTRACT"):
         operator_func = operator.sub
@@ -35,8 +35,10 @@ def run(input, output):
         operator_func = operator.pow
 
     data_block_df = _format_request(data_block)
-    data_block_df["data"] = operator_func(data_block_df[data_field], operation_value)
-    return _format_response(data_block_df)
+    data_block_df["data"] = operator_func(
+        data_block_df[data_field].astype(float), float(operation_value)
+    )
+    return {"response": _format_response(data_block_df[["data"]])}
 
 
 def _format_request(request_json):

@@ -49,7 +49,7 @@ class TechnicalAnalysisRunView(APIView):
 def get_operation_types(request):
     response = {
         "response": [
-            "PLUS",
+            "ADD",
             "SUBTRACT",
             "MULTIPLY",
             "DIVIDE",

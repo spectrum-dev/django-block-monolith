@@ -40,7 +40,7 @@ urlpatterns = [
         computational_blocks.views.TechnicalAnalysisRunView.as_view(),
     ),
     path(
-        "COMPUTATION_BLOCK/2/operationType",
+        "COMPUTATIONAL_BLOCK/2/operationType",
         computational_blocks.views.get_operation_types,
     ),
     path("SIGNAL_BLOCK/1/eventAction", signal_blocks.views.get_event_actions),
