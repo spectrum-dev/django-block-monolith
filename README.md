@@ -3,6 +3,10 @@
 ## Developer Docs
 Developer documentation can be found [here](https://spectrum-dev.notion.site/Developer-Documentation-0811ab7d0e5a4190ad9515929c8d90c5).
 
+## Set up pre-commit hook for linting
+1. `pip install pre-commit`
+2. `pre-commit install`
+Now, each time you make a commit, git cleans up the directory by linting your files first. You should then rerun your commit with the same message with the linted files.
 
 ## Running Tests
 - `docker-compose up --build test`
