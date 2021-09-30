@@ -242,13 +242,13 @@ def tsi(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
 def opening_range(data_block=None, lookback_period="20", lookback_field="high"):
     """
     Implementation of an intrday opening range strategy. Takes in first N lookback_period of each day and compute either
-    low/high of that period and return it as a static value for the entire day.
+    low/high/mid of that period and return it as a static value for the entire day.
     Main idea here is, for example, to get a knowledge of the high of first 30 bars of each day.
     data_block          :   Data corresponding to price data
     lookback_period     :   Number of periods to compute range
-    lookback_field      :   low/high to compute different range statistics of time period
+    lookback_field      :   low/high/mid to compute different range statistics of time period
     """
-    assert lookback_field in ["high", "low"]
+    assert lookback_field in ["high", "low", "mid"]
     # Convert to proper datetime column since we need to compute on date
     data_block.index = pd.to_datetime(data_block.index)
     data_block["high"] = data_block["high"].astype(float)
