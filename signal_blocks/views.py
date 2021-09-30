@@ -263,3 +263,23 @@ class PostCandleCloseRunView(APIView):
         response = candle_close_run(input, output)
 
         return JsonResponse(response)
+
+
+# Comparison Block (Signal Block with ID 7)
+# ------------------------------------
+
+
+def get_comparison_types(request):
+    """
+    Retrieves a list of supported logical comparison types
+    """
+    response = {
+        "response": [
+            "LESS_THAN",
+            "LESS_THAN_EQUAL",
+            "MORE_THAN",
+            "MORE_THAN_EQUAL",
+        ]
+    }
+
+    return JsonResponse(response)

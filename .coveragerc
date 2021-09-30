@@ -7,3 +7,4 @@ omit =
     signal_blocks/blocks/intersect_block/events/intersect.py
     blocks/celery.py
     blocks/event.py
+    blocks/settings.py 

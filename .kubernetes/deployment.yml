@@ -74,5 +74,15 @@ spec:
                 secretKeyRef:
                   name: "spectrum"
                   key: "CELERY_BACKEND_DATABASE_NAME"
+            - name: "DJANGO_DEBUG"
+              valueFrom:
+                secretKeyRef:
+                  name: "spectrum-block-monolith"
+                  key: "DJANGO_DEBUG"
+            - name: "SENTRY_DSN"
+              valueFrom:
+                secretKeyRef:
+                  name: "spectrum-block-monolith"
+                  key: "SENTRY_DSN"
       imagePullSecrets:
         - name: registry-spectrum
