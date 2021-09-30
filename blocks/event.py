@@ -6,6 +6,9 @@ from data_blocks.blocks.crypto_data.main import run as data_block_2_run
 from computational_blocks.blocks.technical_analysis.main import (
     run as computational_block_1_run,
 )
+from computational_blocks.blocks.operation_block.main import (
+    run as computational_block_2_run,
+)
 
 # Signal Blocks
 from signal_blocks.blocks.intersect_block.main import run as signal_block_1_run
@@ -48,6 +51,8 @@ def event_ingestor(payload):
     elif case("COMPUTATIONAL_BLOCK"):
         if block_id == 1:
             return computational_block_1_run(inputs, outputs)
+        elif block_id == 2:
+            return computational_block_2_run(inputs, outputs)
 
     elif case("SIGNAL_BLOCK"):
         if block_id == 1:
