@@ -44,6 +44,7 @@ def exponential_moving_average(
 
     data                :   Data corresponding to price data
     time_period         :   TBD
+    Takes simple average for first N lookback_period as starting point of Nth EMA.
     """
 
     ema = EMA(data_block[lookback_data_type], timeperiod=int(lookback_period))
@@ -171,48 +172,68 @@ def rsi(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
 
 
 def bb(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
-    response = ta.volatility.bollinger_pband(close=data_block["close"],fillna=True)
+    response = ta.volatility.bollinger_pband(
+        close=data_block["close"].astype(float), fillna=True
+    )
 
     return response
 
 
 def db(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
-    response = ta.volatility.donchian_channel_pband(high=data_block["high"],low=data_block["low"],close=data_block["close"],fillna=True)
+    response = ta.volatility.donchian_channel_pband(
+        high=data_block["high"].astype(float),
+        low=data_block["low"].astype(float),
+        close=data_block["close"].astype(float),
+        fillna=True,
+    )
 
     return response
 
 
 def kama(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
-    response = ta.momentum.kama(close=data_block["close"],fillna=True)
+    response = ta.momentum.kama(close=data_block["close"].astype(float), fillna=True)
 
     return response
 
 
 def kc(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
-    response = ta.volatility.keltner_channel_pband(high=data_block["high"],low=data_block["low"],close=data_block["close"],fillna=True,ov=False)
+    response = ta.volatility.keltner_channel_pband(
+        high=data_block["high"].astype(float),
+        low=data_block["low"].astype(float),
+        close=data_block["close"].astype(float),
+        fillna=True,
+    )
 
     return response
 
 
 def mi(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
-    response = ta.trend.mass_index(high=data_block["high"],low=data_block["low"],fillna=True)
+    response = ta.trend.mass_index(
+        high=data_block["high"].astype(float),
+        low=data_block["low"].astype(float),
+        fillna=True,
+    )
 
     return response
 
 
 def stoch_osci(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
-    response = ta.momentum.stoch(close=data_block["close"],high=data_block["high"],low=data_block["low"])
+    response = ta.momentum.stoch(
+        close=data_block["close"].astype(float),
+        high=data_block["high"].astype(float),
+        low=data_block["low"].astype(float),
+    )
 
     return response
 
 
 def trix(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
-    response = ta.trend.trix(close=data_block["close"],fillna=True)
+    response = ta.trend.trix(close=data_block["close"].astype(float), fillna=True)
 
     return response
 
 
 def tsi(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
-    response = ta.momentum.tsi(close=data_block["close"],fillna=True)
+    response = ta.momentum.tsi(close=data_block["close"].astype(float), fillna=True)
 
     return response

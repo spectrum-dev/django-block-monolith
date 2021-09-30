@@ -188,10 +188,10 @@ INDICATORS = {
         "functionName": "mi",
         "params": [],
     },
-    "STOC_OSCI": {
-        "shortName": "STOC_OSCI",
+    "STOCH_OSCI": {
+        "shortName": "STOCH_OSCI",
         "longName": "Stochastic Oscillator",
-        "functionName": "stoc_osci",
+        "functionName": "stoch_osci",
         "params": [],
     },
     "TRIX": {
