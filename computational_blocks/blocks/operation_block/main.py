@@ -23,15 +23,15 @@ def run(input, output):
     data_field = input["data_field"]
     operation_value = input["operation_value"]
     case = lambda x: x == input["operation_type"]
-    if case("ADD"):
+    if case("+"):
         operator_func = operator.add
-    elif case("SUBTRACT"):
+    elif case("-"):
         operator_func = operator.sub
-    elif case("MULTIPLY"):
+    elif case("*"):
         operator_func = operator.mul
-    elif case("DIVIDE"):
+    elif case("/"):
         operator_func = operator.truediv
-    elif case("POWER/EXPONENT"):
+    elif case("^"):
         operator_func = operator.pow
 
     data_block_df = _format_request(data_block)
