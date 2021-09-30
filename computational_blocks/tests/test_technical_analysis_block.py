@@ -2,7 +2,11 @@ import json
 from django.test import TestCase
 
 from computational_blocks.blocks.technical_analysis.main import run
-from computational_blocks.tests.data.technical_analysis import DATA_BLOCK
+from computational_blocks.tests.data.technical_analysis import (
+    DATA_BLOCK,
+    INTRADAY_DATA_BLOCK,
+    INTRADAY_TWO_DAYS_DATA_BLOCK,
+)
 
 
 class GetIndicator(TestCase):
@@ -33,6 +37,7 @@ class GetIndicator(TestCase):
                     "STOCH_OSCI",
                     "TRIX",
                     "TSI",
+                    "OR",
                 ]
             },
         )
@@ -631,3 +636,141 @@ class PostRun(TestCase):
                 ]
             },
         )
+
+    def test_compute_opening_range_high_one_day(self):
+        payload = {
+            "input": {
+                "indicator_name": "OR",
+                "lookback_period": "3",
+                "lookback_field": "high",
+            },
+            "output": {"DATA_BLOCK-1-1": INTRADAY_DATA_BLOCK},
+        }
+
+        response = self.client.post(
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
+        )
+
+        self.assertDictEqual(
+            response.json(),
+            {
+                "response": [
+                    {"timestamp": "2020-01-01T09:30:00.000Z", "data": None},
+                    {"timestamp": "2020-01-01T09:40:00.000Z", "data": None},
+                    {"timestamp": "2020-01-01T09:50:00.000Z", "data": None},
+                    {"timestamp": "2020-01-01T10:00:00.000Z", "data": 12.0},
+                    {"timestamp": "2020-01-01T10:10:00.000Z", "data": 12.0},
+                ]
+            },
+        )
+
+    def test_compute_opening_range_mid_one_day(self):
+        payload = {
+            "input": {
+                "indicator_name": "OR",
+                "lookback_period": "3",
+                "lookback_field": "mid",
+            },
+            "output": {"DATA_BLOCK-1-1": INTRADAY_DATA_BLOCK},
+        }
+
+        response = self.client.post(
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
+        )
+
+        self.assertDictEqual(
+            response.json(),
+            {
+                "response": [
+                    {"timestamp": "2020-01-01T09:30:00.000Z", "data": None},
+                    {"timestamp": "2020-01-01T09:40:00.000Z", "data": None},
+                    {"timestamp": "2020-01-01T09:50:00.000Z", "data": None},
+                    {"timestamp": "2020-01-01T10:00:00.000Z", "data": 11.0},
+                    {"timestamp": "2020-01-01T10:10:00.000Z", "data": 11.0},
+                ]
+            },
+        )
+
+    def test_compute_opening_range_low_one_day(self):
+        payload = {
+            "input": {
+                "indicator_name": "OR",
+                "lookback_period": "3",
+                "lookback_field": "low",
+            },
+            "output": {"DATA_BLOCK-1-1": INTRADAY_DATA_BLOCK},
+        }
+
+        response = self.client.post(
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
+        )
+
+        self.assertDictEqual(
+            response.json(),
+            {
+                "response": [
+                    {"timestamp": "2020-01-01T09:30:00.000Z", "data": None},
+                    {"timestamp": "2020-01-01T09:40:00.000Z", "data": None},
+                    {"timestamp": "2020-01-01T09:50:00.000Z", "data": None},
+                    {"timestamp": "2020-01-01T10:00:00.000Z", "data": 10.0},
+                    {"timestamp": "2020-01-01T10:10:00.000Z", "data": 10.0},
+                ]
+            },
+        )
+
+    def test_compute_opening_range_high_two_days(self):
+        payload = {
+            "input": {
+                "indicator_name": "OR",
+                "lookback_period": "3",
+                "lookback_field": "high",
+            },
+            "output": {"DATA_BLOCK-1-1": INTRADAY_TWO_DAYS_DATA_BLOCK},
+        }
+
+        response = self.client.post(
+            "/COMPUTATIONAL_BLOCK/1/run",
+            json.dumps(payload),
+            content_type="application/json",
+        )
+
+        self.assertDictEqual(
+            response.json(),
+            {
+                "response": [
+                    {"timestamp": "2020-01-01T09:30:00.000Z", "data": None},
+                    {"timestamp": "2020-01-01T09:40:00.000Z", "data": None},
+                    {"timestamp": "2020-01-01T09:50:00.000Z", "data": None},
+                    {"timestamp": "2020-01-01T10:00:00.000Z", "data": 12.0},
+                    {"timestamp": "2020-01-01T10:10:00.000Z", "data": 12.0},
+                    {"timestamp": "2020-01-02T09:30:00.000Z", "data": None},
+                    {"timestamp": "2020-01-02T09:40:00.000Z", "data": None},
+                    {"timestamp": "2020-01-02T09:50:00.000Z", "data": None},
+                    {"timestamp": "2020-01-02T10:00:00.000Z", "data": 15.0},
+                    {"timestamp": "2020-01-02T10:10:00.000Z", "data": 15.0},
+                ]
+            },
+        )
+
+    def test_compute_opening_range_error_not_supported_field(self):
+        payload = {
+            "input": {
+                "indicator_name": "OR",
+                "lookback_period": "3",
+                "lookback_field": "volume",
+            },
+            "output": {"DATA_BLOCK-1-1": INTRADAY_TWO_DAYS_DATA_BLOCK},
+        }
+
+        with self.assertRaises(AssertionError):
+            response = self.client.post(
+                "/COMPUTATIONAL_BLOCK/1/run",
+                json.dumps(payload),
+                content_type="application/json",
+            )

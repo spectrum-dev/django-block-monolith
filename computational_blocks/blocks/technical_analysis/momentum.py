@@ -237,3 +237,48 @@ def tsi(data_block=None, lookback_period="20", lookback_unit="DATA_POINT"):
     response = ta.momentum.tsi(close=data_block["close"].astype(float), fillna=True)
 
     return response
+
+
+def opening_range(data_block=None, lookback_period="20", lookback_field="high"):
+    """
+    Implementation of an intrday opening range strategy. Takes in first N lookback_period of each day and compute either
+    low/high of that period and return it as a static value for the entire day.
+    Main idea here is, for example, to get a knowledge of the high of first 30 bars of each day.
+    data_block          :   Data corresponding to price data
+    lookback_period     :   Number of periods to compute range
+    lookback_field      :   low/high to compute different range statistics of time period
+    """
+    assert lookback_field in ["high", "low"]
+    # Convert to proper datetime column since we need to compute on date
+    data_block.index = pd.to_datetime(data_block.index)
+    data_block["high"] = data_block["high"].astype(float)
+    data_block["low"] = data_block["low"].astype(float)
+    # We make a date-level column to group since opening range is necessarily intraday
+    data_block["datestamp"] = data_block.index.date
+    # Keep top-N periods for opening Range
+    # TODO: flexible range, probably use datetime to subset for certain time period range
+    df_subset = data_block.groupby(["datestamp"]).head(int(lookback_period))
+    opening_range_period = list(df_subset.index)
+    df_stats = (
+        df_subset.groupby(["datestamp"])
+        .agg(high=("high", max), low=("low", min))
+        .reset_index()
+    )
+    df_stats["mid"] = (df_stats["high"] + df_stats["low"]) / 2
+    # Rename target column with 'data' as expected by downstream processes
+    df_stats = df_stats.rename(columns={lookback_field: "data"})
+    output = data_block[["datestamp"]]
+    # Merge back onto initial data with 1 row per candle
+    output = (
+        output.reset_index()
+        .merge(df_stats[["datestamp", "data"]], how="left", on="datestamp")
+        .set_index("timestamp")
+    )
+    # Make rows of data within opening range None since we don't want to have look-ahead bias
+    output["data"] = [
+        output["data"][x] if output.index[x] not in opening_range_period else None
+        for x in range(len(output))
+    ]
+    del output["datestamp"]
+
+    return output

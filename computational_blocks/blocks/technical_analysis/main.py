@@ -80,7 +80,9 @@ def _format_response(response_df):
     """
     response_df.index.name = "timestamp"
     response_df.name = "data"
-    response_json = response_df.reset_index().to_json(orient="records")
+    response_json = response_df.reset_index().to_json(
+        orient="records", date_format="iso"
+    )
     response_json = json.loads(response_json)
 
     return response_json

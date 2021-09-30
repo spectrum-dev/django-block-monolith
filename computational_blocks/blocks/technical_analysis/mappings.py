@@ -206,4 +206,21 @@ INDICATORS = {
         "functionName": "tsi",
         "params": [],
     },
+    "OR": {
+        "shortName": "OR",
+        "longName": "Opening Range",
+        "functionName": "opening_range",
+        "params": [
+            {
+                "fieldName": "Opening Range Type",
+                "fieldVariableName": "lookback_field",
+                "fieldType": "input",  # low/high (must be in data block)
+            },
+            {
+                "fieldName": "Lookback Period",
+                "fieldVariableName": "lookback_period",
+                "fieldType": "input",
+            },
+        ],
+    },
 }
