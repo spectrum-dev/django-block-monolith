@@ -60,10 +60,10 @@ class GetComparisonType(TestCase):
             response.json(),
             {
                 "response": [
-                    "LESS_THAN",
-                    "LESS_THAN_EQUAL",
-                    "MORE_THAN",
-                    "MORE_THAN_EQUAL",
+                    "<",
+                    "<=",
+                    ">",
+                    ">=",
                 ]
             },
         )
@@ -84,7 +84,7 @@ class TriggerEvent(TestCase):
             "inputs": {
                 "incoming_data_one": "1-volume",
                 "incoming_data_two": "2-data",
-                "comparison_type": "LESS_THAN",
+                "comparison_type": "<",
                 "event_action": "BUY",
             },
             "outputs": {
@@ -117,7 +117,7 @@ class TriggerEvent(TestCase):
             "inputs": {
                 "incoming_data_one": "1-volume",
                 "incoming_data_two": "2-data",
-                "comparison_type": "LESS_THAN_EQUAL",
+                "comparison_type": "<=",
                 "event_action": "BUY",
             },
             "outputs": {
@@ -151,7 +151,7 @@ class TriggerEvent(TestCase):
             "inputs": {
                 "incoming_data_one": "1-volume",
                 "incoming_data_two": "2-data",
-                "comparison_type": "MORE_THAN",
+                "comparison_type": ">",
                 "event_action": "BUY",
             },
             "outputs": {
@@ -182,7 +182,7 @@ class TriggerEvent(TestCase):
             "inputs": {
                 "incoming_data_one": "1-volume",
                 "incoming_data_two": "2-data",
-                "comparison_type": "MORE_THAN_EQUAL",
+                "comparison_type": ">=",
                 "event_action": "BUY",
             },
             "outputs": {
@@ -214,7 +214,7 @@ class TriggerEvent(TestCase):
             "inputs": {
                 "incoming_data_one": "1-data",
                 "incoming_data_two": "2-data",
-                "comparison_type": "MORE_THAN_EQUAL",
+                "comparison_type": ">=",
                 "event_action": "BUY",
             },
             "outputs": {
@@ -253,7 +253,7 @@ class TriggerEvent(TestCase):
             "inputs": {
                 "incoming_data_one": "1-value",
                 "incoming_data_two": "2-field",
-                "comparison_type": "MORE_THAN_EQUAL",
+                "comparison_type": ">=",
                 "event_action": "BUY",
             },
             "outputs": {
