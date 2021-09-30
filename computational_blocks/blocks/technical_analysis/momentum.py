@@ -255,7 +255,7 @@ def opening_range(data_block=None, lookback_period="20", lookback_field="high"):
     data_block["low"] = data_block["low"].astype(float)
     # We make a date-level column to group since opening range is necessarily intraday
     data_block["datestamp"] = data_block.index.date
-    # Keep top-N periods for opening Range
+    # Keep top-N periods per day for opening range
     # TODO: flexible range, probably use datetime to subset for certain time period range
     df_subset = data_block.groupby(["datestamp"]).head(int(lookback_period))
     opening_range_period = list(df_subset.index)
