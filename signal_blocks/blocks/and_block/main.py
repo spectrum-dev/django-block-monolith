@@ -7,6 +7,8 @@ def run(outputs):
     df_list = []
     for _, value in outputs.items():
         df = _create_orders_df(value)
+        if len(df) == 0:
+            df = pd.DataFrame([], columns=["timestamp", "order"])
         df_list.append(df)
 
     # Checks for same date
