@@ -158,4 +158,69 @@ INDICATORS = {
             }
         ],
     },
+    "BB": {
+        "shortName": "BB",
+        "longName": "Bollinger Bands %B (<0 is below lower bound and >1 is above upper bound)",
+        "functionName": "bb",
+        "params": [],
+    },
+    "DB": {
+        "shortName": "DB",
+        "longName": "Donchian Bands %B (similar to BB but uses low and high of period)",
+        "functionName": "db",
+        "params": [],
+    },
+    "KAMA": {
+        "shortName": "KAMA",
+        "longName": "KAMA Indicator",
+        "functionName": "kama",
+        "params": [],
+    },
+    "KC": {
+        "shortName": "KC",
+        "longName": "Keltner Channel",
+        "functionName": "kc",
+        "params": [],
+    },
+    "MI": {
+        "shortName": "MI",
+        "longName": "Mass Index (fluctuates around 20)",
+        "functionName": "mi",
+        "params": [],
+    },
+    "STOCH_OSCI": {
+        "shortName": "STOCH_OSCI",
+        "longName": "Stochastic Oscillator",
+        "functionName": "stoch_osci",
+        "params": [],
+    },
+    "TRIX": {
+        "shortName": "TRIX",
+        "longName": "Triple Smoothed SMA Rate of Change",
+        "functionName": "trix",
+        "params": [],
+    },
+    "TSI": {
+        "shortName": "TSI",
+        "longName": "True Strength Index",
+        "functionName": "tsi",
+        "params": [],
+    },
+    "OR": {
+        "shortName": "OR",
+        "longName": "Opening Range",
+        "functionName": "opening_range",
+        "params": [
+            {
+                "fieldName": "Opening Range Type",
+                "fieldVariableName": "lookback_field",
+                "fieldType": "input",  # low/high (must be in data block)
+            },
+            {
+                "fieldName": "Lookback Period",
+                "fieldVariableName": "lookback_period",
+                "fieldType": "input",
+            },
+        ],
+    },
 }
