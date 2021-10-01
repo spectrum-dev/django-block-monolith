@@ -27,8 +27,8 @@ jobs:
     
     - name: Runs coverage
       run: |
-        docker-compose run -e DATABASE_NAME="postgres" -e DATABASE_USER="postgres" -e DATABASE_PASSWORD="postgres" -e DATABASE_HOST="127.0.0.1" -e DATABASE_PORT=${{ matrix.db_port }} -e ALPHA_VANTAGE_API_KEY=demo -e DJANGO_SECRET_KEY=test-secret-key -e DJANGO_DEBUG="1" -e CELERY_BACKEND_DATABASE_NAME="celery-backend" -e RABBIT_MQ_URL="amqp://guest:guest@rabbitmq:5672" -e SENTRY_DSN="" test-coverage
+        docker-compose run test-coverage
 
     - name: Run Lint
       run: |
-        docker-compose run -e DATABASE_NAME="postgres" -e DATABASE_USER="postgres" -e DATABASE_PASSWORD="postgres" -e DATABASE_HOST="127.0.0.1" -e DATABASE_PORT=${{ matrix.db_port }} -e ALPHA_VANTAGE_API_KEY=demo -e DJANGO_SECRET_KEY=test-secret-key -e DJANGO_DEBUG="1" -e CELERY_BACKEND_DATABASE_NAME="celery-backend" -e RABBIT_MQ_URL="amqp://guest:guest@rabbitmq:5672" -e SENTRY_DSN="" test-lint
+        docker-compose run test-lint
