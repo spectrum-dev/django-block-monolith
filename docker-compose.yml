@@ -9,6 +9,8 @@ services:
             - POSTGRES_PASSWORD=postgres
         networks:
             - default
+        ports:
+            - 5432:5432
     test:
         build: .
         command: python manage.py test
@@ -18,13 +20,13 @@ services:
             - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
             - DATABASE_NAME=default
-            - DATABASE_USER=root
-            - DATABASE_PASSWORD=password
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
             - DATABASE_HOST=postgres
             - DATABASE_PORT=5432
             - DATA_BANK_DATABASE_NAME=data-bank
-            - DATA_BANK_DATABASE_USER=root
-            - DATA_BANK_DATABASE_PASSWORD=password
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
             - DATA_BANK_DATABASE_HOST=postgres
             - DATA_BANK_DATABASE_PORT=5432
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
@@ -42,13 +44,13 @@ services:
             - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
             - DATABASE_NAME=default
-            - DATABASE_USER=root
-            - DATABASE_PASSWORD=password
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
             - DATABASE_HOST=postgres
             - DATABASE_PORT=5432
             - DATA_BANK_DATABASE_NAME=data-bank
-            - DATA_BANK_DATABASE_USER=root
-            - DATA_BANK_DATABASE_PASSWORD=password
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
             - DATA_BANK_DATABASE_HOST=postgres
             - DATA_BANK_DATABASE_PORT=5432
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
@@ -66,13 +68,13 @@ services:
             - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
             - DATABASE_NAME=default
-            - DATABASE_USER=root
-            - DATABASE_PASSWORD=password
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
             - DATABASE_HOST=postgres
             - DATABASE_PORT=5432
             - DATA_BANK_DATABASE_NAME=data-bank
-            - DATA_BANK_DATABASE_USER=root
-            - DATA_BANK_DATABASE_PASSWORD=password
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
             - DATA_BANK_DATABASE_HOST=postgres
             - DATA_BANK_DATABASE_PORT=5432
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
@@ -90,13 +92,13 @@ services:
             - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
             - DATABASE_NAME=default
-            - DATABASE_USER=root
-            - DATABASE_PASSWORD=password
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
             - DATABASE_HOST=postgres
             - DATABASE_PORT=5432
             - DATA_BANK_DATABASE_NAME=data-bank
-            - DATA_BANK_DATABASE_USER=root
-            - DATA_BANK_DATABASE_PASSWORD=password
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
             - DATA_BANK_DATABASE_HOST=postgres
             - DATA_BANK_DATABASE_PORT=5432
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
@@ -116,13 +118,13 @@ services:
             - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
             - DATABASE_NAME=default
-            - DATABASE_USER=root
-            - DATABASE_PASSWORD=password
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
             - DATABASE_HOST=postgres
             - DATABASE_PORT=5432
             - DATA_BANK_DATABASE_NAME=data-bank
-            - DATA_BANK_DATABASE_USER=root
-            - DATA_BANK_DATABASE_PASSWORD=password
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
             - DATA_BANK_DATABASE_HOST=postgres
             - DATA_BANK_DATABASE_PORT=5432
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
