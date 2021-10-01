@@ -85,13 +85,13 @@ def run(input, output):
     _comparison_func = None
     case = lambda x: x == comparison_type
 
-    if case("LESS_THAN"):
+    if case("<"):
         _comparison_func = less_than
-    elif case("LESS_THAN_EQUAL"):
+    elif case("<="):
         _comparison_func = less_than_equal
-    elif case("MORE_THAN"):
+    elif case(">"):
         _comparison_func = more_than
-    elif case("MORE_THAN_EQUAL"):
+    elif case(">="):
         _comparison_func = more_than_equal
 
     response_df = _comparison_func(

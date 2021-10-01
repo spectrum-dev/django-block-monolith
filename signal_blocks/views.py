@@ -275,10 +275,10 @@ def get_comparison_types(request):
     """
     response = {
         "response": [
-            "LESS_THAN",
-            "LESS_THAN_EQUAL",
-            "MORE_THAN",
-            "MORE_THAN_EQUAL",
+            "<",
+            "<=",
+            ">",
+            ">=",
         ]
     }
 
