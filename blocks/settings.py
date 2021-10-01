@@ -127,7 +127,7 @@ DATABASES = {
         "PASSWORD": environ["DATA_BANK_DATABASE_PASSWORD"],
         "HOST": environ["DATA_BANK_DATABASE_HOST"],
         "PORT": environ["DATA_BANK_DATABASE_PORT"],
-    }
+    },
 }
 
 
