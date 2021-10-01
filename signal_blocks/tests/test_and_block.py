@@ -86,6 +86,31 @@ class TestAndRun(TestCase):
             response.json(), {"response": [{"timestamp": "01/07/2020", "order": "BUY"}]}
         )
 
+    def test_one_input_empty(self):
+        payload = {
+            "input": {},
+            "output": {
+                "SIGNAL_BLOCK-1-1": [
+                    {"timestamp": "01/02/2020", "order": "BUY"},
+                    {"timestamp": "01/07/2020", "order": "BUY"},
+                    {"timestamp": "01/21/2020", "order": "BUY"},
+                ],
+                "SIGNAL_BLOCK-1-2": [
+                    {"timestamp": "01/07/2020", "order": "BUY"},
+                    {"timestamp": "01/14/2020", "order": "BUY"},
+                ],
+                "SIGNAL_BLOCK-1-3": [],
+            },
+        }
+
+        response = self.client.post(
+            "/SIGNAL_BLOCK/3/run",
+            json.dumps(payload),
+            content_type="application/json",
+        )
+
+        self.assertDictEqual(response.json(), {"response": []})
+
     def test_buy_sell_same_timestamp_does_not_trigger_intersect(self):
         payload = {
             "input": {},
