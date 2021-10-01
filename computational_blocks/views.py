@@ -49,11 +49,11 @@ class TechnicalAnalysisRunView(APIView):
 def get_operation_types(request):
     response = {
         "response": [
-            "ADD",
-            "SUBTRACT",
-            "MULTIPLY",
-            "DIVIDE",
-            "POWER/EXPONENT",
+            "+",
+            "-",
+            "*",
+            "/",
+            "^",
         ]
     }
     return JsonResponse(response)

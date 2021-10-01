@@ -107,11 +107,11 @@ class GetOperationType(TestCase):
             response.json(),
             {
                 "response": [
-                    "ADD",
-                    "SUBTRACT",
-                    "MULTIPLY",
-                    "DIVIDE",
-                    "POWER/EXPONENT",
+                    "+",
+                    "-",
+                    "*",
+                    "/",
+                    "^",
                 ]
             },
         )
@@ -124,7 +124,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "ADD",
+                "operation_type": "+",
                 "operation_value": "5",
             },
             "outputs": {
@@ -151,7 +151,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "ADD",
+                "operation_type": "+",
                 "operation_value": "-5",
             },
             "outputs": {
@@ -178,7 +178,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "ADD",
+                "operation_type": "+",
                 "operation_value": "0.5",
             },
             "outputs": {
@@ -205,7 +205,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "SUBTRACT",
+                "operation_type": "-",
                 "operation_value": "5",
             },
             "outputs": {
@@ -232,7 +232,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "SUBTRACT",
+                "operation_type": "-",
                 "operation_value": "-5",
             },
             "outputs": {
@@ -259,7 +259,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "SUBTRACT",
+                "operation_type": "-",
                 "operation_value": "-0.5",
             },
             "outputs": {
@@ -286,7 +286,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "MULTIPLY",
+                "operation_type": "*",
                 "operation_value": "5",
             },
             "outputs": {
@@ -313,7 +313,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "MULTIPLY",
+                "operation_type": "*",
                 "operation_value": "-5",
             },
             "outputs": {
@@ -340,7 +340,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "MULTIPLY",
+                "operation_type": "*",
                 "operation_value": "0.5",
             },
             "outputs": {
@@ -367,7 +367,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "DIVIDE",
+                "operation_type": "/",
                 "operation_value": "5",
             },
             "outputs": {
@@ -394,7 +394,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "DIVIDE",
+                "operation_type": "/",
                 "operation_value": "-5",
             },
             "outputs": {
@@ -421,7 +421,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "DIVIDE",
+                "operation_type": "/",
                 "operation_value": "0.5",
             },
             "outputs": {
@@ -448,7 +448,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "POWER/EXPONENT",
+                "operation_type": "^",
                 "operation_value": "2",
             },
             "outputs": {
@@ -475,7 +475,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "POWER/EXPONENT",
+                "operation_type": "^",
                 "operation_value": "2",
             },
             "outputs": {
@@ -502,7 +502,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "close",
-                "operation_type": "POWER/EXPONENT",
+                "operation_type": "^",
                 "operation_value": "-1",
             },
             "outputs": {
@@ -529,7 +529,7 @@ class TriggerEvent(TestCase):
             "blockId": 2,
             "inputs": {
                 "data_field": "volume",
-                "operation_type": "MULTIPLY",
+                "operation_type": "*",
                 "operation_value": "5",
             },
             "outputs": {
@@ -558,7 +558,7 @@ class TriggerEvent(TestCase):
     #         "blockId": 2,
     #         "inputs": {
     #             "data_field": "close",
-    #             "operation_type": "ADD",
+    #             "operation_type": "+",
     #             "operation_value": "5",
     #         },
     #         "outputs": {
