@@ -49,6 +49,31 @@ spec:
                 secretKeyRef:
                   name: "spectrum"
                   key: "DATABASE_PORT"
+            - name: "DATA_BANK_DATABASE_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: "spectrum"
+                  key: "DATA_BANK_DATABASE_NAME"
+            - name: "DATA_BANK_DATABASE_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: "spectrum"
+                  key: "DATA_BANK_DATABASE_USER"
+            - name: "DATA_BANK_DATABASE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "spectrum"
+                  key: "DATA_BANK_DATABASE_PASSWORD"
+            - name: "DATA_BANK_DATABASE_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: "spectrum"
+                  key: "DATA_BANK_DATABASE_HOST"
+            - name: "DATA_BANK_DATABASE_PORT"
+              valueFrom:
+                secretKeyRef:
+                  name: "spectrum"
+                  key: "DATA_BANK_DATABASE_PORT"
             - name: "ALPHA_VANTAGE_API_KEY"
               valueFrom:
                 secretKeyRef:

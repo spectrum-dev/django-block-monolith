@@ -113,9 +113,21 @@ WSGI_APPLICATION = "blocks.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": environ["DATABASE_NAME"],
+        "USER": environ["DATABASE_USER"],
+        "PASSWORD": environ["DATABASE_PASSWORD"],
+        "HOST": environ["DATABASE_HOST"],
+        "PORT": environ["DATABASE_PORT"],
+    },
+    "data_bank": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": environ["DATA_BANK_DATABASE_NAME"],
+        "USER": environ["DATA_BANK_DATABASE_USER"],
+        "PASSWORD": environ["DATA_BANK_DATABASE_PASSWORD"],
+        "HOST": environ["DATA_BANK_DATABASE_HOST"],
+        "PORT": environ["DATA_BANK_DATABASE_PORT"],
+    },
 }
 
 

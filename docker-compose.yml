@@ -9,6 +9,8 @@ services:
             - POSTGRES_PASSWORD=postgres
         networks:
             - default
+        ports:
+            - 5432:5432
     test:
         build: .
         command: python manage.py test
@@ -17,10 +19,16 @@ services:
             - DJANGO_SECRET_KEY=django-public-secret-key
             - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
-            - DATABASE_USER=root
-            - DATABASE_PASSWORD=password
+            - DATABASE_NAME=default
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
             - DATABASE_HOST=postgres
             - DATABASE_PORT=5432
+            - DATA_BANK_DATABASE_NAME=data-bank
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
+            - DATA_BANK_DATABASE_HOST=postgres
+            - DATA_BANK_DATABASE_PORT=5432
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
         depends_on:
             - postgres
@@ -35,10 +43,16 @@ services:
             - DJANGO_SECRET_KEY=django-public-secret-key
             - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
-            - DATABASE_USER=root
-            - DATABASE_PASSWORD=password
+            - DATABASE_NAME=default
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
             - DATABASE_HOST=postgres
             - DATABASE_PORT=5432
+            - DATA_BANK_DATABASE_NAME=data-bank
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
+            - DATA_BANK_DATABASE_HOST=postgres
+            - DATA_BANK_DATABASE_PORT=5432
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
         depends_on:
             - postgres
@@ -53,10 +67,16 @@ services:
             - DJANGO_SECRET_KEY=django-public-secret-key
             - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
-            - DATABASE_USER=root
-            - DATABASE_PASSWORD=password
+            - DATABASE_NAME=default
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
             - DATABASE_HOST=postgres
             - DATABASE_PORT=5432
+            - DATA_BANK_DATABASE_NAME=data-bank
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
+            - DATA_BANK_DATABASE_HOST=postgres
+            - DATA_BANK_DATABASE_PORT=5432
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
         depends_on:
             - postgres
@@ -71,10 +91,16 @@ services:
             - DJANGO_SECRET_KEY=django-public-secret-key
             - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
-            - DATABASE_USER=root
-            - DATABASE_PASSWORD=password
+            - DATABASE_NAME=default
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
             - DATABASE_HOST=postgres
             - DATABASE_PORT=5432
+            - DATA_BANK_DATABASE_NAME=data-bank
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
+            - DATA_BANK_DATABASE_HOST=postgres
+            - DATA_BANK_DATABASE_PORT=5432
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
         depends_on:
             - postgres
@@ -91,16 +117,22 @@ services:
             - DJANGO_SECRET_KEY=django-public-secret-key
             - DJANGO_DEBUG=1
             - CELERY_BACKEND_DATABASE_NAME=celery-backend
-            - DATABASE_USER=root
-            - DATABASE_PASSWORD=password
+            - DATABASE_NAME=default
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
             - DATABASE_HOST=postgres
             - DATABASE_PORT=5432
+            - DATA_BANK_DATABASE_NAME=data-bank
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
+            - DATA_BANK_DATABASE_HOST=postgres
+            - DATA_BANK_DATABASE_PORT=5432
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
         volumes:
             - .:/usr/src/app/
         depends_on:
             - postgres
-            - rabbitmq
+            # - rabbitmq
         entrypoint: ''
         command: './docker-entrypoint.sh'
         networks:
