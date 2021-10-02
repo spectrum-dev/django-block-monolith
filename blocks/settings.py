@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "computational_blocks",
     "signal_blocks",
     "strategy_blocks",
+    "data_store",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
