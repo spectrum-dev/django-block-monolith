@@ -8,3 +8,4 @@ omit =
     blocks/celery.py
     blocks/event.py
     blocks/settings.py 
+    data_store/interface.py  
