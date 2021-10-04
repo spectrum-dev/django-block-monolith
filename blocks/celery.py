@@ -5,6 +5,7 @@ from celery import Celery
 
 # Ingests block run events
 from blocks.event import event_ingestor as event_ingestor_run
+from data_store.interface import store_eod_data as store_eod_data_run
 
 # this code copied from manage.py
 # set the default Django settings module for the 'celery' app.
@@ -24,3 +25,7 @@ app.autodiscover_tasks()
 @app.task
 def event_ingestor(payload):
     return event_ingestor_run(payload)
+
+@app.task
+def store_eod_data(start_date, end_date):
+    return store_eod_data_run(start_date, end_date)
