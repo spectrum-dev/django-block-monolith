@@ -89,6 +89,11 @@ spec:
                 secretKeyRef:
                   name: "spectrum-block-monolith"
                   key: "DJANGO_DEBUG"
+            - name: "EOD_HISTORICAL_DATA_API_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: "spectrum-block-monolith"
+                  key: "EOD_HISTORICAL_DATA_API_KEY"
             - name: "RABBIT_MQ_URL"
               valueFrom:
                 secretKeyRef:

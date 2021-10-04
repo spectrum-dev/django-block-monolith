@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "computational_blocks",
     "signal_blocks",
     "strategy_blocks",
+    "data_store",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -129,6 +130,8 @@ DATABASES = {
         "PORT": environ["DATA_BANK_DATABASE_PORT"],
     },
 }
+
+DATABASE_ROUTERS = ["blocks.router.CheckerRouter"]
 
 
 # Password validation
