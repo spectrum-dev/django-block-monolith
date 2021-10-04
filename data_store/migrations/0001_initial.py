@@ -7,25 +7,38 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='EquityDataStore',
+            name="EquityDataStore",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('ticker', models.CharField(max_length=21)),
-                ('datetime', models.DateTimeField()),
-                ('exchange', models.CharField(choices=[('US', 'United States'), ('MY', 'Malaysia')], max_length=2)),
-                ('open', models.FloatField()),
-                ('high', models.FloatField()),
-                ('low', models.FloatField()),
-                ('close', models.FloatField()),
-                ('adjusted_close', models.FloatField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("ticker", models.CharField(max_length=21)),
+                ("datetime", models.DateTimeField()),
+                (
+                    "exchange",
+                    models.CharField(
+                        choices=[("US", "United States"), ("MY", "Malaysia")],
+                        max_length=2,
+                    ),
+                ),
+                ("open", models.FloatField()),
+                ("high", models.FloatField()),
+                ("low", models.FloatField()),
+                ("close", models.FloatField()),
+                ("adjusted_close", models.FloatField()),
             ],
             options={
-                'unique_together': {('ticker', 'datetime', 'exchange')},
+                "unique_together": {("ticker", "datetime", "exchange")},
             },
         ),
     ]

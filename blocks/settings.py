@@ -131,7 +131,7 @@ DATABASES = {
     },
 }
 
-DATABASE_ROUTERS = ['blocks.router.CheckerRouter']
+DATABASE_ROUTERS = ["blocks.router.CheckerRouter"]
 
 
 # Password validation
