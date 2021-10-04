@@ -29,6 +29,7 @@ services:
             - DATA_BANK_DATABASE_PASSWORD=postgres
             - DATA_BANK_DATABASE_HOST=postgres
             - DATA_BANK_DATABASE_PORT=5432
+            - EOD_HISTORICAL_DATA_API_KEY=TEST
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
         depends_on:
             - postgres
@@ -53,6 +54,7 @@ services:
             - DATA_BANK_DATABASE_PASSWORD=postgres
             - DATA_BANK_DATABASE_HOST=postgres
             - DATA_BANK_DATABASE_PORT=5432
+            - EOD_HISTORICAL_DATA_API_KEY=TEST
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
         depends_on:
             - postgres
@@ -77,6 +79,7 @@ services:
             - DATA_BANK_DATABASE_PASSWORD=postgres
             - DATA_BANK_DATABASE_HOST=postgres
             - DATA_BANK_DATABASE_PORT=5432
+            - EOD_HISTORICAL_DATA_API_KEY=TEST
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
         depends_on:
             - postgres
@@ -101,6 +104,7 @@ services:
             - DATA_BANK_DATABASE_PASSWORD=postgres
             - DATA_BANK_DATABASE_HOST=postgres
             - DATA_BANK_DATABASE_PORT=5432
+            - EOD_HISTORICAL_DATA_API_KEY=TEST
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
         depends_on:
             - postgres
@@ -127,6 +131,7 @@ services:
             - DATA_BANK_DATABASE_PASSWORD=postgres
             - DATA_BANK_DATABASE_HOST=postgres
             - DATA_BANK_DATABASE_PORT=5432
+            - EOD_HISTORICAL_DATA_API_KEY=TEST
             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
         volumes:
             - .:/usr/src/app/
