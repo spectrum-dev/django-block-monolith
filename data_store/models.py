@@ -23,3 +23,4 @@ class EquityDataStore(models.Model):
     low = models.FloatField()
     close = models.FloatField()
     adjusted_close = models.FloatField()
+    volume = models.FloatField()

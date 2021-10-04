@@ -19,9 +19,9 @@ def store_eod_data(start_date: str, end_date: str):
         if response is not None:
             for ticker_result in response:
                 EquityDataStore.objects.using('data_bank').update_or_create(
-                    date=day,
+                    datetime=day,
                     exchange="US",
-                    ticker_name=ticker_result["code"],
+                    ticker=ticker_result["code"],
                     open=ticker_result["open"],
                     high=ticker_result["high"],
                     low=ticker_result["low"],
