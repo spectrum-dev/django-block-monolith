@@ -18,7 +18,7 @@ def store_eod_data(start_date: str, end_date: str):
         response = make_eod_candlestick_request(exchange="US", date=day)
         if response is not None:
             for ticker_result in response:
-                EquityDataStore.objects.using('data_bank').update_or_create(
+                EquityDataStore.objects.using("data_bank").update_or_create(
                     datetime=day,
                     exchange="US",
                     ticker=ticker_result["code"],
