@@ -1,13 +1,13 @@
 import requests
 from os import environ
 
-from datetime import timedelta, date
+from datetime import timedelta, datetime
 
 
 EOD_HISTORICAL_DATA_API_KEY = environ["EOD_HISTORICAL_DATA_API_KEY"]
 
 
-def get_weekdays(start_date: date, end_date: date):
+def get_all_weekdays(start_date=None, end_date=None):
     """
         Gets a list of all weekdays in YYYY-MM-DD format
 
@@ -15,21 +15,17 @@ def get_weekdays(start_date: date, end_date: date):
             start_date: Datetime of Start Date
             end_date: Datetime of End Date
     """
-    response = []
-    weekends = [6, 7]
-    for dt in _get_date_range(start_date, end_date):
-        if dt.isoweekday() not in weekends:
-            response.append(dt.strftime("%Y-%m-%d"))
+    def daterange(date1, date2):
+        for n in range(int ((date2 - date1).days)+1):
+            yield date1 + timedelta(n)
+
+    all_dates = []
+    weekdays = [6,7]
+    for dt in daterange(start_date, end_date):
+        if dt.isoweekday() not in weekdays:
+            all_dates.append(dt.strftime("%Y-%m-%d"))
     
-    return response
-
-
-def _get_date_range(date_one, date_two):
-    """
-        Helper Function to get the integer index of a day within the range
-    """
-    for n in range(int ((date_one - date_two).days)+1):
-        yield date_one + timedelta(n)
+    return all_dates
 
 
 def make_eod_candlestick_request(exchange="US", date=None):

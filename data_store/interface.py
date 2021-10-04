@@ -1,14 +1,18 @@
-from datetime import date
+from datetime import datetime
 
-from data_store.interface import get_weekdays, make_eod_candlestick_request
+from data_store.helpers import get_all_weekdays, make_eod_candlestick_request
 from data_store.models import EquityDataStore
 
-def store_eod_data():
+def store_eod_data(start_date: str, end_date: str):
     """
         Iterates through a fixed date range and pulls in data
     """
+    
+    start_date = datetime.fromisoformat(start_date)
+    end_date = datetime.fromisoformat(end_date)
+
     # Check database to see what datetimes to start from
-    dates_in_range = get_weekdays(start_date=date(2020, 1, 1), end_date=date(2021, 10, 4))
+    dates_in_range = get_all_weekdays(start_date=start_date, end_date=end_date)
     for day in dates_in_range:
         response = make_eod_candlestick_request(exchange="US", date=day)
         if response is not None:

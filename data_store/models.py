@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 class EquityDataStore(models.Model):
     
     class Meta:
+        app_label = 'data_store'
         unique_together=(("ticker", "datetime", "exchange"),)
 
     class Exchange(models.TextChoices):
