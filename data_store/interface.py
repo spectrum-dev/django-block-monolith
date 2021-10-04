@@ -1,9 +1,11 @@
+from celery import current_app as app
 from datetime import datetime
 
 from data_store.helpers import get_all_weekdays, make_eod_candlestick_request
 from data_store.models import EquityDataStore
 
 
+@app.task
 def store_eod_data(start_date: str, end_date: str):
     """
     Iterates through a fixed date range and pulls in data
