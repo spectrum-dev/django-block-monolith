@@ -45,7 +45,7 @@ class TestStoreEodData(TestCase):
                 status=200,
             )
 
-        store_eod_data(start_date, end_date)
+        store_eod_data(start_date, end_date, exchange)
 
         assert EquityDataStore.objects.using("data_bank").all().count() == 2
 
@@ -80,8 +80,8 @@ class TestStoreEodData(TestCase):
                 status=200,
             )
 
-        store_eod_data(start_date, end_date)
+        store_eod_data(start_date, end_date, exchange)
         assert EquityDataStore.objects.using("data_bank").all().count() == 2
 
-        store_eod_data(start_date, end_date)
+        store_eod_data(start_date, end_date, exchange)
         assert EquityDataStore.objects.using("data_bank").all().count() == 2
