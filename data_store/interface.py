@@ -17,7 +17,7 @@ def store_eod_data(start_date: str, end_date: str):
     dates_in_range = get_all_weekdays(start_date=start_date, end_date=end_date)
 
     for day in dates_in_range:
-        logging.info(f'Processing data for {day}')
+        logging.info(f"Processing data for {day}")
         records = []
         response = make_eod_candlestick_request(exchange="US", date=day)
         if response is not None:
@@ -42,9 +42,7 @@ def store_eod_data(start_date: str, end_date: str):
                 )
             except Exception as e:
                 logging.error(e)
-        
-        logging.info(f'Processed data for {day}')
-    
+
+        logging.info(f"Processed data for {day}")
+
     return True
-
-
