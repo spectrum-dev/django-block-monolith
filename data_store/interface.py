@@ -13,17 +13,15 @@ def store_eod_data(start_date: str, end_date: str):
     start_date = datetime.fromisoformat(start_date)
     end_date = datetime.fromisoformat(end_date)
 
+    records = []
     # Check database to see what datetimes to start from
     dates_in_range = get_all_weekdays(start_date=start_date, end_date=end_date)
     for day in dates_in_range:
         response = make_eod_candlestick_request(exchange="US", date=day)
         if response is not None:
             for ticker_result in response:
-                try:
-                    logging.info(
-                        f'Processing ticker {ticker_result["code"]} on date {day}'
-                    )
-                    EquityDataStore.objects.using("data_bank").update_or_create(
+                records.append(
+                    EquityDataStore(
                         datetime=day,
                         exchange="US",
                         ticker=ticker_result["code"],
@@ -34,10 +32,13 @@ def store_eod_data(start_date: str, end_date: str):
                         adjusted_close=ticker_result["adjusted_close"],
                         volume=ticker_result["volume"],
                     )
-                except:
-                    logging.error(
-                        f'Error processing ticker {ticker_result["code"]} on date {day}'
-                    )
-                    pass
+                )
 
-    return True
+    try:
+        EquityDataStore.objects.using("data_bank").bulk_create(
+            records, ignore_conflicts=True
+        )
+        return True
+    except Exception as e:
+        logging.error(e)
+        return False
