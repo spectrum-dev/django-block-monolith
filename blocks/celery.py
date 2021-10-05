@@ -27,7 +27,7 @@ def event_ingestor(payload):
 
 
 @app.task
-def store_eod_data(start_date, end_date):
+def store_eod_data(start_date, end_date, exchange):
     import data_store.interface
 
-    return data_store.interface.store_eod_data(start_date, end_date)
+    return data_store.interface.store_eod_data(start_date, end_date, exchange)
