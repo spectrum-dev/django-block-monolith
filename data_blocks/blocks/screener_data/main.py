@@ -1,6 +1,3 @@
-from data_store.models import EquityDataStore
-
-
 def run(input):
     """
     Runs a database query to get all data associated with a list of tickers
@@ -13,8 +10,9 @@ def run(input):
         [ticker]: [{ data_record }]
     }
     """
+    import data_store.models
 
-    query = EquityDataStore.objects.filter(
+    query = data_store.models.EquityDataStore.objects.filter(
         exchange=input["exchange_name"],
         datetime__range=(input["start_date"], input["end_date"]),
     )
