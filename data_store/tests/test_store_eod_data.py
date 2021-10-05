@@ -18,6 +18,7 @@ class TestStoreEodData(TestCase):
     def test_base_case_ok(self):
         start_date = "2021-09-30"
         end_date = "2021-10-01"
+        exchange = "US"
 
         dates_in_range = get_all_weekdays(
             start_date=datetime.fromisoformat(start_date),
@@ -27,11 +28,11 @@ class TestStoreEodData(TestCase):
         for date in dates_in_range:
             responses.add(
                 responses.GET,
-                f"https://eodhistoricaldata.com/api/eod-bulk-last-day/US?api_token={environ['EOD_HISTORICAL_DATA_API_KEY']}&fmt=json&date={date}",
+                f"https://eodhistoricaldata.com/api/eod-bulk-last-day/{exchange}?api_token={environ['EOD_HISTORICAL_DATA_API_KEY']}&fmt=json&date={date}",
                 json=[
                     {
                         "code": "BBK",
-                        "exchange_short_name": "US",
+                        "exchange_short_name": exchange,
                         "date": date,
                         "open": 0.505,
                         "high": 0.506,
@@ -44,7 +45,7 @@ class TestStoreEodData(TestCase):
                 status=200,
             )
 
-        store_eod_data(start_date, end_date)
+        store_eod_data(start_date, end_date, exchange)
 
         assert EquityDataStore.objects.using("data_bank").all().count() == 2
 
@@ -52,6 +53,7 @@ class TestStoreEodData(TestCase):
     def test_same_data_inserted_updates_record_ok(self):
         start_date = "2021-09-30"
         end_date = "2021-10-01"
+        exchange = "US"
 
         dates_in_range = get_all_weekdays(
             start_date=datetime.fromisoformat(start_date),
@@ -61,11 +63,11 @@ class TestStoreEodData(TestCase):
         for date in dates_in_range:
             responses.add(
                 responses.GET,
-                f"https://eodhistoricaldata.com/api/eod-bulk-last-day/US?api_token={environ['EOD_HISTORICAL_DATA_API_KEY']}&fmt=json&date={date}",
+                f"https://eodhistoricaldata.com/api/eod-bulk-last-day/{exchange}?api_token={environ['EOD_HISTORICAL_DATA_API_KEY']}&fmt=json&date={date}",
                 json=[
                     {
                         "code": "BBK",
-                        "exchange_short_name": "US",
+                        "exchange_short_name": exchange,
                         "date": date,
                         "open": 0.505,
                         "high": 0.506,
@@ -78,8 +80,8 @@ class TestStoreEodData(TestCase):
                 status=200,
             )
 
-        store_eod_data(start_date, end_date)
+        store_eod_data(start_date, end_date, exchange)
         assert EquityDataStore.objects.using("data_bank").all().count() == 2
 
-        store_eod_data(start_date, end_date)
+        store_eod_data(start_date, end_date, exchange)
         assert EquityDataStore.objects.using("data_bank").all().count() == 2
