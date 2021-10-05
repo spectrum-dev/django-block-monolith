@@ -13,10 +13,12 @@ def store_eod_data(start_date: str, end_date: str):
     start_date = datetime.fromisoformat(start_date)
     end_date = datetime.fromisoformat(end_date)
 
-    records = []
     # Check database to see what datetimes to start from
     dates_in_range = get_all_weekdays(start_date=start_date, end_date=end_date)
+
     for day in dates_in_range:
+        logging.info(f'Processing data for {day}')
+        records = []
         response = make_eod_candlestick_request(exchange="US", date=day)
         if response is not None:
             for ticker_result in response:
@@ -34,11 +36,15 @@ def store_eod_data(start_date: str, end_date: str):
                     )
                 )
 
-    try:
-        EquityDataStore.objects.using("data_bank").bulk_create(
-            records, ignore_conflicts=True
-        )
-        return True
-    except Exception as e:
-        logging.error(e)
-        return False
+            try:
+                EquityDataStore.objects.using("data_bank").bulk_create(
+                    records, ignore_conflicts=True
+                )
+            except Exception as e:
+                logging.error(e)
+        
+        logging.info(f'Processed data for {day}')
+    
+    return True
+
+
