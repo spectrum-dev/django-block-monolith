@@ -5,7 +5,7 @@ from data_store.helpers import get_all_weekdays, make_eod_candlestick_request
 from data_store.models import EquityDataStore
 
 
-def store_eod_data(start_date: str, end_date: str):
+def store_eod_data(start_date: str, end_date: str, exchange: str):
     """
     Iterates through a fixed date range and pulls in data
     """
@@ -19,13 +19,13 @@ def store_eod_data(start_date: str, end_date: str):
     for day in dates_in_range:
         logging.info(f"Processing data for {day}")
         records = []
-        response = make_eod_candlestick_request(exchange="US", date=day)
+        response = make_eod_candlestick_request(exchange=exchange, date=day)
         if response is not None:
             for ticker_result in response:
                 records.append(
                     EquityDataStore(
                         datetime=day,
-                        exchange="US",
+                        exchange=exchange,
                         ticker=ticker_result["code"],
                         open=ticker_result["open"],
                         high=ticker_result["high"],
@@ -38,7 +38,7 @@ def store_eod_data(start_date: str, end_date: str):
 
             try:
                 EquityDataStore.objects.using("data_bank").bulk_create(
-                    records, ignore_conflicts=True
+                    records, ignore_conflicts=True, batch_size=100
                 )
             except Exception as e:
                 logging.error(e)
