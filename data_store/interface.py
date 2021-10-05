@@ -20,7 +20,9 @@ def store_eod_data(start_date: str, end_date: str):
         if response is not None:
             for ticker_result in response:
                 try:
-                    logging.info(f'Processing ticker {ticker_result["code"]} on date {day}')
+                    logging.info(
+                        f'Processing ticker {ticker_result["code"]} on date {day}'
+                    )
                     EquityDataStore.objects.using("data_bank").update_or_create(
                         datetime=day,
                         exchange="US",
@@ -33,7 +35,9 @@ def store_eod_data(start_date: str, end_date: str):
                         volume=ticker_result["volume"],
                     )
                 except:
-                    logging.error(f'Error processing ticker {ticker_result["code"]} on date {day}')
+                    logging.error(
+                        f'Error processing ticker {ticker_result["code"]} on date {day}'
+                    )
                     pass
 
     return True
