@@ -1,8 +1,8 @@
 from django.test import TestCase
 
+import data_store.factories
+
 from data_blocks.blocks.screener_data.main import run
-from data_store.models import EquityDataStore
-from data_store.factories import EquityDataStoreFactory
 
 
 class GetCandlestick(TestCase):
@@ -38,9 +38,9 @@ class RunScreenerData(TestCase):
     databases = "__all__"
 
     def test_single_ticker_in_db(self):
-        EquityDataStoreFactory(ticker="AAPL", datetime="2021-09-29 00:00:00")
-        EquityDataStoreFactory(ticker="AAPL", datetime="2021-09-30 00:00:00")
-        EquityDataStoreFactory(ticker="AAPL", datetime="2021-10-01 00:00:00")
+        data_store.factories.EquityDataStoreFactory(ticker="AAPL", datetime="2021-09-29 00:00:00")
+        data_store.factories.EquityDataStoreFactory(ticker="AAPL", datetime="2021-09-30 00:00:00")
+        data_store.factories.EquityDataStoreFactory(ticker="AAPL", datetime="2021-10-01 00:00:00")
 
         input = {
             "exchange_name": "US",
