@@ -24,3 +24,10 @@ app.autodiscover_tasks()
 @app.task
 def event_ingestor(payload):
     return event_ingestor_run(payload)
+
+
+@app.task
+def store_eod_data(start_date, end_date):
+    import data_store.interface
+
+    return data_store.interface.store_eod_data(start_date, end_date)
