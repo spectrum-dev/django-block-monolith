@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 
 from data_store.helpers import get_all_weekdays, make_eod_candlestick_request
@@ -18,16 +19,21 @@ def store_eod_data(start_date: str, end_date: str):
         response = make_eod_candlestick_request(exchange="US", date=day)
         if response is not None:
             for ticker_result in response:
-                EquityDataStore.objects.using("data_bank").update_or_create(
-                    datetime=day,
-                    exchange="US",
-                    ticker=ticker_result["code"],
-                    open=ticker_result["open"],
-                    high=ticker_result["high"],
-                    low=ticker_result["low"],
-                    close=ticker_result["close"],
-                    adjusted_close=ticker_result["adjusted_close"],
-                    volume=ticker_result["volume"],
-                )
+                try:
+                    logging.info(f'Processing ticker {ticker_result["code"]} on date {day}')
+                    EquityDataStore.objects.using("data_bank").update_or_create(
+                        datetime=day,
+                        exchange="US",
+                        ticker=ticker_result["code"],
+                        open=ticker_result["open"],
+                        high=ticker_result["high"],
+                        low=ticker_result["low"],
+                        close=ticker_result["close"],
+                        adjusted_close=ticker_result["adjusted_close"],
+                        volume=ticker_result["volume"],
+                    )
+                except:
+                    logging.error(f'Error processing ticker {ticker_result["code"]} on date {day}')
+                    pass
 
     return True
