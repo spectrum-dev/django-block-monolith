@@ -29,12 +29,54 @@ class PostRun(TestCase):
             },
             "output": {
                 "DATA_BLOCK-1-1": [
-                    {"timestamp": "2020-01-01", "open": 10.00, "high": 10.00, "low": 10.00, "close": 10.00, "volume": 100.00},
-                    {"timestamp": "2020-01-02", "open": 11.00, "high": 11.00, "low": 11.00, "close": 11.00, "volume": 100.00},
-                    {"timestamp": "2020-01-03", "open": 13.00, "high": 13.00, "low": 13.00, "close": 13.00, "volume": 100.00},
-                    {"timestamp": "2020-01-04", "open": 16.00, "high": 16.00, "low": 16.00, "close": 16.00, "volume": 100.00},
-                    {"timestamp": "2020-01-05", "open": 15.00, "high": 15.00, "low": 15.00, "close": 15.00, "volume": 100.00},
-                    {"timestamp": "2020-01-06", "open": 20.00, "high": 20.00, "low": 20.00, "close": 20.00, "volume": 100.00},
+                    {
+                        "timestamp": "2020-01-01",
+                        "open": 10.00,
+                        "high": 10.00,
+                        "low": 10.00,
+                        "close": 10.00,
+                        "volume": 100.00,
+                    },
+                    {
+                        "timestamp": "2020-01-02",
+                        "open": 11.00,
+                        "high": 11.00,
+                        "low": 11.00,
+                        "close": 11.00,
+                        "volume": 100.00,
+                    },
+                    {
+                        "timestamp": "2020-01-03",
+                        "open": 13.00,
+                        "high": 13.00,
+                        "low": 13.00,
+                        "close": 13.00,
+                        "volume": 100.00,
+                    },
+                    {
+                        "timestamp": "2020-01-04",
+                        "open": 16.00,
+                        "high": 16.00,
+                        "low": 16.00,
+                        "close": 16.00,
+                        "volume": 100.00,
+                    },
+                    {
+                        "timestamp": "2020-01-05",
+                        "open": 15.00,
+                        "high": 15.00,
+                        "low": 15.00,
+                        "close": 15.00,
+                        "volume": 100.00,
+                    },
+                    {
+                        "timestamp": "2020-01-06",
+                        "open": 20.00,
+                        "high": 20.00,
+                        "low": 20.00,
+                        "close": 20.00,
+                        "volume": 100.00,
+                    },
                 ]
             },
         }
@@ -46,6 +88,7 @@ class PostRun(TestCase):
         self.assertDictEqual(
             response.json(), {"response": [{"timestamp": "2020-01-06", "order": "BUY"}]}
         )
+
     def test_upward_ok(self):
         payload = {
             "input": {

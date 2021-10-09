@@ -48,11 +48,7 @@ def _format_request(data, incoming_data_field):
     for k, v in data.items():
         df = pd.DataFrame(v)
         df = df[["timestamp", incoming_data_field]]
-        df = df.rename(
-            columns={
-                incoming_data_field: 'data'
-            }
-        )
+        df = df.rename(columns={incoming_data_field: "data"})
         df_list.append(df)
 
     df = reduce(lambda x, y: pd.merge(x, y, on="timestamp"), df_list)
