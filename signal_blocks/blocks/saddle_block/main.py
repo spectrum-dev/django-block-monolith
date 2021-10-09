@@ -15,7 +15,7 @@ def run(input, output):
     Attributes
     ----------
     input: Form Inputs
-    computational_block: Time series data from a computational block
+    output: Time series data from a block
     """
 
     incoming_data_field = input.get("incoming_data", "")
