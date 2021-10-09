@@ -18,9 +18,10 @@ class GetEventAction(TestCase):
 
 
 class PostRun(TestCase):
-    def test_upward_ok(self):
+    def test_upwards_data_block_ok(self):
         payload = {
             "input": {
+                "incoming_data": "close",
                 "saddle_type": "UPWARD",
                 "event_action": "BUY",
                 "consecutive_up": 2,
@@ -28,6 +29,77 @@ class PostRun(TestCase):
             },
             "output": {
                 "DATA_BLOCK-1-1": [
+                    {
+                        "timestamp": "2020-01-01",
+                        "open": 10.00,
+                        "high": 10.00,
+                        "low": 10.00,
+                        "close": 10.00,
+                        "volume": 100.00,
+                    },
+                    {
+                        "timestamp": "2020-01-02",
+                        "open": 11.00,
+                        "high": 11.00,
+                        "low": 11.00,
+                        "close": 11.00,
+                        "volume": 100.00,
+                    },
+                    {
+                        "timestamp": "2020-01-03",
+                        "open": 13.00,
+                        "high": 13.00,
+                        "low": 13.00,
+                        "close": 13.00,
+                        "volume": 100.00,
+                    },
+                    {
+                        "timestamp": "2020-01-04",
+                        "open": 16.00,
+                        "high": 16.00,
+                        "low": 16.00,
+                        "close": 16.00,
+                        "volume": 100.00,
+                    },
+                    {
+                        "timestamp": "2020-01-05",
+                        "open": 15.00,
+                        "high": 15.00,
+                        "low": 15.00,
+                        "close": 15.00,
+                        "volume": 100.00,
+                    },
+                    {
+                        "timestamp": "2020-01-06",
+                        "open": 20.00,
+                        "high": 20.00,
+                        "low": 20.00,
+                        "close": 20.00,
+                        "volume": 100.00,
+                    },
+                ]
+            },
+        }
+
+        response = self.client.post(
+            "/SIGNAL_BLOCK/2/run", json.dumps(payload), content_type="application/json"
+        )
+
+        self.assertDictEqual(
+            response.json(), {"response": [{"timestamp": "2020-01-06", "order": "BUY"}]}
+        )
+
+    def test_upward_ok(self):
+        payload = {
+            "input": {
+                "incoming_data": "data",
+                "saddle_type": "UPWARD",
+                "event_action": "BUY",
+                "consecutive_up": 2,
+                "consecutive_down": 1,
+            },
+            "output": {
+                "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
                     {"timestamp": "2020-01-02", "data": 11.00},
                     {"timestamp": "2020-01-03", "data": 13.00},
@@ -49,6 +121,7 @@ class PostRun(TestCase):
     def test_upward_no_event(self):
         payload = {
             "input": {
+                "incoming_data": "data",
                 "saddle_type": "UPWARD",
                 "event_action": "BUY",
                 "consecutive_up": 2,
@@ -75,6 +148,7 @@ class PostRun(TestCase):
     def test_downward_ok(self):
         payload = {
             "input": {
+                "incoming_data": "data",
                 "saddle_type": "DOWNWARD",
                 "event_action": "BUY",
                 "consecutive_down": 2,
@@ -103,6 +177,7 @@ class PostRun(TestCase):
     def test_downward_no_event(self):
         payload = {
             "input": {
+                "incoming_data": "data",
                 "saddle_type": "DOWNWARD",
                 "event_action": "BUY",
                 "consecutive_down": 2,
@@ -129,6 +204,7 @@ class PostRun(TestCase):
     def test_validation_error_too_many_data_streams(self):
         payload = {
             "input": {
+                "incoming_data": "data",
                 "saddle_type": "DOWNWARD",
                 "event_action": "BUY",
                 "consecutive_down": 2,
