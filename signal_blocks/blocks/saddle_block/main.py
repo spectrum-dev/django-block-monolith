@@ -7,7 +7,7 @@ from signal_blocks.blocks.saddle_block.events.downward_saddle import (
 )
 
 
-def run(input, computational_block):
+def run(input, output):
     """
     Takes in elements from the form input and a single DATA_BLOCK
     to generates a series of events associated with that block
@@ -17,20 +17,22 @@ def run(input, computational_block):
     input: Form Inputs
     computational_block: Time series data from a computational block
     """
-    computational_block_df = _format_request(computational_block)
+
+    incoming_data_field = input.get("incoming_data", "")
+    output_df = _format_request(output, incoming_data_field)
 
     response_df = None
     case = lambda x: x == input["saddle_type"]
     if case("UPWARD"):
         response_df = upward_saddle(
-            computational_block_df,
+            output_df,
             input["event_action"],
             consecutive_up=int(input["consecutive_up"]),
             consecutive_down=int(input["consecutive_down"]),
         )
     elif case("DOWNWARD"):
         response_df = downward_saddle(
-            computational_block_df,
+            output_df,
             input["event_action"],
             consecutive_down=int(input["consecutive_down"]),
             consecutive_up=int(input["consecutive_up"]),
@@ -41,10 +43,16 @@ def run(input, computational_block):
     return _format_response(response_df)
 
 
-def _format_request(data):
+def _format_request(data, incoming_data_field):
     df_list = []
     for k, v in data.items():
         df = pd.DataFrame(v)
+        df = df[["timestamp", incoming_data_field]]
+        df = df.rename(
+            columns={
+                incoming_data_field: 'data'
+            }
+        )
         df_list.append(df)
 
     df = reduce(lambda x, y: pd.merge(x, y, on="timestamp"), df_list)
