@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spectrum-block-monolith-worker
+  name: spectrum-block-monolith-worker-blocks
   namespace: production
   labels:
-    app: spectrum-block-monolith-worker
+    app: spectrum-block-monolith-worker-blocks
 spec:
   replicas: 1 # By default 1 pod only
   selector:
     matchLabels:
-      app: spectrum-block-monolith-worker
+      app: spectrum-block-monolith-worker-blocks
   template:
     metadata:
       labels:
-        app: spectrum-block-monolith-worker
+        app: spectrum-block-monolith-worker-blocks
     spec:
       containers:
-        - name: spectrum-block-monolith-worker
+        - name: spectrum-block-monolith-worker-blocks
           image: <CONTAINER_IMAGE_URL>
           imagePullPolicy: Always
-          command: ['celery', '-A', 'blocks', 'worker', '-Q', 'blocks', '-l', 'INFO', '-n', 'block-monolith@%h']
+          command: ['celery', '-A', 'blocks', 'worker', '-Q', 'blocks', '-l', 'INFO', '--concurrency', '10', '-n', 'block-monolith-blocks@%h']
           ports:
             - containerPort: 8000
               name: http
