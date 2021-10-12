@@ -5,7 +5,7 @@ import data_store.factories
 from data_blocks.blocks.screener_data.main import run
 
 
-class GetCandlestick(TestCase):
+class GetExchange(TestCase):
     def test_ok(self):
         response = self.client.get("/BULK_DATA_BLOCK/1/exchange")
 
@@ -22,7 +22,7 @@ class GetCandlestick(TestCase):
 
 class GetCandlestick(TestCase):
     def test_ok(self):
-        response = self.client.get("/BULK_DATA_BLOCK/1/candlestick")
+        response = self.client.get("/BULK_DATA_BLOCK/2/candlestick")
 
         self.assertDictEqual(
             response.json(),
