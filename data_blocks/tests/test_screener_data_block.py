@@ -7,7 +7,7 @@ from data_blocks.blocks.screener_data.main import run
 
 class GetCandlestick(TestCase):
     def test_ok(self):
-        response = self.client.get("/DATA_BLOCK/3/exchange")
+        response = self.client.get("/BULK_DATA_BLOCK/1/exchange")
 
         self.assertDictEqual(
             response.json(),
@@ -22,7 +22,7 @@ class GetCandlestick(TestCase):
 
 class GetCandlestick(TestCase):
     def test_ok(self):
-        response = self.client.get("/DATA_BLOCK/3/candlestick")
+        response = self.client.get("/BULK_DATA_BLOCK/1/candlestick")
 
         self.assertDictEqual(
             response.json(),
