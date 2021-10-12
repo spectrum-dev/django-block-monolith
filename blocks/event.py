@@ -50,7 +50,7 @@ def event_ingestor(payload):
             return data_block_1_run(inputs)
         elif block_id == 2:
             return data_block_2_run(inputs)
-    
+
     if case("BULK_DATA_BLOCK"):
         if block_id == 1:
             return bulk_data_block_1_run(inputs)
