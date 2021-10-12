@@ -189,6 +189,4 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 
-CELERY_QUEUES = (
-    Queue("data", Exchange("data"), routing_key="data_task"),
-)
+CELERY_QUEUES = (Queue("data", Exchange("data"), routing_key="data_task"),)
