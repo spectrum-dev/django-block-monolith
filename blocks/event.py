@@ -2,6 +2,9 @@
 from data_blocks.blocks.us_stock_data.main import run as data_block_1_run
 from data_blocks.blocks.crypto_data.main import run as data_block_2_run
 
+# Bulk Data Blocks
+from data_blocks.blocks.screener_data.main import run as bulk_data_block_1_run
+
 # Computational Blocks
 from computational_blocks.blocks.technical_analysis.main import (
     run as computational_block_1_run,
@@ -47,6 +50,10 @@ def event_ingestor(payload):
             return data_block_1_run(inputs)
         elif block_id == 2:
             return data_block_2_run(inputs)
+
+    if case("BULK_DATA_BLOCK"):
+        if block_id == 1:
+            return bulk_data_block_1_run(inputs)
 
     elif case("COMPUTATIONAL_BLOCK"):
         if block_id == 1:

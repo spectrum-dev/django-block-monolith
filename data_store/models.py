@@ -14,7 +14,7 @@ class EquityDataStore(models.Model):
     ticker = models.CharField(max_length=21)
     datetime = models.DateTimeField()
     exchange = models.CharField(
-        max_length=2,
+        max_length=8,
         choices=Exchange.choices,
     )
 

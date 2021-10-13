@@ -17,6 +17,8 @@ from dotenv import load_dotenv
 
 from pathlib import Path
 
+from kombu import Queue, Exchange
+
 from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -62,11 +64,11 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "data_store",
     "data_blocks",
     "computational_blocks",
     "signal_blocks",
     "strategy_blocks",
-    "data_store",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -186,3 +188,5 @@ CELERY_BROKER_URL = environ["RABBIT_MQ_URL"]
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
+
+CELERY_QUEUES = (Queue("data", Exchange("data"), routing_key="data_task"),)

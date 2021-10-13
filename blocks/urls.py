@@ -30,6 +30,8 @@ urlpatterns = [
     path("DATA_BLOCK/2/cryptoName", data_blocks.views.get_symbol),
     path("DATA_BLOCK/2/candlestick", data_blocks.views.get_crypto_candlesticks),
     path("DATA_BLOCK/2/run", data_blocks.views.CryptoRunView.as_view()),
+    path("BULK_DATA_BLOCK/1/exchange", data_blocks.views.get_screener_exchanges),
+    path("BULK_DATA_BLOCK/2/candlestick", data_blocks.views.get_screener_candlesticks),
     path("COMPUTATIONAL_BLOCK/1/indicator", computational_blocks.views.get_indicators),
     path(
         "COMPUTATIONAL_BLOCK/1/indicatorField",

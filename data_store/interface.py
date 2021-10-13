@@ -5,7 +5,7 @@ from data_store.helpers import get_all_weekdays, make_eod_candlestick_request
 from data_store.models import EquityDataStore
 
 
-def store_eod_data(start_date: str, end_date: str):
+def store_eod_data(start_date: str, end_date: str, exchange: str):
     """
     Iterates through a fixed date range and pulls in data
     """
@@ -15,17 +15,17 @@ def store_eod_data(start_date: str, end_date: str):
 
     # Check database to see what datetimes to start from
     dates_in_range = get_all_weekdays(start_date=start_date, end_date=end_date)
+
     for day in dates_in_range:
-        response = make_eod_candlestick_request(exchange="US", date=day)
+        logging.info(f"Processing data for {day}")
+        records = []
+        response = make_eod_candlestick_request(exchange=exchange, date=day)
         if response is not None:
             for ticker_result in response:
-                try:
-                    logging.info(
-                        f'Processing ticker {ticker_result["code"]} on date {day}'
-                    )
-                    EquityDataStore.objects.using("data_bank").update_or_create(
+                records.append(
+                    EquityDataStore(
                         datetime=day,
-                        exchange="US",
+                        exchange=exchange,
                         ticker=ticker_result["code"],
                         open=ticker_result["open"],
                         high=ticker_result["high"],
@@ -34,10 +34,15 @@ def store_eod_data(start_date: str, end_date: str):
                         adjusted_close=ticker_result["adjusted_close"],
                         volume=ticker_result["volume"],
                     )
-                except:
-                    logging.error(
-                        f'Error processing ticker {ticker_result["code"]} on date {day}'
-                    )
-                    pass
+                )
+
+            try:
+                EquityDataStore.objects.using("data_bank").bulk_create(
+                    records, ignore_conflicts=True, batch_size=100
+                )
+            except Exception as e:
+                logging.error(e)
+
+        logging.info(f"Processed data for {day}")
 
     return True
