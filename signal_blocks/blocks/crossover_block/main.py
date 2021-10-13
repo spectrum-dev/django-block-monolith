@@ -27,9 +27,7 @@ def run(input, output):
     if data_field_string is None:
         pass
 
-    computational_block_df = get_data_from_id_and_field(
-        data_field_string, input, output
-    )
+    computational_block_df = get_data_from_id_and_field(data_field_string, output)
 
     _crossover_func = None
     case = lambda x: x == input["event_type"]
