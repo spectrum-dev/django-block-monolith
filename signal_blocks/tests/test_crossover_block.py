@@ -24,6 +24,7 @@ class PostRun(TestCase):
                 "event_type": "ABOVE",
                 "event_action": "BUY",
                 "event_value": "15",
+                "incoming_data": "1-data",
             },
             "output": {
                 "COMPUTATIONAL_BLOCK-1-1": [
@@ -44,12 +45,40 @@ class PostRun(TestCase):
             response.json(), {"response": [{"timestamp": "2020-01-04", "order": "BUY"}]}
         )
 
+    def test_crossover_above_event_single_action_ok_close_field(self):
+        payload = {
+            "input": {
+                "event_type": "ABOVE",
+                "event_action": "BUY",
+                "event_value": "15",
+                "incoming_data": "3-close",
+            },
+            "output": {
+                "COMPUTATIONAL_BLOCK-1-3": [
+                    {"timestamp": "2020-01-01", "close": 10.00},
+                    {"timestamp": "2020-01-02", "close": 11.00},
+                    {"timestamp": "2020-01-03", "close": 13.00},
+                    {"timestamp": "2020-01-04", "close": 16.00},
+                    {"timestamp": "2020-01-05", "close": 17.00},
+                ]
+            },
+        }
+
+        response = self.client.post(
+            "/SIGNAL_BLOCK/4/run", json.dumps(payload), content_type="application/json"
+        )
+
+        self.assertDictEqual(
+            response.json(), {"response": [{"timestamp": "2020-01-04", "order": "BUY"}]}
+        )
+
     def test_crossover_below_event_single_action_ok(self):
         payload = {
             "input": {
                 "event_type": "BELOW",
                 "event_action": "SELL",
                 "event_value": "15",
+                "incoming_data": "1-data",
             },
             "output": {
                 "COMPUTATIONAL_BLOCK-1-1": [
@@ -79,6 +108,7 @@ class PostRun(TestCase):
                 "event_type": "BELOW",
                 "event_action": "BUY",
                 "event_value": "15",
+                "incoming_data": "1-data",
             },
             "output": {
                 "COMPUTATIONAL_BLOCK-1-1": [
@@ -118,6 +148,7 @@ class PostRun(TestCase):
                 "event_type": "BELOW",
                 "event_action": "BUY",
                 "event_value": "15",
+                "incoming_data": "1-data",
             },
             "output": {
                 "COMPUTATIONAL_BLOCK-1-1": [

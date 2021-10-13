@@ -7,9 +7,10 @@ from signal_blocks.blocks.crossover_block.events.crossover_above import (
 from signal_blocks.blocks.crossover_block.events.crossover_below import (
     main as crossover_below,
 )
+from utils.utils import get_data_from_id_and_field
 
 
-def run(input, computational_block):
+def run(input, output):
     """
     Takes in elements from the form input and a single COMPUTATIONAL_BLOCK
     to generates a series of events associated with that block
@@ -19,7 +20,16 @@ def run(input, computational_block):
     input: Form Inputs
     computational_block: Time series data from a computational block
     """
-    computational_block_df = _format_request(computational_block)
+
+    data_field_string = input.get("incoming_data")
+
+    # TODO: VALIDATION
+    if data_field_string is None:
+        pass
+
+    computational_block_df = get_data_from_id_and_field(
+        data_field_string, input, output
+    )
 
     _crossover_func = None
     case = lambda x: x == input["event_type"]
@@ -35,18 +45,6 @@ def run(input, computational_block):
         crossover_value=float(input["event_value"]),
     )
     return _format_response(response_df)
-
-
-def _format_request(data):
-    df_list = []
-    for k, v in data.items():
-        df = pd.DataFrame(v)
-        df_list.append(df)
-
-    df = reduce(lambda x, y: pd.merge(x, y, on="timestamp"), df_list)
-    df = df.set_index("timestamp")
-
-    return df
 
 
 def _format_response(response_df):
