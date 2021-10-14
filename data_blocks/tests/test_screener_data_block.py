@@ -22,7 +22,7 @@ class GetExchange(TestCase):
 
 class GetCandlestick(TestCase):
     def test_ok(self):
-        response = self.client.get("/BULK_DATA_BLOCK/2/candlestick")
+        response = self.client.get("/BULK_DATA_BLOCK/1/candlestick")
 
         self.assertDictEqual(
             response.json(),
