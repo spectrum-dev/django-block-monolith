@@ -6,7 +6,12 @@ from data_store.models import EquityDataStore
 
 
 def get_date_range_of_missing_data(exchange_name):
-    last_saved_date = EquityDataStore.objects.order_by('datetime').values_list('datetime').distinct().last()
+    last_saved_date = (
+        EquityDataStore.objects.order_by("datetime")
+        .values_list("datetime")
+        .distinct()
+        .last()
+    )
     last_saved_date = last_saved_date[0]
 
     current_date = datetime.today()
