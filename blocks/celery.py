@@ -27,7 +27,14 @@ def event_ingestor(payload):
 
 
 @app.task
-def store_eod_data(start_date, end_date, exchange):
+def store_eod_data():
     import data_store.interface
-
-    return data_store.interface.store_eod_data(start_date, end_date, exchange)
+    
+    supported_exchanges = ["US", "KLSE"]
+    result = []
+    for exchange in supported_exchanges:
+        start_date, end_date = data_store.interface.get_date_range_of_missing_data(exchange)
+        response = data_store.interface.store_eod_data(start_date, end_date, exchange)
+        result.append(response)
+    
+    return all(result)

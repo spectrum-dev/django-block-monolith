@@ -1,8 +1,21 @@
 import logging
-from datetime import datetime
+from datetime import datetime, date
 
 from data_store.helpers import get_all_weekdays, make_eod_candlestick_request
 from data_store.models import EquityDataStore
+
+
+def get_date_range_of_missing_data(exchange_name):
+    last_saved_date = EquityDataStore.objects.order_by('datetime').values_list('datetime').distinct().last()
+    last_saved_date = last_saved_date[0]
+
+    current_date = datetime.today()
+
+    # Removes timezone awareness
+    last_saved_date = last_saved_date.replace(tzinfo=None)
+    current_date = current_date.replace(tzinfo=None)
+
+    return last_saved_date, current_date
 
 
 def store_eod_data(start_date: str, end_date: str, exchange: str):
