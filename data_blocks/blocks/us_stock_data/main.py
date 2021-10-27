@@ -1,5 +1,15 @@
 import pandas as pd
+
+from pydantic import BaseModel
+
 from data_blocks.blocks.us_stock_data.alpha_vantage import get_us_stock_data
+
+
+class InputPayload(BaseModel):
+    equity_name: str
+    candlestick: str
+    start_date: str
+    end_date: str
 
 
 def run(input):
@@ -30,15 +40,15 @@ def run(input):
         elif case("1month"):
             return "D"
 
-    response_df = get_us_stock_data(
-        input["equity_name"], data_type=input["candlestick"]
-    )
+    input = InputPayload(**input)
+
+    response_df = get_us_stock_data(input.equity_name, data_type=input.candlestick)
 
     if response_df is not None:
         date_range = pd.date_range(
-            input["start_date"],
-            input["end_date"],
-            freq=map_candlestick_to_freq_date(input["candlestick"]),
+            input.start_date,
+            input.end_date,
+            freq=map_candlestick_to_freq_date(input.candlestick),
         )
 
         date_intersection = date_range.intersection(response_df.index)
