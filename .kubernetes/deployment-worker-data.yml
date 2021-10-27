@@ -19,7 +19,7 @@ spec:
         - name: spectrum-block-monolith-worker-data
           image: <CONTAINER_IMAGE_URL>
           imagePullPolicy: Always
-          command: ['celery', '-A', 'blocks', 'beat', '-l', 'INFO', '--scheduler', 'django_celery_beat.schedulers:DatabaseScheduler', '-n', 'block-monolith-data@%h']
+          command: ['celery', '-A', 'blocks', 'beat', '-l', 'INFO', '--scheduler', 'django_celery_beat.schedulers:DatabaseScheduler']
           ports:
             - containerPort: 8000
               name: http
