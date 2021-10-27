@@ -195,3 +195,10 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 
 CELERY_QUEUES = (Queue("data", Exchange("data"), routing_key="data_task"),)
+
+CELERY_TASK_ROUTES = {
+    "blocks.celery.store_eod_data": {
+        "queue": "blocks",
+        "routing_key": "block_task",
+    }
+}
