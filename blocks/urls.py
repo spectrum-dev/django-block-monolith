@@ -14,8 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls import url
 from django.urls import path
-from django.middleware.csrf import get_token
+from django.views.static import serve
 
 import computational_blocks.views
 import signal_blocks.views
@@ -23,6 +25,7 @@ import strategy_blocks.views
 import data_blocks.views
 
 urlpatterns = [
+    url(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
     path("admin/", admin.site.urls),
     path("DATA_BLOCK/1/equityName", data_blocks.views.get_equity_name),
     path("DATA_BLOCK/1/candlestick", data_blocks.views.get_us_stock_data_candlesticks),
