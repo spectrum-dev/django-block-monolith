@@ -5,9 +5,11 @@ from data_store.helpers import get_all_weekdays, make_eod_candlestick_request
 from data_store.models import EquityDataStore
 
 
-def get_date_range_of_missing_data(exchange_name):
+def get_date_range_of_missing_data(exchange):
     last_saved_date = (
-        EquityDataStore.objects.order_by("datetime")
+        EquityDataStore.objects
+        .order_by("datetime")
+        .filter(exchange=exchange)
         .values_list("datetime")
         .distinct()
         .last()
@@ -23,13 +25,10 @@ def get_date_range_of_missing_data(exchange_name):
     return last_saved_date, current_date
 
 
-def store_eod_data(start_date: str, end_date: str, exchange: str):
+def store_eod_data(start_date, end_date, exchange):
     """
     Iterates through a fixed date range and pulls in data
     """
-
-    start_date = datetime.fromisoformat(start_date)
-    end_date = datetime.fromisoformat(end_date)
 
     # Check database to see what datetimes to start from
     dates_in_range = get_all_weekdays(start_date=start_date, end_date=end_date)
