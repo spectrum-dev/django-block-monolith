@@ -7,8 +7,7 @@ from data_store.models import EquityDataStore
 
 def get_date_range_of_missing_data(exchange):
     last_saved_date = (
-        EquityDataStore.objects
-        .order_by("datetime")
+        EquityDataStore.objects.order_by("datetime")
         .filter(exchange=exchange)
         .values_list("datetime")
         .distinct()
