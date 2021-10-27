@@ -35,7 +35,7 @@ python-dotenv==0.19.1
 pytz==2021.3
 regex==2021.10.8
 requests==2.26.0
-responses==0.14.0
+responses==0.15.0
 screen==1.0.1
 sentry-sdk==1.4.3
 six==1.16.0
