@@ -23,7 +23,7 @@ from signal_blocks.blocks.candle_close_block.main import run as signal_block_6_r
 from signal_blocks.blocks.comparison_block.main import run as signal_block_7_run
 
 # Strategy Blocks
-from strategy_blocks.blocks.simple_backtest.main import run as strategy_block_1_run
+from strategy_blocks.simple_backtest.main import run as strategy_block_1_run
 
 
 def event_ingestor(payload):
