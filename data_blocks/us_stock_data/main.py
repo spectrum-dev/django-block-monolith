@@ -2,7 +2,7 @@ import pandas as pd
 
 from pydantic import BaseModel
 
-from data_blocks.blocks.us_stock_data.alpha_vantage import get_us_stock_data
+from data_blocks.us_stock_data.alpha_vantage import get_us_stock_data
 
 
 class InputPayload(BaseModel):
