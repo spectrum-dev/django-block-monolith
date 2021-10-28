@@ -348,10 +348,7 @@ class PostRun(TestCase):
     def test_compute_rsi(self):
         payload = {
             **self.payload,
-            "inputs": {
-                "indicator_name": "RSI",
-                "lookback_period": 3,
-            },
+            "inputs": {"indicator_name": "RSI", "lookback_period": 3},
             "outputs": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
@@ -370,354 +367,291 @@ class PostRun(TestCase):
 
     def test_compute_bb(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "indicator_name": "BB",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
+            "outputs": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
-        response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 0.0},
-                    {"timestamp": "01/02/2020", "data": 0.75},
-                    {"timestamp": "01/03/2020", "data": 0.8061862178},
-                    {"timestamp": "01/04/2020", "data": 0.8354101966},
-                    {"timestamp": "01/05/2020", "data": 0.8535533906},
-                ]
-            },
+        self.assertEqual(
+            response,
+            [
+                {"timestamp": "01/01/2020", "data": 0.0},
+                {"timestamp": "01/02/2020", "data": 0.75},
+                {"timestamp": "01/03/2020", "data": 0.8061862178},
+                {"timestamp": "01/04/2020", "data": 0.8354101966},
+                {"timestamp": "01/05/2020", "data": 0.8535533906},
+            ],
         )
 
     def test_compute_db(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "indicator_name": "DB",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
+            "outputs": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
-        response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 0.0},
-                    {"timestamp": "01/02/2020", "data": 1.0},
-                    {"timestamp": "01/03/2020", "data": 1.0},
-                    {"timestamp": "01/04/2020", "data": 1.0},
-                    {"timestamp": "01/05/2020", "data": 1.0},
-                ]
-            },
+        self.assertEqual(
+            response,
+            [
+                {"timestamp": "01/01/2020", "data": 0.0},
+                {"timestamp": "01/02/2020", "data": 1.0},
+                {"timestamp": "01/03/2020", "data": 1.0},
+                {"timestamp": "01/04/2020", "data": 1.0},
+                {"timestamp": "01/05/2020", "data": 1.0},
+            ],
         )
 
     def test_compute_kama(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "indicator_name": "KAMA",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
+            "outputs": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
-        response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 10.0},
-                    {"timestamp": "01/02/2020", "data": 10.0041623309},
-                    {"timestamp": "01/03/2020", "data": 10.0124696677},
-                    {"timestamp": "01/04/2020", "data": 10.0249047575},
-                    {"timestamp": "01/05/2020", "data": 10.0414504193},
-                ]
-            },
+        self.assertEqual(
+            response,
+            [
+                {"timestamp": "01/01/2020", "data": 10.0},
+                {"timestamp": "01/02/2020", "data": 10.0041623309},
+                {"timestamp": "01/03/2020", "data": 10.0124696677},
+                {"timestamp": "01/04/2020", "data": 10.0249047575},
+                {"timestamp": "01/05/2020", "data": 10.0414504193},
+            ],
         )
 
     def test_compute_kc(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "indicator_name": "KC",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
+            "outputs": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
-        response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 0.0},
-                    {"timestamp": "01/02/2020", "data": 0.0},
-                    {"timestamp": "01/03/2020", "data": 0.0},
-                    {"timestamp": "01/04/2020", "data": 0.0},
-                    {"timestamp": "01/05/2020", "data": 0.0},
-                ]
-            },
+        self.assertEqual(
+            response,
+            [
+                {"timestamp": "01/01/2020", "data": 0.0},
+                {"timestamp": "01/02/2020", "data": 0.0},
+                {"timestamp": "01/03/2020", "data": 0.0},
+                {"timestamp": "01/04/2020", "data": 0.0},
+                {"timestamp": "01/05/2020", "data": 0.0},
+            ],
         )
 
     def test_compute_mi(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "indicator_name": "MI",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
+            "outputs": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
-        response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 0.0},
-                    {"timestamp": "01/02/2020", "data": 0.0},
-                    {"timestamp": "01/03/2020", "data": 0.0},
-                    {"timestamp": "01/04/2020", "data": 0.0},
-                    {"timestamp": "01/05/2020", "data": 0.0},
-                ]
-            },
+        self.assertEqual(
+            response,
+            [
+                {"timestamp": "01/01/2020", "data": 0.0},
+                {"timestamp": "01/02/2020", "data": 0.0},
+                {"timestamp": "01/03/2020", "data": 0.0},
+                {"timestamp": "01/04/2020", "data": 0.0},
+                {"timestamp": "01/05/2020", "data": 0.0},
+            ],
         )
 
     def test_compute_stoch_osci(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "indicator_name": "STOCH_OSCI",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
+            "outputs": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
-        response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": None},
-                    {"timestamp": "01/02/2020", "data": None},
-                    {"timestamp": "01/03/2020", "data": None},
-                    {"timestamp": "01/04/2020", "data": None},
-                    {"timestamp": "01/05/2020", "data": None},
-                ]
-            },
+        self.assertEqual(
+            response,
+            [
+                {"timestamp": "01/01/2020", "data": None},
+                {"timestamp": "01/02/2020", "data": None},
+                {"timestamp": "01/03/2020", "data": None},
+                {"timestamp": "01/04/2020", "data": None},
+                {"timestamp": "01/05/2020", "data": None},
+            ],
         )
 
     def test_compute_trix(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "indicator_name": "TRIX",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
+            "outputs": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
-        response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": -0.180262237},
-                    {"timestamp": "01/02/2020", "data": 0.01953125},
-                    {"timestamp": "01/03/2020", "data": 0.0707869557},
-                    {"timestamp": "01/04/2020", "data": 0.1603775886},
-                    {"timestamp": "01/05/2020", "data": 0.2906374999},
-                ]
-            },
+        self.assertEqual(
+            response,
+            [
+                {"timestamp": "01/01/2020", "data": -0.180262237},
+                {"timestamp": "01/02/2020", "data": 0.01953125},
+                {"timestamp": "01/03/2020", "data": 0.0707869557},
+                {"timestamp": "01/04/2020", "data": 0.1603775886},
+                {"timestamp": "01/05/2020", "data": 0.2906374999},
+            ],
         )
 
     def test_compute_tsi(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "indicator_name": "TSI",
             },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK},
+            "outputs": {"DATA_BLOCK-1-1": DATA_BLOCK},
         }
 
-        response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 0.0},
-                    {"timestamp": "01/02/2020", "data": 100.0},
-                    {"timestamp": "01/03/2020", "data": 100.0},
-                    {"timestamp": "01/04/2020", "data": 100.0},
-                    {"timestamp": "01/05/2020", "data": 100.0},
-                ]
-            },
+        self.assertEqual(
+            response,
+            [
+                {"timestamp": "01/01/2020", "data": 0.0},
+                {"timestamp": "01/02/2020", "data": 100.0},
+                {"timestamp": "01/03/2020", "data": 100.0},
+                {"timestamp": "01/04/2020", "data": 100.0},
+                {"timestamp": "01/05/2020", "data": 100.0},
+            ],
         )
 
     def test_compute_opening_range_high_one_day(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "indicator_name": "OR",
                 "lookback_period": "3",
                 "lookback_field": "high",
             },
-            "output": {"DATA_BLOCK-1-1": INTRADAY_DATA_BLOCK},
+            "outputs": {"DATA_BLOCK-1-1": INTRADAY_DATA_BLOCK},
         }
 
-        response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "2020-01-01T09:30:00.000Z", "data": None},
-                    {"timestamp": "2020-01-01T09:40:00.000Z", "data": None},
-                    {"timestamp": "2020-01-01T09:50:00.000Z", "data": None},
-                    {"timestamp": "2020-01-01T10:00:00.000Z", "data": 12.0},
-                    {"timestamp": "2020-01-01T10:10:00.000Z", "data": 12.0},
-                ]
-            },
+        self.assertEqual(
+            response,
+            [
+                {"timestamp": "2020-01-01T09:30:00.000Z", "data": None},
+                {"timestamp": "2020-01-01T09:40:00.000Z", "data": None},
+                {"timestamp": "2020-01-01T09:50:00.000Z", "data": None},
+                {"timestamp": "2020-01-01T10:00:00.000Z", "data": 12.0},
+                {"timestamp": "2020-01-01T10:10:00.000Z", "data": 12.0},
+            ],
         )
 
     def test_compute_opening_range_mid_one_day(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "indicator_name": "OR",
                 "lookback_period": "3",
                 "lookback_field": "mid",
             },
-            "output": {"DATA_BLOCK-1-1": INTRADAY_DATA_BLOCK},
+            "outputs": {"DATA_BLOCK-1-1": INTRADAY_DATA_BLOCK},
         }
 
-        response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "2020-01-01T09:30:00.000Z", "data": None},
-                    {"timestamp": "2020-01-01T09:40:00.000Z", "data": None},
-                    {"timestamp": "2020-01-01T09:50:00.000Z", "data": None},
-                    {"timestamp": "2020-01-01T10:00:00.000Z", "data": 11.0},
-                    {"timestamp": "2020-01-01T10:10:00.000Z", "data": 11.0},
-                ]
-            },
+        self.assertEqual(
+            response,
+            [
+                {"timestamp": "2020-01-01T09:30:00.000Z", "data": None},
+                {"timestamp": "2020-01-01T09:40:00.000Z", "data": None},
+                {"timestamp": "2020-01-01T09:50:00.000Z", "data": None},
+                {"timestamp": "2020-01-01T10:00:00.000Z", "data": 11.0},
+                {"timestamp": "2020-01-01T10:10:00.000Z", "data": 11.0},
+            ],
         )
 
     def test_compute_opening_range_low_one_day(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "indicator_name": "OR",
                 "lookback_period": "3",
                 "lookback_field": "low",
             },
-            "output": {"DATA_BLOCK-1-1": INTRADAY_DATA_BLOCK},
+            "outputs": {"DATA_BLOCK-1-1": INTRADAY_DATA_BLOCK},
         }
 
-        response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "2020-01-01T09:30:00.000Z", "data": None},
-                    {"timestamp": "2020-01-01T09:40:00.000Z", "data": None},
-                    {"timestamp": "2020-01-01T09:50:00.000Z", "data": None},
-                    {"timestamp": "2020-01-01T10:00:00.000Z", "data": 10.0},
-                    {"timestamp": "2020-01-01T10:10:00.000Z", "data": 10.0},
-                ]
-            },
+        self.assertEqual(
+            response,
+            [
+                {"timestamp": "2020-01-01T09:30:00.000Z", "data": None},
+                {"timestamp": "2020-01-01T09:40:00.000Z", "data": None},
+                {"timestamp": "2020-01-01T09:50:00.000Z", "data": None},
+                {"timestamp": "2020-01-01T10:00:00.000Z", "data": 10.0},
+                {"timestamp": "2020-01-01T10:10:00.000Z", "data": 10.0},
+            ],
         )
 
     def test_compute_opening_range_high_two_days(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "indicator_name": "OR",
                 "lookback_period": "3",
                 "lookback_field": "high",
             },
-            "output": {"DATA_BLOCK-1-1": INTRADAY_TWO_DAYS_DATA_BLOCK},
+            "outputs": {"DATA_BLOCK-1-1": INTRADAY_TWO_DAYS_DATA_BLOCK},
         }
 
-        response = self.client.post(
-            "/COMPUTATIONAL_BLOCK/1/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "2020-01-01T09:30:00.000Z", "data": None},
-                    {"timestamp": "2020-01-01T09:40:00.000Z", "data": None},
-                    {"timestamp": "2020-01-01T09:50:00.000Z", "data": None},
-                    {"timestamp": "2020-01-01T10:00:00.000Z", "data": 12.0},
-                    {"timestamp": "2020-01-01T10:10:00.000Z", "data": 12.0},
-                    {"timestamp": "2020-01-02T09:30:00.000Z", "data": None},
-                    {"timestamp": "2020-01-02T09:40:00.000Z", "data": None},
-                    {"timestamp": "2020-01-02T09:50:00.000Z", "data": None},
-                    {"timestamp": "2020-01-02T10:00:00.000Z", "data": 15.0},
-                    {"timestamp": "2020-01-02T10:10:00.000Z", "data": 15.0},
-                ]
-            },
+        self.assertEqual(
+            response,
+            [
+                {"timestamp": "2020-01-01T09:30:00.000Z", "data": None},
+                {"timestamp": "2020-01-01T09:40:00.000Z", "data": None},
+                {"timestamp": "2020-01-01T09:50:00.000Z", "data": None},
+                {"timestamp": "2020-01-01T10:00:00.000Z", "data": 12.0},
+                {"timestamp": "2020-01-01T10:10:00.000Z", "data": 12.0},
+                {"timestamp": "2020-01-02T09:30:00.000Z", "data": None},
+                {"timestamp": "2020-01-02T09:40:00.000Z", "data": None},
+                {"timestamp": "2020-01-02T09:50:00.000Z", "data": None},
+                {"timestamp": "2020-01-02T10:00:00.000Z", "data": 15.0},
+                {"timestamp": "2020-01-02T10:10:00.000Z", "data": 15.0},
+            ],
         )
 
     def test_compute_opening_range_error_not_supported_field(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "indicator_name": "OR",
                 "lookback_period": "3",
                 "lookback_field": "volume",
             },
-            "output": {"DATA_BLOCK-1-1": INTRADAY_TWO_DAYS_DATA_BLOCK},
+            "outputs": {"DATA_BLOCK-1-1": INTRADAY_TWO_DAYS_DATA_BLOCK},
         }
 
         with self.assertRaises(AssertionError):
-            response = self.client.post(
-                "/COMPUTATIONAL_BLOCK/1/run",
-                json.dumps(payload),
-                content_type="application/json",
-            )
+            event_ingestor(payload)
