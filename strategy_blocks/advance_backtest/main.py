@@ -14,7 +14,7 @@ def run(input, output):
     input: Form Input Values
     output: Output Cache Values
     """
-    data_block = get_block_data_from_dict(["DATA_BLOCK", "BULK_DATA_BLOCK"], output)
+    data_block = get_block_data_from_dict("DATA_BLOCK", output)
     signal_block = get_block_data_from_dict("SIGNAL_BLOCK", output)
     portfolio_cash_value = float(input["start_value"])
     trade_commission = float(input["commission"])
@@ -55,14 +55,18 @@ def run(input, output):
             "take_profit": [
                 None,
             ],
+            "monitor_to_close": [
+                False,
+            ],
         }
     )
-
     for i in range(len(price_df)):
         row = price_df.iloc[i]
         order_unit_price = float(row["close"])
         index = price_df.index[i]
-        monitor_df = final_orders.loc[final_orders["monitor_to_close"]]
+
+        monitor_df = final_orders.copy()
+        monitor_df = monitor_df.loc[final_orders["monitor_to_close"]]
         has_entry = False
         for j in range(len(monitor_df)):
             monitor_df_row = monitor_df.iloc[j]
@@ -80,10 +84,18 @@ def run(input, output):
                 elif monitor_df_row["order_type"] == "SELL":
                     order_type = "BUY_CLOSE"
                     held_units += order_units
-                    portfolio_cash_value -= order_total_price - trade_commission
-                monitor_df.loc[j, "monitor_to_close"] = False
+                    portfolio_cash_value -= order_total_price + trade_commission
 
-                final_orders.append(
+                bool_arr = []
+                counter = 0
+                for k, v in final_orders.iterrows():
+                    monitor_bool = v["monitor_to_close"]
+                    if monitor_bool and counter == j:
+                        monitor_bool = False
+                    bool_arr.append(monitor_bool)
+                final_orders["monitor_to_close"] = bool_arr
+
+                final_orders = final_orders.append(
                     {
                         "timestamp": index,
                         "portfolio_cash_value": portfolio_cash_value,
@@ -101,7 +113,7 @@ def run(input, output):
                 has_entry = True
 
         if index in trades_df.index:
-            trade = trades_df.loc[trades_df.timestamp == index]
+            trade = trades_df.loc[index]
             order_type = trade["order"]
             order_units = int(math.floor(trade["monetary_amount"] / order_unit_price))
             monitor_to_close = False
@@ -131,11 +143,11 @@ def run(input, output):
                 held_units = 0
             order_total_price = order_unit_price * order_units
             if "BUY" in order_type:
-                portfolio_cash_value -= order_total_price - trade_commission
+                portfolio_cash_value -= order_total_price + trade_commission
             elif "SELL" in order_type:
                 portfolio_cash_value += order_total_price - trade_commission
 
-            final_orders.append(
+            final_orders = final_orders.append(
                 {
                     "timestamp": index,
                     "portfolio_cash_value": portfolio_cash_value,
@@ -151,61 +163,54 @@ def run(input, output):
                 ignore_index=True,
             )
             has_entry = True
-    if not has_entry:
-        final_orders.append(
-            {
-                "timestamp": index,
-                "portfolio_cash_value": portfolio_cash_value,
-                "held_units": held_units,
-                "order_type": "NONE",
-                "order_units": 0,
-                "order_unit_price": 0,
-                "order_total_price": 0,
-                "stop_loss": None,
-                "take_profit": None,
-                "monitor_to_close": False,
-            },
-            ignore_index=True,
-        )
-    # final_orders.append([portfolio_cash_value, held_units, order_type, units, price, stop_loss, take_profit, status])
-    # TODO: Check signal
-    # TODO: Check performance hit SL/TP
-    # Do we exit based on total portfolio or last trade or specific trade?
-    # TODO: append to trades df
-    # Calculate portfolio value
-
-    # TODO: Implement the marketsim
-    # port_vals, trades_df = run_marketsim(
-    #     trades_df,
-    #     data_block_df,
-    #     float(input["start_value"]),
-    #     float(input["commission"]),
-    # )
-
+        if not has_entry and i > 0:
+            final_orders = final_orders.append(
+                {
+                    "timestamp": index,
+                    "portfolio_cash_value": portfolio_cash_value,
+                    "held_units": held_units,
+                    "order_type": None,
+                    "order_units": 0,
+                    "order_unit_price": 0,
+                    "order_total_price": 0,
+                    "stop_loss": None,
+                    "take_profit": None,
+                    "monitor_to_close": False,
+                },
+                ignore_index=True,
+            )
     port_val_df = price_df.copy(deep=True)
     port_val_df = port_val_df[["close"]]
-    port_val_df["timestamp"] = port_val_df.index
+    port_val_df = port_val_df.reset_index()
     port_val_df = pd.merge(port_val_df, final_orders, on="timestamp", how="left")
-    port_val_df["value"] = port_val_df["held_units"] * port_val_df["close"]
+    port_val_df["value"] = port_val_df["held_units"].astype(float) * port_val_df[
+        "close"
+    ].astype(float) + port_val_df["portfolio_cash_value"].astype(float)
+    print(port_val_df)
     port_val_df = port_val_df[["timestamp", "value"]]
+    port_val_df["timestamp"] = port_val_df.timestamp.dt.strftime("%m/%d/%Y %H:%M:%S")
+    port_val_df = port_val_df.drop_duplicates(
+        keep="last",
+        subset=[
+            "timestamp",
+        ],
+    )
     port_vals = port_val_df.to_dict(orient="records")
-    # port_val_df["securities_value"] = port_val_df["held_units"] * 1
-    # Generates Responses
-    # port_vals = _generate_port_vals_response(port_vals)
-    trades = _generate_trades_df_response(trades_df)
 
     trades_df = final_orders.copy(deep=True)
     trades_df = trades_df[
         ["timestamp", "order_type", "order_units", "order_total_price"]
     ]
+    trades_df = trades_df.loc[trades_df["order_type"].notnull()]
     trades_df = trades_df.rename(
-        {
+        columns={
             "order_type": "order",
             "order_units": "shares",
             "order_total_price": "amount_invested",
         }
     )
     trades_df["cash_allocated"] = trade_amount
+    trades_df["timestamp"] = trades_df.timestamp.dt.strftime("%m/%d/%Y %H:%M:%S")
     trades = trades_df.to_dict(orient="records")
 
     return {"response": {"portVals": port_vals, "trades": trades}}
@@ -228,10 +233,9 @@ def _generate_signal_block_df(signal_block):
         # Returns boolean of whether should BUY or SELL
         buy = signal_block[i]["order"] == "BUY"
         sell = signal_block[i]["order"] == "SELL"
-
         not_purchased = True
         if i >= 1:
-            if buy and signal_block[i - 1]["order"] == "SELL":
+            if buy and signal_block_df.loc[i - 1]["sell"]:
                 signal_block_df = signal_block_df.append(
                     {
                         "timestamp": signal_block[i]["timestamp"],
@@ -243,7 +247,7 @@ def _generate_signal_block_df(signal_block):
                     ignore_index=True,
                 )
                 not_purchased = False
-            elif sell and signal_block[i - 1]["order"] == "BUY":
+            elif sell and signal_block_df.loc[i - 1]["buy"]:
                 signal_block_df = signal_block_df.append(
                     {
                         "timestamp": signal_block[i]["timestamp"],
@@ -255,7 +259,6 @@ def _generate_signal_block_df(signal_block):
                     ignore_index=True,
                 )
                 not_purchased = False
-
         if not_purchased:
             signal_block_df = signal_block_df.append(
                 {
@@ -284,8 +287,8 @@ def _generate_trades_df(input, signal_block_df):
     orders = Orders()
 
     trade_amount = float(input["trade_amount_value"])
-    stop_loss_pct = float(input["trade_stop_loss"])
-    take_profit_pct = float(input["trade_take_profit"])
+    stop_loss_pct = float(input["stop_loss"])
+    take_profit_pct = float(input["take_profit"])
 
     for index, row in signal_block_df.iterrows():
         if row["buy"]:
@@ -299,46 +302,9 @@ def _generate_trades_df(input, signal_block_df):
         elif row["sell_close"]:
             orders.sell_close(index, "close", "", "", "")
 
-    return orders.trades_df
+    trades_df = orders.trades_df
+    trades_df.timestamp = pd.to_datetime(trades_df.timestamp)
+    trades_df = trades_df.sort_values(by="timestamp")
+    trades_df = trades_df.set_index("timestamp")
 
-
-def _generate_port_vals_response(port_vals):
-    """
-    Generates JSON response from port_vals
-
-    Attributes
-    ----------
-    port_vals: List of Portfolio Values
-    """
-    port_vals_df = port_vals.to_frame()
-    port_vals_df = port_vals_df.rename(columns={0: "value"})
-    port_vals_df["timestamp"] = port_vals_df.index
-
-    port_vals = port_vals_df.to_dict(orient="records")
-
-    return port_vals
-
-
-def _generate_trades_df_response(trades_df):
-    """
-    Generates JSON response from trades
-
-    Attributes
-    ----------
-    trades_df: DataFrame of Trades
-    """
-    trades_df = trades_df.drop(
-        columns=["symbol", "trade_id", "stop_loss", "take_profit"]
-    )
-
-    trades_df = trades_df.rename(
-        columns={
-            "cash_value": "amount_invested",
-            "monetary_amount": "cash_allocated",
-        }
-    )
-
-    trades_df = trades_df.round(2)
-    trades = trades_df.to_dict(orient="records")
-
-    return trades
+    return trades_df
