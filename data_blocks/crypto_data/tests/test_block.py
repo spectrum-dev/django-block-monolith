@@ -3,6 +3,8 @@ import responses
 
 from django.test import TestCase
 
+from blocks.event import event_ingestor
+
 
 class GetSymbol(TestCase):
     def test_ok(self):
@@ -65,6 +67,12 @@ class GetCandlestick(TestCase):
 
 
 class PostRun(TestCase):
+    def setUp(self):
+        self.payload = {
+            "blockType": "DATA_BLOCK",
+            "blockId": 2,
+        }
+
     @responses.activate
     def test_one_minute_candlestick_ok(self):
         responses.add(
@@ -110,21 +118,20 @@ class PostRun(TestCase):
         )
 
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "crypto_name": "BTC",
                 "candlestick": "1min",
                 "start_date": "2021-07-23 10:00:00",
                 "end_date": "2021-07-23 10:02:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
-        response = self.client.post(
-            "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {
@@ -151,7 +158,7 @@ class PostRun(TestCase):
                         "volume": 64,
                         "timestamp": "2021-07-23T10:02:00.000000000",
                     },
-                ]
+                ],
             },
         )
 
@@ -200,21 +207,20 @@ class PostRun(TestCase):
         )
 
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "crypto_name": "BTC",
                 "candlestick": "5min",
                 "start_date": "2021-07-23 15:00:00",
                 "end_date": "2021-07-23 15:10:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
-        response = self.client.post(
-            "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
+        self.assertEqual(
+            response,
             {
                 "response": [
                     {
@@ -241,7 +247,7 @@ class PostRun(TestCase):
                         "volume": 64,
                         "timestamp": "2021-07-23T15:10:00.000000000",
                     },
-                ]
+                ],
             },
         )
 
@@ -290,21 +296,20 @@ class PostRun(TestCase):
         )
 
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "crypto_name": "BTC",
                 "candlestick": "15min",
                 "start_date": "2021-07-23 13:00:00",
                 "end_date": "2021-07-23 13:30:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
-        response = self.client.post(
-            "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {
@@ -380,21 +385,20 @@ class PostRun(TestCase):
         )
 
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "crypto_name": "BTC",
                 "candlestick": "30min",
                 "start_date": "2021-07-23 13:00:00",
                 "end_date": "2021-07-23 14:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
-        response = self.client.post(
-            "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
+        self.assertEqual(
+            response,
             {
                 "response": [
                     {
@@ -470,21 +474,20 @@ class PostRun(TestCase):
         )
 
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "crypto_name": "BTC",
                 "candlestick": "60min",
                 "start_date": "2021-07-23 13:00:00",
                 "end_date": "2021-07-23 15:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
-        response = self.client.post(
-            "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {
@@ -575,21 +578,20 @@ class PostRun(TestCase):
         )
 
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "crypto_name": "BTC",
                 "candlestick": "1day",
                 "start_date": "2021-06-10 00:00:00",
                 "end_date": "2021-06-12 00:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
-        response = self.client.post(
-            "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
+        self.assertEqual(
+            response,
             {
                 "response": [
                     {
@@ -668,21 +670,20 @@ class PostRun(TestCase):
         )
 
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "crypto_name": "BTC",
                 "candlestick": "1week",
                 "start_date": "2021-06-10 00:00:00",
                 "end_date": "2021-06-21 00:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
-        response = self.client.post(
-            "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
+        self.assertEqual(
+            response,
             {
                 "response": [
                     {
@@ -765,21 +766,20 @@ class PostRun(TestCase):
         )
 
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "crypto_name": "BTC",
                 "candlestick": "1month",
                 "start_date": "2021-04-01 00:00:00",
                 "end_date": "2021-07-01 00:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
-        response = self.client.post(
-            "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
+        self.assertEqual(
+            response,
             {
                 "response": [
                     {
@@ -808,23 +808,4 @@ class PostRun(TestCase):
                     },
                 ]
             },
-        )
-
-    def test_get_stock_data_end_date_preceeds_start_date(self):
-        payload = {
-            "input": {
-                "crypto_name": "BTC",
-                "candlestick": "1min",
-                "start_date": "2021-06-22 00:00:00",
-                "end_date": "2021-06-18 00:00:00",
-            },
-            "output": {},
-        }
-
-        response = self.client.post(
-            "/DATA_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
-
-        self.assertEqual(
-            response.json(), {"non_field_errors": ["finish must occur after start"]}
         )

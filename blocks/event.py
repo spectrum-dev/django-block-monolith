@@ -1,9 +1,9 @@
 # Data Blocks
-from data_blocks.blocks.us_stock_data.main import run as data_block_1_run
-from data_blocks.blocks.crypto_data.main import run as data_block_2_run
+from data_blocks.us_stock_data.main import run as data_block_1_run
+from data_blocks.crypto_data.main import run as data_block_2_run
 
 # Bulk Data Blocks
-from data_blocks.blocks.screener_data.main import run as bulk_data_block_1_run
+from data_blocks.screener_data.main import run as bulk_data_block_1_run
 
 # Computational Blocks
 from computational_blocks.technical_analysis.main import (
