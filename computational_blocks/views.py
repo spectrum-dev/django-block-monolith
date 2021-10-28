@@ -1,12 +1,8 @@
-import json
-
 from django.shortcuts import render
 
 from django.http import JsonResponse
-from rest_framework.views import APIView
 
-from computational_blocks.blocks.technical_analysis.mappings import INDICATORS
-from computational_blocks.blocks.technical_analysis.main import run
+from computational_blocks.technical_analysis.mappings import INDICATORS
 
 
 # Technical Analysis (Computational Block with ID 1)
@@ -28,18 +24,6 @@ def get_indiciator_fields(request):
         return JsonResponse({"error": f"The indicator {indicator_name} was not found"})
 
     return JsonResponse({"response": indicator_information["params"]})
-
-
-class TechnicalAnalysisRunView(APIView):
-    def post(self, request):
-        request_body = json.loads(request.body)
-
-        input = request_body["input"]
-        output = request_body["output"]
-
-        response = run(input, output)
-
-        return JsonResponse({"response": response})
 
 
 # Operation Block (Computational Block with ID 2)
