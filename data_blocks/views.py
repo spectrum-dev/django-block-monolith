@@ -82,37 +82,6 @@ def get_us_stock_data_candlesticks(request):
     return JsonResponse({"response": response_payload})
 
 
-class CryptoRunView(APIView):
-    def post(self, request):
-        class Candlestick(enum.Enum):
-            ONE_MINUTE = "1min"
-            FIVE_MINUTE = "5min"
-            FIFTEEN_MINUTE = "15min"
-            THIRTY_MINUTE = "30min"
-            SIXTY_MINUTE = "60min"
-            ONE_DAY = "1day"
-            ONE_WEEK = "1week"
-            ONE_MONTH = "1month"
-
-        class InputSerializer(serializers.Serializer):
-            crypto_name = serializers.CharField(max_length=10, required=True)
-            candlestick = EnumField(choices=Candlestick)
-            start_date = serializers.CharField(max_length=20)
-            end_date = serializers.CharField(max_length=20)
-
-            def validate(self, data):
-                if data["start_date"] > data["end_date"]:
-                    raise serializers.ValidationError("finish must occur after start")
-                return data
-
-        request_body = json.loads(request.body)
-        input = request_body["input"]
-        if InputSerializer(data=input).is_valid(raise_exception=True):
-            response = crypto_run(input)
-
-        return JsonResponse(response)
-
-
 # Screener Data (Data Block with ID 3)
 # -----------------------------------
 
