@@ -21,7 +21,6 @@ from django.views.static import serve
 
 import computational_blocks.views
 import signal_blocks.views
-import strategy_blocks.views
 import data_blocks.views
 
 urlpatterns = [
@@ -57,5 +56,4 @@ urlpatterns = [
     path("SIGNAL_BLOCK/6/run", signal_blocks.views.PostCandleCloseRunView.as_view()),
     path("SIGNAL_BLOCK/7/eventAction", signal_blocks.views.get_event_actions),
     path("SIGNAL_BLOCK/7/comparisonType", signal_blocks.views.get_comparison_types),
-    path("STRATEGY_BLOCK/1/run", strategy_blocks.views.PostRun.as_view()),
 ]
