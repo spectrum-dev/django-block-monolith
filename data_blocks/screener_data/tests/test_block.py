@@ -2,7 +2,7 @@ from django.test import TestCase
 
 import data_store.factories
 
-from data_blocks.blocks.screener_data.main import run
+from data_blocks.screener_data.main import run
 
 
 class GetExchange(TestCase):

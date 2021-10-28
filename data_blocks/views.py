@@ -10,8 +10,8 @@ from rest_enumfield import EnumField
 
 # US Stock Data (Data Block with ID 1)
 # -----------------------------------
-from data_blocks.blocks.us_stock_data.alpha_vantage import search_ticker
-from data_blocks.blocks.us_stock_data.main import run as us_stock_data_run
+from data_blocks.us_stock_data.alpha_vantage import search_ticker
+from data_blocks.us_stock_data.main import run as us_stock_data_run
 
 # Dropdowns
 def get_equity_name(request):
@@ -41,47 +41,10 @@ def get_crypto_candlesticks(request):
     return JsonResponse({"response": response_payload})
 
 
-class USStockDataRunView(APIView):
-    def post(self, request):
-        """
-        Runs a data querying process against data source's API
-        """
-
-        class Candlestick(enum.Enum):
-            ONE_MINUTE = "1min"
-            FIVE_MINUTE = "5min"
-            FIFTEEN_MINUTE = "15min"
-            THIRTY_MINUTE = "30min"
-            SIXTY_MINUTE = "60min"
-            ONE_DAY = "1day"
-            ONE_WEEK = "1week"
-            ONE_MONTH = "1month"
-
-        class InputSerializer(serializers.Serializer):
-            equity_name = serializers.CharField(max_length=10, required=True)
-            candlestick = EnumField(Candlestick)
-            start_date = serializers.CharField(max_length=20)
-            end_date = serializers.CharField(max_length=20)
-
-            def validate(self, data):
-                if data["start_date"] > data["end_date"]:
-                    raise serializers.ValidationError("finish must occur after start")
-                return data
-
-        request_body = json.loads(request.body)
-        input = request_body["input"]
-
-        response = {"response": []}
-        if InputSerializer(data=input).is_valid(raise_exception=True):
-            response = us_stock_data_run(input)
-
-        return JsonResponse(response)
-
-
 # Crypto Data (Data Block with ID 2)
 # -----------------------------------
-from data_blocks.blocks.crypto_data.supported_crypto import SUPPORTED_CRYPTO
-from data_blocks.blocks.crypto_data.main import run as crypto_run
+from data_blocks.crypto_data.supported_crypto import SUPPORTED_CRYPTO
+from data_blocks.crypto_data.main import run as crypto_run
 
 
 def get_symbol(request):
