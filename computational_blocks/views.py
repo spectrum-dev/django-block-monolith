@@ -5,8 +5,8 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework.views import APIView
 
-from computational_blocks.blocks.technical_analysis.mappings import INDICATORS
-from computational_blocks.blocks.technical_analysis.main import run
+from computational_blocks.technical_analysis.mappings import INDICATORS
+from computational_blocks.technical_analysis.main import run
 
 
 # Technical Analysis (Computational Block with ID 1)

@@ -1,7 +1,7 @@
 import json
 from django.test import TestCase
 
-from computational_blocks.blocks.technical_analysis.main import run
+from computational_blocks.technical_analysis.main import run
 from computational_blocks.tests.data.technical_analysis import (
     DATA_BLOCK,
     INTRADAY_DATA_BLOCK,
