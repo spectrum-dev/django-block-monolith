@@ -5,6 +5,7 @@ from django.test import TestCase
 
 from blocks.event import event_ingestor
 
+
 class GetEquityName(TestCase):
     @responses.activate
     def test_ok(self):
@@ -96,13 +97,12 @@ class GetCandlestick(TestCase):
 
 
 class PostRun(TestCase):
-
     def setUp(self):
         self.payload = {
             "blockType": "DATA_BLOCK",
             "blockId": 1,
         }
-    
+
     @responses.activate
     def test_get_intraday_1min_data_ok(self):
         payload = {
