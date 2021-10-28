@@ -41,10 +41,6 @@ urlpatterns = [
         computational_blocks.views.get_indiciator_fields,
     ),
     path(
-        "COMPUTATIONAL_BLOCK/1/run",
-        computational_blocks.views.TechnicalAnalysisRunView.as_view(),
-    ),
-    path(
         "COMPUTATIONAL_BLOCK/2/operationType",
         computational_blocks.views.get_operation_types,
     ),
