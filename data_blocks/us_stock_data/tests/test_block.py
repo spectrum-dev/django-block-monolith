@@ -3,6 +3,7 @@ import responses
 
 from django.test import TestCase
 
+from blocks.event import event_ingestor
 
 class GetEquityName(TestCase):
     @responses.activate
@@ -95,16 +96,24 @@ class GetCandlestick(TestCase):
 
 
 class PostRun(TestCase):
+
+    def setUp(self):
+        self.payload = {
+            "blockType": "DATA_BLOCK",
+            "blockId": 1,
+        }
+    
     @responses.activate
     def test_get_intraday_1min_data_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "equity_name": "AAPL",
                 "candlestick": "1min",
                 "start_date": "2021-06-21 19:58:00",
                 "end_date": "2021-06-21 20:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
         responses.add(
@@ -146,12 +155,10 @@ class PostRun(TestCase):
             status=200,
         )
 
-        response = self.client.post(
-            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {
@@ -185,13 +192,14 @@ class PostRun(TestCase):
     @responses.activate
     def test_get_intraday_5min_data_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "equity_name": "AAPL",
                 "candlestick": "5min",
                 "start_date": "2021-06-21 19:50:00",
                 "end_date": "2021-06-21 20:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
         responses.add(
@@ -233,12 +241,10 @@ class PostRun(TestCase):
             status=200,
         )
 
-        response = self.client.post(
-            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {
@@ -272,13 +278,14 @@ class PostRun(TestCase):
     @responses.activate
     def test_get_intraday_15min_data_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "equity_name": "AAPL",
                 "candlestick": "15min",
                 "start_date": "2021-06-21 19:30:00",
                 "end_date": "2021-06-21 20:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
         responses.add(
@@ -320,12 +327,10 @@ class PostRun(TestCase):
             status=200,
         )
 
-        response = self.client.post(
-            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {
@@ -359,13 +364,14 @@ class PostRun(TestCase):
     @responses.activate
     def test_get_intraday_30min_data_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "equity_name": "AAPL",
                 "candlestick": "30min",
                 "start_date": "2021-06-21 19:00:00",
                 "end_date": "2021-06-21 20:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
         responses.add(
@@ -407,12 +413,10 @@ class PostRun(TestCase):
             status=200,
         )
 
-        response = self.client.post(
-            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {
@@ -446,13 +450,14 @@ class PostRun(TestCase):
     @responses.activate
     def test_get_intraday_60min_data_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "equity_name": "AAPL",
                 "candlestick": "60min",
                 "start_date": "2021-06-21 18:00:00",
                 "end_date": "2021-06-21 20:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
         responses.add(
@@ -494,12 +499,10 @@ class PostRun(TestCase):
             status=200,
         )
 
-        response = self.client.post(
-            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {
@@ -533,13 +536,14 @@ class PostRun(TestCase):
     @responses.activate
     def test_get_intraday_data_error_cannot_find_ticker(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "equity_name": "TICKER_DNE",
                 "candlestick": "1min",
                 "start_date": "2021-06-21 19:58:00",
                 "end_date": "2021-06-21 20:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
         responses.add(
@@ -551,22 +555,21 @@ class PostRun(TestCase):
             status=200,
         )
 
-        response = self.client.post(
-            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(response.json(), {"response": []})
+        self.assertDictEqual(response, {"response": []})
 
     @responses.activate
     def test_get_daily_adjusted_data_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "equity_name": "AAPL",
                 "candlestick": "1day",
                 "start_date": "2021-06-18 00:00:00",
                 "end_date": "2021-06-22 00:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
         responses.add(
@@ -607,12 +610,10 @@ class PostRun(TestCase):
             status=200,
         )
 
-        response = self.client.post(
-            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {
@@ -646,13 +647,14 @@ class PostRun(TestCase):
     @responses.activate
     def test_get_weekly_data_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "equity_name": "IBM",
                 "candlestick": "1week",
                 "start_date": "2021-07-16 00:00:00",
                 "end_date": "2021-07-30 00:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
         responses.add(
@@ -692,12 +694,10 @@ class PostRun(TestCase):
             status=200,
         )
 
-        response = self.client.post(
-            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {
@@ -731,13 +731,14 @@ class PostRun(TestCase):
     @responses.activate
     def test_get_monthly_data_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "equity_name": "IBM",
                 "candlestick": "1month",
                 "start_date": "2021-05-28 00:00:00",
                 "end_date": "2021-07-30 00:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
         responses.add(
@@ -777,12 +778,10 @@ class PostRun(TestCase):
             status=200,
         )
 
-        response = self.client.post(
-            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {
@@ -816,13 +815,14 @@ class PostRun(TestCase):
     @responses.activate
     def test_get_daily_adjusted_data_error_cannot_find_ticker(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "equity_name": "TICKER_DNE",
                 "candlestick": "1day",
                 "start_date": "2021-06-18 00:00:00",
                 "end_date": "2021-06-22 00:00:00",
             },
-            "output": {},
+            "outputs": {},
         }
 
         responses.add(
@@ -834,27 +834,6 @@ class PostRun(TestCase):
             status=200,
         )
 
-        response = self.client.post(
-            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(response.json(), {"response": []})
-
-    def test_get_stock_data_end_date_preceeds_start_date(self):
-        payload = {
-            "input": {
-                "equity_name": "TICKER_DNE",
-                "candlestick": "1min",
-                "start_date": "2021-06-22 00:00:00",
-                "end_date": "2021-06-18 00:00:00",
-            },
-            "output": {},
-        }
-
-        response = self.client.post(
-            "/DATA_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
-
-        self.assertEqual(
-            response.json(), {"non_field_errors": ["finish must occur after start"]}
-        )
+        self.assertDictEqual(response, {"response": []})
