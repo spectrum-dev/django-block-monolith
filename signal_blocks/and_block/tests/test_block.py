@@ -7,26 +7,6 @@ class TestAndRun(TestCase):
     def setUp(self):
         self.payload = {"blockType": "SIGNAL_BLOCK", "blockId": 3}
 
-    def test_only_one_param_passed_in(self):
-        payload = {
-            **self.payload,
-            "inputs": {},
-            "outputs": {
-                "SIGNAL_BLOCK-1-1": [
-                    {"timestamp": "01/02/2020", "order": "BUY"},
-                    {"timestamp": "01/07/2020", "order": "BUY"},
-                    {"timestamp": "01/32/2020", "order": "BUY"},
-                ],
-            },
-        }
-
-        response = event_ingestor(payload)
-
-        self.assertDictEqual(
-            response,
-            {"non_field_errors": ["You must pass in at least two streams of data"]},
-        )
-
     def test_simple_two_param_and(self):
         payload = {
             **self.payload,
@@ -117,7 +97,7 @@ class TestAndRun(TestCase):
         }
 
         response = event_ingestor(payload)
-
+        
         self.assertEqual(response, [])
 
     def test_multiple_timestamp_trigger_multiple_intersect(self):

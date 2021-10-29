@@ -10,7 +10,7 @@ def run(outputs):
         if len(df) == 0:
             df = pd.DataFrame([], columns=["timestamp", "order"])
         df_list.append(df)
-
+    
     # Checks for same date
     df_merged = reduce(
         lambda left, right: pd.merge(left, right, on=["timestamp"], how="outer"),
