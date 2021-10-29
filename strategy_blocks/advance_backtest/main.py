@@ -71,8 +71,17 @@ def run(input, output):
         for j in range(len(monitor_df)):
             monitor_df_row = monitor_df.iloc[j]
             if (
-                order_unit_price < monitor_df_row["stop_loss"]
-                or order_unit_price > monitor_df_row["take_profit"]
+                monitor_df_row["order_type"] == "BUY"
+                and (
+                    order_unit_price < monitor_df_row["stop_loss"]
+                    or order_unit_price > monitor_df_row["take_profit"]
+                )
+            ) or (
+                monitor_df_row["order_type"] == "SELL"
+                and (
+                    order_unit_price > monitor_df_row["stop_loss"]
+                    or order_unit_price < monitor_df_row["take_profit"]
+                )
             ):
                 order_units = monitor_df_row["order_units"]
                 order_total_price = order_unit_price * order_units
@@ -139,7 +148,7 @@ def run(input, output):
                 final_orders[
                     "monitor_to_close"
                 ] = False  # All open trades should be closed at this point, no longer needed to be monitored
-                order_units = held_units  # Sell or Buy all to close entire trade
+                order_units = abs(held_units)  # Sell or Buy all to close entire trade
                 held_units = 0
             order_total_price = order_unit_price * order_units
             if "BUY" in order_type:
