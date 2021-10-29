@@ -21,3 +21,37 @@ def get_data_from_id_and_field(id_field_string, output):
     data = data.set_index("timestamp")
     data = data.rename(columns={data_field: "data"})
     return data
+
+
+def get_block_data_from_dict(block_type, output):
+    """
+    block_type: string of form 'DATA_BLOCK' or 'SIGNAL_BLOCK' etc.
+    output: dictionary of connecting output datasets
+    Returns dictionary item that matches with block type required
+    """
+    data = None
+    for key in output.keys():
+        key_breakup = key.split("-")
+        if key_breakup[0] == block_type:
+            data = output[key]
+            break
+    return data
+
+
+def _convert_dict_to_df(data_dict):
+    """
+    Generates a Data Block DF
+
+    Attributes
+    ----------
+
+    data_block: Incoming Data Block DF
+    """
+    data_block_df = pd.DataFrame(data_dict)
+
+    assert "timestamp" in data_block_df.columns
+
+    data_block_df.timestamp = pd.to_datetime(data_block_df.timestamp)
+    data_block_df = data_block_df.sort_values(by="timestamp")
+    data_block_df = data_block_df.set_index("timestamp")
+    return data_block_df

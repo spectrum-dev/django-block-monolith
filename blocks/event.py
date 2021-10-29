@@ -24,6 +24,8 @@ from signal_blocks.blocks.comparison_block.main import run as signal_block_7_run
 
 # Strategy Blocks
 from strategy_blocks.simple_backtest.main import run as strategy_block_1_run
+from strategy_blocks.advance_backtest.main import run as strategy_block_2_run
+
 
 
 def event_ingestor(payload):
@@ -80,5 +82,7 @@ def event_ingestor(payload):
     elif case("STRATEGY_BLOCK"):
         if block_id == 1:
             return strategy_block_1_run(inputs, outputs)
+        elif block_id == 2:
+            return strategy_block_2_run(inputs, outputs)
 
     raise Exception("Block type or ID is invalid")
