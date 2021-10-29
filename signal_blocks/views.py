@@ -12,7 +12,7 @@ from signal_blocks.blocks.saddle_block.main import run as saddle_block_run
 from signal_blocks.and_block.main import run as and_run
 from signal_blocks.blocks.or_block.main import run as or_run
 from signal_blocks.blocks.crossover_block.main import run as crossover_block_run
-from signal_blocks.blocks.candle_close_block.main import run as candle_close_run
+from signal_blocks.candle_close_block.main import run as candle_close_run
 
 
 # Create your views here.

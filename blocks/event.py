@@ -19,7 +19,7 @@ from signal_blocks.blocks.saddle_block.main import run as signal_block_2_run
 from signal_blocks.and_block.main import run as signal_block_3_run
 from signal_blocks.blocks.crossover_block.main import run as signal_block_4_run
 from signal_blocks.blocks.or_block.main import run as signal_block_5_run
-from signal_blocks.blocks.candle_close_block.main import run as signal_block_6_run
+from signal_blocks.candle_close_block.main import run as signal_block_6_run
 from signal_blocks.blocks.comparison_block.main import run as signal_block_7_run
 
 # Strategy Blocks

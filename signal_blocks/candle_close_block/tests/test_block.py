@@ -3,6 +3,7 @@ from django.test import TestCase
 
 from signal_blocks.tests.data.data_block import DATA_BLOCK, DATA_BLOCK_2
 
+from blocks.event import event_ingestor
 
 class GetEventAction(TestCase):
     def test_ok(self):
@@ -39,45 +40,26 @@ class GetEventType(TestCase):
 
 
 class PostRun(TestCase):
-    def test_more_than_one_output_stream_data_error(self):
-        payload = {
-            "input": {
-                "event_action": "BUY",
-                "event_type": "CLOSE_ABOVE_OPEN",
-            },
-            "output": {"DATA_BLOCK-1-1": DATA_BLOCK, "DATA_BLOCK-1-2": DATA_BLOCK},
-        }
+    def setUp(self):
+        self.payload = {"blockType": "SIGNAL_BLOCK", "blockId": 6}
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/6/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
-
-        self.assertDictEqual(
-            response.json(),
-            {"non_field_errors": ["You must pass in at most one stream of data"]},
-        )
 
     def test_close_above_low(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "event_action": "BUY",
                 "event_type": "CLOSE_ABOVE_LOW",
             },
-            "output": {
+            "outputs": {
                 "DATA_BLOCK-1-1": DATA_BLOCK,
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/6/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {"timestamp": "01/01/2020", "order": "BUY"},
@@ -89,23 +71,20 @@ class PostRun(TestCase):
 
     def test_close_above_open(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "event_action": "BUY",
                 "event_type": "CLOSE_ABOVE_OPEN",
             },
-            "output": {
+            "outputs": {
                 "DATA_BLOCK-1-1": DATA_BLOCK,
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/6/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {"timestamp": "01/02/2020", "order": "BUY"},
@@ -116,23 +95,20 @@ class PostRun(TestCase):
 
     def test_close_below_high(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "event_action": "BUY",
                 "event_type": "CLOSE_BELOW_HIGH",
             },
-            "output": {
+            "outputs": {
                 "DATA_BLOCK-1-1": DATA_BLOCK,
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/6/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {"timestamp": "01/01/2020", "order": "BUY"},
@@ -144,23 +120,20 @@ class PostRun(TestCase):
 
     def test_close_below_open(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "event_action": "BUY",
                 "event_type": "CLOSE_BELOW_OPEN",
             },
-            "output": {
+            "outputs": {
                 "DATA_BLOCK-1-1": DATA_BLOCK,
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/6/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {"timestamp": "01/01/2020", "order": "BUY"},
@@ -171,23 +144,20 @@ class PostRun(TestCase):
 
     def test_close_eq_high(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "event_action": "BUY",
                 "event_type": "CLOSE_EQ_HIGH",
             },
-            "output": {
+            "outputs": {
                 "DATA_BLOCK-1-1": DATA_BLOCK,
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/6/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {"timestamp": "01/02/2020", "order": "BUY"},
@@ -198,23 +168,20 @@ class PostRun(TestCase):
 
     def test_close_eq_low(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "event_action": "BUY",
                 "event_type": "CLOSE_EQ_LOW",
             },
-            "output": {
+            "outputs": {
                 "DATA_BLOCK-1-1": DATA_BLOCK,
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/6/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {"timestamp": "01/03/2020", "order": "BUY"},
@@ -225,23 +192,20 @@ class PostRun(TestCase):
 
     def test_close_eq_low_sell(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "event_action": "SELL",
                 "event_type": "CLOSE_EQ_LOW",
             },
-            "output": {
+            "outputs": {
                 "DATA_BLOCK-1-1": DATA_BLOCK,
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/6/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {
                 "response": [
                     {"timestamp": "01/03/2020", "order": "SELL"},
@@ -252,22 +216,19 @@ class PostRun(TestCase):
 
     def test_no_results(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "event_action": "BUY",
                 "event_type": "CLOSE_ABOVE_OPEN",
             },
-            "output": {
+            "outputs": {
                 "DATA_BLOCK-1-1": DATA_BLOCK_2,
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/6/run",
-            json.dumps(payload),
-            content_type="application/json",
-        )
+        response = event_ingestor(payload)
 
         self.assertDictEqual(
-            response.json(),
+            response,
             {"response": []},
         )
