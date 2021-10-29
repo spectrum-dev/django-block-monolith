@@ -20,8 +20,10 @@ def run(input, output):
     trade_commission = float(input["commission"])
     trade_amount = float(input["trade_amount_value"])
 
-    if len(signal_block) <= 0 or len(data_block) <= 0:
+    if data_block is None or signal_block is None:
         return {"response": {"portVals": [], "trades": []}}
+
+    # TODO: add validation for inputs
 
     price_df = _convert_dict_to_df(data_block)
     signal_block_df = _generate_signal_block_df(signal_block)
@@ -32,7 +34,7 @@ def run(input, output):
         {
             "timestamp": price_df.index[0],
             "portfolio_cash_value": [
-                10000,
+                portfolio_cash_value,
             ],
             "held_units": [
                 0,
@@ -85,7 +87,6 @@ def run(input, output):
             ):
                 order_units = monitor_df_row["order_units"]
                 order_total_price = order_unit_price * order_units
-                # order_type = "SELL_CLOSE" if monitor_df_row["order_type"] == "BUY" else "BUY_CLOSE"
                 if monitor_df_row["order_type"] == "BUY":
                     order_type = "SELL_CLOSE"
                     held_units -= order_units

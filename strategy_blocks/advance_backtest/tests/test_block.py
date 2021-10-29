@@ -5,7 +5,64 @@ from blocks.event import event_ingestor
 
 
 class BacktestBlockRunning(TestCase):
-    maxDiff = None
+    def test_failure_missing_data_block(self):
+        payload = {
+            "blockType": "STRATEGY_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "start_value": 10000.00,
+                "commission": 2.00,
+                "stop_loss": 0.25,
+                "take_profit": 0.50,
+                "trade_amount_value": 1000.00,
+            },
+            "outputs": {
+                "SIGNAL_BLOCK-1-1": [
+                    {"timestamp": "01/02/2020", "order": "BUY"},
+                    {"timestamp": "01/03/2020", "order": "SELL"},
+                    {"timestamp": "01/04/2020", "order": "BUY"},
+                ],
+            },
+        }
+        response = event_ingestor(payload)
+        self.assertDictEqual(response, {"response": {"portVals": [], "trades": []}})
+
+    def test_failure_missing_signal_block(self):
+        payload = {
+            "blockType": "STRATEGY_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "start_value": 10000.00,
+                "commission": 2.00,
+                "stop_loss": 0.25,
+                "take_profit": 0.50,
+                "trade_amount_value": 1000.00,
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": [
+                    {
+                        "timestamp": "01/01/2020",
+                        "timezone": "UTC/EST",
+                        "open": "10.00",
+                        "high": "10.00",
+                        "low": "10.00",
+                        "close": "10.00",
+                        "volume": "10.00",
+                    },
+                    {
+                        "timestamp": "01/02/2020",
+                        "timezone": "UTC/EST",
+                        "open": "11.00",
+                        "high": "11.00",
+                        "low": "11.00",
+                        "close": "11.00",
+                        "volume": "11.00",
+                    },
+                ]
+            },
+        }
+        response = event_ingestor(payload)
+        self.assertDictEqual(response, {"response": {"portVals": [], "trades": []}})
 
     def test_backtest_block_simple_scenario(self):
         payload = {
@@ -75,8 +132,6 @@ class BacktestBlockRunning(TestCase):
         }
 
         response = event_ingestor(payload)
-        # import pprint
-        # print(pprint.pprint(response, width=1))
         self.assertDictEqual(
             response,
             {
@@ -611,6 +666,86 @@ class BacktestBlockRunning(TestCase):
                             "timestamp": "01/09/2020 00:00:00",
                         },
                     ],
+                }
+            },
+        )
+
+    def test_backtest_block_no_trades(self):
+        payload = {
+            "blockType": "STRATEGY_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "start_value": 50000.00,
+                "commission": 2.00,
+                "stop_loss": 999,
+                "take_profit": 999,
+                "trade_amount_value": 1000.00,
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": [
+                    {
+                        "timestamp": "01/01/2020",
+                        "close": "10.00",
+                    },
+                    {
+                        "timestamp": "01/02/2020",
+                        "close": "8.00",
+                    },
+                    {
+                        "timestamp": "01/03/2020",
+                        "close": "5.00",
+                    },
+                    {
+                        "timestamp": "01/04/2020",
+                        "close": "10.00",
+                    },
+                    {
+                        "timestamp": "01/05/2020",
+                        "close": "12.00",
+                    },
+                    {
+                        "timestamp": "01/06/2020",
+                        "close": "20.00",
+                    },
+                    {
+                        "timestamp": "01/07/2020",
+                        "close": "16.00",
+                    },
+                    {
+                        "timestamp": "01/08/2020",
+                        "close": "18.00",
+                    },
+                    {
+                        "timestamp": "01/09/2020",
+                        "close": "20.00",
+                    },
+                    {
+                        "timestamp": "01/10/2020",
+                        "close": "20.00",
+                    },
+                ],
+                "SIGNAL_BLOCK-1-1": [],
+            },
+        }
+
+        response = event_ingestor(payload)
+        self.assertDictEqual(
+            response,
+            {
+                "response": {
+                    "portVals": [
+                        {"value": 50000.0, "timestamp": "01/01/2020 00:00:00"},
+                        {"value": 50000.0, "timestamp": "01/02/2020 00:00:00"},
+                        {"value": 50000.0, "timestamp": "01/03/2020 00:00:00"},
+                        {"value": 50000.0, "timestamp": "01/04/2020 00:00:00"},
+                        {"value": 50000.0, "timestamp": "01/05/2020 00:00:00"},
+                        {"value": 50000.0, "timestamp": "01/06/2020 00:00:00"},
+                        {"value": 50000.0, "timestamp": "01/07/2020 00:00:00"},
+                        {"value": 50000.0, "timestamp": "01/08/2020 00:00:00"},
+                        {"value": 50000.0, "timestamp": "01/09/2020 00:00:00"},
+                        {"value": 50000.0, "timestamp": "01/10/2020 00:00:00"},
+                    ],
+                    "trades": [],
                 }
             },
         )
