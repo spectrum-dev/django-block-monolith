@@ -281,7 +281,8 @@ def _generate_signal_block_df(signal_block):
                 ignore_index=True,
             )
 
-    signal_block_df = signal_block_df.set_index("timestamp")
+    if len(signal_block_df) > 0:
+        signal_block_df = signal_block_df.set_index("timestamp")
     return signal_block_df
 
 
@@ -313,8 +314,9 @@ def _generate_trades_df(input, signal_block_df):
             orders.sell_close(index, "close", "", "", "")
 
     trades_df = orders.trades_df
-    trades_df.timestamp = pd.to_datetime(trades_df.timestamp)
-    trades_df = trades_df.sort_values(by="timestamp")
-    trades_df = trades_df.set_index("timestamp")
+    if len(trades_df) > 0:
+        trades_df.timestamp = pd.to_datetime(trades_df.timestamp)
+        trades_df = trades_df.sort_values(by="timestamp")
+        trades_df = trades_df.set_index("timestamp")
 
     return trades_df
