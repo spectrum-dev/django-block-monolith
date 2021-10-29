@@ -5,6 +5,7 @@ from signal_blocks.tests.data.data_block import DATA_BLOCK, DATA_BLOCK_2
 
 from blocks.event import event_ingestor
 
+
 class GetEventAction(TestCase):
     def test_ok(self):
         response = self.client.get(f"/SIGNAL_BLOCK/6/eventAction")
@@ -42,7 +43,6 @@ class GetEventType(TestCase):
 class PostRun(TestCase):
     def setUp(self):
         self.payload = {"blockType": "SIGNAL_BLOCK", "blockId": 6}
-
 
     def test_close_above_low(self):
         payload = {

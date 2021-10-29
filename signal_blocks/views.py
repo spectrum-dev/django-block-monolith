@@ -10,7 +10,7 @@ from rest_enumfield import EnumField
 from signal_blocks.blocks.intersect_block.main import run as signal_block_run
 from signal_blocks.blocks.saddle_block.main import run as saddle_block_run
 from signal_blocks.and_block.main import run as and_run
-from signal_blocks.blocks.or_block.main import run as or_run
+from signal_blocks.or_block.main import run as or_run
 from signal_blocks.blocks.crossover_block.main import run as crossover_block_run
 from signal_blocks.candle_close_block.main import run as candle_close_run
 
