@@ -27,7 +27,6 @@ from strategy_blocks.simple_backtest.main import run as strategy_block_1_run
 from strategy_blocks.advance_backtest.main import run as strategy_block_2_run
 
 
-
 def event_ingestor(payload):
     """
     Takes in a payload resembling:
