@@ -22,6 +22,7 @@ from django.views.static import serve
 import computational_blocks.views
 import signal_blocks.views
 import data_blocks.views
+import bulk_data_block.views
 
 urlpatterns = [
     url(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
@@ -30,8 +31,10 @@ urlpatterns = [
     path("DATA_BLOCK/1/candlestick", data_blocks.views.get_us_stock_data_candlesticks),
     path("DATA_BLOCK/2/cryptoName", data_blocks.views.get_symbol),
     path("DATA_BLOCK/2/candlestick", data_blocks.views.get_crypto_candlesticks),
-    path("BULK_DATA_BLOCK/1/exchange", data_blocks.views.get_screener_exchanges),
-    path("BULK_DATA_BLOCK/1/candlestick", data_blocks.views.get_screener_candlesticks),
+    path("BULK_DATA_BLOCK/1/exchange", bulk_data_block.views.get_screener_exchanges),
+    path(
+        "BULK_DATA_BLOCK/1/candlestick", bulk_data_block.views.get_screener_candlesticks
+    ),
     path("COMPUTATIONAL_BLOCK/1/indicator", computational_blocks.views.get_indicators),
     path(
         "COMPUTATIONAL_BLOCK/1/indicatorField",
