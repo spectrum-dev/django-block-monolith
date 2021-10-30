@@ -1,7 +1,6 @@
-import json
 from django.test import TestCase
 
-from signal_blocks.tests.data.data_block import DATA_BLOCK, DATA_BLOCK_2
+from signal_blocks.candle_close_block.tests.fixture import DATA_BLOCK, DATA_BLOCK_2
 
 from blocks.event import event_ingestor
 
