@@ -1,5 +1,5 @@
 import pandas as pd
-from data_blocks.crypto_data.alpha_vantage import get_crypto_data
+from data_blocks.two.alpha_vantage import get_crypto_data
 
 
 def run(input):

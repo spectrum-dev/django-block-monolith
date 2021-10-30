@@ -1,6 +1,6 @@
 import pandas as pd
 
-from signal_blocks.intersect_block.events.intersect import main
+from signal_blocks.one.events.intersect import main
 
 
 def handle_intersect(computational_block_df):

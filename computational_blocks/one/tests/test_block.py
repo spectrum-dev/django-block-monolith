@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from blocks.event import event_ingestor
 
-from computational_blocks.technical_analysis.tests.fixtures import (
+from computational_blocks.one.tests.fixtures import (
     DATA_BLOCK,
     INTRADAY_DATA_BLOCK,
     INTRADAY_TWO_DAYS_DATA_BLOCK,
