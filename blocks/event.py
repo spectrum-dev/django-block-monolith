@@ -17,7 +17,7 @@ from computational_blocks.operation_block.main import (
 from signal_blocks.intersect_block.main import run as signal_block_1_run
 from signal_blocks.blocks.saddle_block.main import run as signal_block_2_run
 from signal_blocks.and_block.main import run as signal_block_3_run
-from signal_blocks.blocks.crossover_block.main import run as signal_block_4_run
+from signal_blocks.crossover_block.main import run as signal_block_4_run
 from signal_blocks.or_block.main import run as signal_block_5_run
 from signal_blocks.candle_close_block.main import run as signal_block_6_run
 from signal_blocks.comparison_block.main import run as signal_block_7_run

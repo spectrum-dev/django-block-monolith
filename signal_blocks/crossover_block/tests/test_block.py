@@ -1,6 +1,6 @@
-import json
-
 from django.test import TestCase
+
+from blocks.event import event_ingestor
 
 
 class GetCrossoverType(TestCase):
@@ -18,15 +18,19 @@ class GetEventAction(TestCase):
 
 
 class PostRun(TestCase):
+    def setUp(self):
+        self.payload = {"blockType": "SIGNAL_BLOCK", "blockId": 4}
+
     def test_crossover_above_event_single_action_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "event_type": "ABOVE",
                 "event_action": "BUY",
                 "event_value": "15",
                 "incoming_data": "1-data",
             },
-            "output": {
+            "outputs": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
                     {"timestamp": "2020-01-02", "data": 11.00},
@@ -37,23 +41,20 @@ class PostRun(TestCase):
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/4/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(), {"response": [{"timestamp": "2020-01-04", "order": "BUY"}]}
-        )
+        self.assertEqual(response, [{"timestamp": "2020-01-04", "order": "BUY"}])
 
     def test_crossover_above_event_single_action_ok_close_field(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "event_type": "ABOVE",
                 "event_action": "BUY",
                 "event_value": "15",
                 "incoming_data": "3-close",
             },
-            "output": {
+            "outputs": {
                 "COMPUTATIONAL_BLOCK-1-3": [
                     {"timestamp": "2020-01-01", "close": 10.00},
                     {"timestamp": "2020-01-02", "close": 11.00},
@@ -64,23 +65,20 @@ class PostRun(TestCase):
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/4/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(), {"response": [{"timestamp": "2020-01-04", "order": "BUY"}]}
-        )
+        self.assertEqual(response, [{"timestamp": "2020-01-04", "order": "BUY"}])
 
     def test_crossover_below_event_single_action_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "event_type": "BELOW",
                 "event_action": "SELL",
                 "event_value": "15",
                 "incoming_data": "1-data",
             },
-            "output": {
+            "outputs": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
                     {"timestamp": "2020-01-02", "data": 13.00},
@@ -93,24 +91,23 @@ class PostRun(TestCase):
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/4/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {"response": [{"timestamp": "2020-01-05", "order": "SELL"}]},
+        self.assertEqual(
+            response,
+            [{"timestamp": "2020-01-05", "order": "SELL"}],
         )
 
     def test_crossover_below_event_multiple_actions_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "event_type": "BELOW",
                 "event_action": "BUY",
                 "event_value": "15",
                 "incoming_data": "1-data",
             },
-            "output": {
+            "outputs": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 20.00},
                     {"timestamp": "2020-01-02", "data": 15.00},
@@ -127,30 +124,27 @@ class PostRun(TestCase):
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/4/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "2020-01-03", "order": "BUY"},
-                    {"timestamp": "2020-01-08", "order": "BUY"},
-                    {"timestamp": "2020-01-10", "order": "BUY"},
-                ]
-            },
+        self.assertEqual(
+            response,
+            [
+                {"timestamp": "2020-01-03", "order": "BUY"},
+                {"timestamp": "2020-01-08", "order": "BUY"},
+                {"timestamp": "2020-01-10", "order": "BUY"},
+            ],
         )
 
     def test_crossover_below_begin_below_threshold_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "event_type": "BELOW",
                 "event_action": "BUY",
                 "event_value": "15",
                 "incoming_data": "1-data",
             },
-            "output": {
+            "outputs": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
                     {"timestamp": "2020-01-02", "data": 10.00},
@@ -164,45 +158,11 @@ class PostRun(TestCase):
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/4/run", json.dumps(payload), content_type="application/json"
-        )
-
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "2020-01-07", "order": "BUY"},
-                ]
-            },
-        )
-
-    def test_more_than_one_output_stream_data_error(self):
-        payload = {
-            "input": {
-                "event_type": "ABOVE",
-                "event_action": "BUY",
-                "event_value": "15",
-            },
-            "output": {
-                "COMPUTATIONAL_BLOCK-1-1": [
-                    {"timestamp": "2020-01-01", "data": 10.00},
-                    {"timestamp": "2020-01-02", "data": 11.00},
-                    {"timestamp": "2020-01-03", "data": 13.00},
-                ],
-                "COMPUTATIONAL_BLOCK-1-2": [
-                    {"timestamp": "2020-01-01", "data": 10.00},
-                    {"timestamp": "2020-01-02", "data": 11.00},
-                    {"timestamp": "2020-01-03", "data": 13.00},
-                ],
-            },
-        }
-
-        response = self.client.post(
-            "/SIGNAL_BLOCK/4/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
         self.assertEqual(
-            response.json(),
-            {"non_field_errors": ["You must pass in at most one stream of data"]},
+            response,
+            [
+                {"timestamp": "2020-01-07", "order": "BUY"},
+            ],
         )
