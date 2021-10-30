@@ -27,39 +27,6 @@ def get_event_actions(request):
     return JsonResponse(response)
 
 
-class PostRun(APIView):
-    def post(self, request):
-        """
-        Runs the event block
-        """
-
-        class EventAction(enum.Enum):
-            BUY = "BUY"
-            SELL = "SELL"
-
-        class InputSerializer(serializers.Serializer):
-            event_action = EnumField(choices=EventAction)
-
-        request_body = json.loads(request.body)
-
-        response = []
-        InputSerializer(data=request_body["input"]).is_valid(raise_exception=True)
-
-        if len(request_body["output"].keys()) < 2:
-            return JsonResponse(
-                {
-                    "non_field_errors": [
-                        "You must pass in at least two different streams of data"
-                    ]
-                },
-                status=400,
-            )
-
-        response = signal_block_run(request_body["input"], request_body["output"])
-
-        return JsonResponse({"response": response})
-
-
 # Saddle Block (Signal Block with ID 2)
 # ------------------------------------
 
