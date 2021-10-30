@@ -1,7 +1,7 @@
 import pandas as pd
 from functools import reduce
 
-from signal_blocks.blocks.intersect_block.events.main import (
+from signal_blocks.intersect_block.events.main import (
     handle_intersect,
 )
 

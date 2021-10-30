@@ -2,6 +2,8 @@ import json
 
 from django.test import TestCase
 
+from blocks.event import event_ingestor
+
 
 class GetEventAction(TestCase):
     def test_ok(self):
@@ -11,10 +13,17 @@ class GetEventAction(TestCase):
 
 
 class PostRun(TestCase):
+    def setUp(self):
+        self.payload = {
+            "blockType": "SIGNAL_BLOCK",
+            "blockId": 1,
+        }
+
     def test_intersect_event_two_outputs_single_intersection_ok(self):
         payload = {
-            "input": {"event_action": "BUY"},
-            "output": {
+            **self.payload,
+            "inputs": {"event_action": "BUY"},
+            "outputs": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
                     {"timestamp": "2020-01-02", "data": 11.00},
@@ -28,18 +37,15 @@ class PostRun(TestCase):
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(), {"response": [{"timestamp": "2020-01-02", "order": "BUY"}]}
-        )
+        self.assertEqual(response, [{"timestamp": "2020-01-02", "order": "BUY"}])
 
     def test_intersect_event_two_outputs_single_intersection_ok(self):
         payload = {
-            "input": {"event_action": "BUY"},
-            "output": {
+            **self.payload,
+            "inputs": {"event_action": "BUY"},
+            "outputs": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
                     {"timestamp": "2020-01-02", "data": 11.00},
@@ -57,24 +63,21 @@ class PostRun(TestCase):
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    {"timestamp": "2020-01-02", "order": "BUY"},
-                    {"order": "BUY", "timestamp": "2020-01-04"},
-                ]
-            },
+        self.assertEqual(
+            response,
+            [
+                {"timestamp": "2020-01-02", "order": "BUY"},
+                {"order": "BUY", "timestamp": "2020-01-04"},
+            ],
         )
 
     def test_intersect_event_three_outputs_single_intersection_ok(self):
         payload = {
-            "input": {"event_action": "SELL"},
-            "output": {
+            **self.payload,
+            "inputs": {"event_action": "SELL"},
+            "outputs": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
                     {"timestamp": "2020-01-02", "data": 11.00},
@@ -96,36 +99,9 @@ class PostRun(TestCase):
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
-
-        self.assertDictEqual(
-            response.json(),
-            {"response": [{"timestamp": "2020-01-03", "order": "SELL"}]},
-        )
-
-    def test_less_than_two_output_streams_error(self):
-        payload = {
-            "input": {"event_action": "BUY"},
-            "output": {
-                "COMPUTATIONAL_BLOCK-1-1": [
-                    {"timestamp": "2020-01-01", "data": 10.00},
-                    {"timestamp": "2020-01-02", "data": 11.00},
-                    {"timestamp": "2020-01-03", "data": 13.00},
-                ]
-            },
-        }
-
-        response = self.client.post(
-            "/SIGNAL_BLOCK/1/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
         self.assertEqual(
-            response.json(),
-            {
-                "non_field_errors": [
-                    "You must pass in at least two different streams of data"
-                ]
-            },
+            response,
+            [{"timestamp": "2020-01-03", "order": "SELL"}],
         )
