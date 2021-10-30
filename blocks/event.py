@@ -6,10 +6,10 @@ from data_blocks.two.main import run as data_block_2_run
 from data_blocks.screener_data.main import run as bulk_data_block_1_run
 
 # Computational Blocks
-from computational_blocks.technical_analysis.main import (
+from computational_blocks.one.main import (
     run as computational_block_1_run,
 )
-from computational_blocks.operation_block.main import (
+from computational_blocks.two.main import (
     run as computational_block_2_run,
 )
 
