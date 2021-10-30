@@ -2,6 +2,8 @@ import json
 
 from django.test import TestCase
 
+from blocks.event import event_ingestor
+
 
 class GetSaddleType(TestCase):
     def test_ok(self):
@@ -18,16 +20,20 @@ class GetEventAction(TestCase):
 
 
 class PostRun(TestCase):
+    def setUp(self):
+        self.payload = {"blockType": "SIGNAL_BLOCK", "blockId": 2}
+
     def test_upwards_data_block_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "incoming_data": "close",
                 "saddle_type": "UPWARD",
                 "event_action": "BUY",
                 "consecutive_up": 2,
                 "consecutive_down": 1,
             },
-            "output": {
+            "outputs": {
                 "DATA_BLOCK-1-1": [
                     {
                         "timestamp": "2020-01-01",
@@ -81,24 +87,21 @@ class PostRun(TestCase):
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(), {"response": [{"timestamp": "2020-01-06", "order": "BUY"}]}
-        )
+        self.assertEqual(response, [{"timestamp": "2020-01-06", "order": "BUY"}])
 
     def test_upward_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "incoming_data": "data",
                 "saddle_type": "UPWARD",
                 "event_action": "BUY",
                 "consecutive_up": 2,
                 "consecutive_down": 1,
             },
-            "output": {
+            "outputs": {
                 "COMPUTATIONAL_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
                     {"timestamp": "2020-01-02", "data": 11.00},
@@ -110,24 +113,21 @@ class PostRun(TestCase):
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(), {"response": [{"timestamp": "2020-01-06", "order": "BUY"}]}
-        )
+        self.assertEqual(response, [{"timestamp": "2020-01-06", "order": "BUY"}])
 
     def test_upward_no_event(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "incoming_data": "data",
                 "saddle_type": "UPWARD",
                 "event_action": "BUY",
                 "consecutive_up": 2,
                 "consecutive_down": 1,
             },
-            "output": {
+            "outputs": {
                 "DATA_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
                     {"timestamp": "2020-01-02", "data": 11.00},
@@ -139,22 +139,21 @@ class PostRun(TestCase):
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(response.json(), {"response": []})
+        self.assertEqual(response, [])
 
     def test_downward_ok(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "incoming_data": "data",
                 "saddle_type": "DOWNWARD",
                 "event_action": "BUY",
                 "consecutive_down": 2,
                 "consecutive_up": 1,
             },
-            "output": {
+            "outputs": {
                 "DATA_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
                     {"timestamp": "2020-01-02", "data": 8.00},
@@ -166,24 +165,21 @@ class PostRun(TestCase):
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(
-            response.json(), {"response": [{"order": "BUY", "timestamp": "2020-01-05"}]}
-        )
+        self.assertEqual(response, [{"order": "BUY", "timestamp": "2020-01-05"}])
 
     def test_downward_no_event(self):
         payload = {
-            "input": {
+            **self.payload,
+            "inputs": {
                 "incoming_data": "data",
                 "saddle_type": "DOWNWARD",
                 "event_action": "BUY",
                 "consecutive_down": 2,
                 "consecutive_up": 1,
             },
-            "output": {
+            "outputs": {
                 "DATA_BLOCK-1-1": [
                     {"timestamp": "2020-01-01", "data": 10.00},
                     {"timestamp": "2020-01-02", "data": 9.00},
@@ -195,46 +191,6 @@ class PostRun(TestCase):
             },
         }
 
-        response = self.client.post(
-            "/SIGNAL_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
+        response = event_ingestor(payload)
 
-        self.assertDictEqual(response.json(), {"response": []})
-
-    def test_validation_error_too_many_data_streams(self):
-        payload = {
-            "input": {
-                "incoming_data": "data",
-                "saddle_type": "DOWNWARD",
-                "event_action": "BUY",
-                "consecutive_down": 2,
-                "consecutive_up": 1,
-            },
-            "output": {
-                "DATA_BLOCK-1-1": [
-                    {"timestamp": "2020-01-01", "data": 10.00},
-                    {"timestamp": "2020-01-02", "data": 9.00},
-                    {"timestamp": "2020-01-03", "data": 8.00},
-                    {"timestamp": "2020-01-04", "data": 7.00},
-                    {"timestamp": "2020-01-05", "data": 6.00},
-                    {"timestamp": "2020-01-06", "data": 5.00},
-                ],
-                "DATA_BLOCK-1-2": [
-                    {"timestamp": "2020-01-01", "data": 10.00},
-                    {"timestamp": "2020-01-02", "data": 9.00},
-                    {"timestamp": "2020-01-03", "data": 8.00},
-                    {"timestamp": "2020-01-04", "data": 7.00},
-                    {"timestamp": "2020-01-05", "data": 6.00},
-                    {"timestamp": "2020-01-06", "data": 5.00},
-                ],
-            },
-        }
-
-        response = self.client.post(
-            "/SIGNAL_BLOCK/2/run", json.dumps(payload), content_type="application/json"
-        )
-
-        self.assertDictEqual(
-            response.json(),
-            {"non_field_errors": ["You must pass in at most one stream of data"]},
-        )
+        self.assertEqual(response, [])

@@ -1,10 +1,7 @@
-import pandas as pd
-from functools import reduce
-
-from signal_blocks.blocks.crossover_block.events.crossover_above import (
+from signal_blocks.crossover_block.events.crossover_above import (
     main as crossover_above,
 )
-from signal_blocks.blocks.crossover_block.events.crossover_below import (
+from signal_blocks.crossover_block.events.crossover_below import (
     main as crossover_below,
 )
 from utils.utils import get_data_from_id_and_field
