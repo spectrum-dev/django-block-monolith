@@ -18,6 +18,7 @@ from signal_blocks.candle_close_block.main import run as candle_close_run
 # Event Block (Signal Block with ID 1)
 # ------------------------------------
 
+
 def get_event_actions(request):
     """
     Retrieves a list of supported event actions
@@ -40,7 +41,6 @@ def get_saddle_types(request):
     return JsonResponse(response)
 
 
-
 # Cross-Over Block (Signal Block with ID 4)
 # ------------------------------------
 
@@ -52,6 +52,7 @@ def get_crossover_types(request):
     response = {"response": ["ABOVE", "BELOW"]}
 
     return JsonResponse(response)
+
 
 # Candle Close Green Block (Signal Block with ID 6)
 # ------------------------------------
@@ -73,6 +74,7 @@ def get_candle_close_types(request):
     }
 
     return JsonResponse(response)
+
 
 # Comparison Block (Signal Block with ID 7)
 # ------------------------------------
