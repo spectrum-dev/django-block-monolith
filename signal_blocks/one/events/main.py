@@ -1,5 +1,3 @@
-import pandas as pd
-
 from signal_blocks.one.events.intersect import main
 
 
