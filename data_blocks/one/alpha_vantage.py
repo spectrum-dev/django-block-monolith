@@ -1,4 +1,3 @@
-import pandas as pd
 from os import environ
 
 from alpha_vantage.timeseries import TimeSeries
