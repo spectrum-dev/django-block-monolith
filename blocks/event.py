@@ -3,7 +3,7 @@ from data_blocks.one.main import run as data_block_1_run
 from data_blocks.two.main import run as data_block_2_run
 
 # Bulk Data Blocks
-from data_blocks.screener_data.main import run as bulk_data_block_1_run
+from bulk_data_block.one.main import run as bulk_data_block_1_run
 
 # Computational Blocks
 from computational_blocks.one.main import (
