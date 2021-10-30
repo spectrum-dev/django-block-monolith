@@ -30,6 +30,7 @@ def get_block_data_from_dict(block_type, output):
     Returns dictionary item that matches with block type required
     """
     data = None
+    # TODO: validate that cannot be more than 1 of block type?
     for key in output.keys():
         key_breakup = key.split("-")
         if key_breakup[0] == block_type:
