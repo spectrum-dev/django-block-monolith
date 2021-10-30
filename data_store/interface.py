@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime, date
+from datetime import datetime
 
 from data_store.helpers import get_all_weekdays, make_eod_candlestick_request
 from data_store.models import EquityDataStore

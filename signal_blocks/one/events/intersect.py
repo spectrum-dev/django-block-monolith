@@ -1,4 +1,3 @@
-import pandas as pd
 from datetime import datetime
 
 # NOTE: Exempted from coverage as this function was lifted from an external source

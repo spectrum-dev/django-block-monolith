@@ -1,4 +1,3 @@
-import talib
 import pandas as pd
 
 from talib import EMA, ADX, ADXR, APO, AROONOSC, BOP, CCI, CMO, DX, RSI

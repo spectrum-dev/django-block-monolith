@@ -1,5 +1,3 @@
-import json
-
 from django.test.testcases import TestCase
 
 from blocks.event import event_ingestor
