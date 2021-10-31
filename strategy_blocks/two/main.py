@@ -105,6 +105,8 @@ def run(input, output):
                     bool_arr.append(monitor_bool)
                 final_orders["monitor_to_close"] = bool_arr
 
+                # TODO: If 2 'closing' orders are present due to SL/TP trigger, these need to be combined into 1 order to save commission
+                # Currently, it gets logged as 2 separate transactions (or N transactions closing N open trades) see test_backtest_block_short_sl_tp_buy_close
                 final_orders = final_orders.append(
                     {
                         "timestamp": index,
