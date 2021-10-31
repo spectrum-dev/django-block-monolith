@@ -1,12 +1,37 @@
-import unittest
-
 import pandas as pd
+from django.test import TestCase
 from pandas.util.testing import assert_frame_equal
 
-from utils.utils import get_data_from_id_and_field
+from utils.exceptions import InvalidRequestException, KeyDoesNotExistException
+from utils.utils import format_request, get_data_from_id_and_field
 
 
-class TestUtils(unittest.TestCase):
+class TestFormatRequest(TestCase):
+    def test_empty_request_json_raises_exception(self):
+        with self.assertRaises(InvalidRequestException):
+            format_request(None, "timestamp")
+
+    def test_empty_array_request_json_raises_exception(self):
+        with self.assertRaises(InvalidRequestException):
+            format_request([], "timestamp")
+
+    def test_key_does_not_exist_in_json(self):
+        with self.assertRaises(KeyDoesNotExistException):
+            format_request([{"value": 0, "data": 0}], "timestamp")
+
+    def test_successfully_returns_request_df(self):
+        response_df = format_request(
+            [{"timestamp": "2020-01-01", "data": 0.00}], "timestamp"
+        )
+        expected_response_df = pd.DataFrame(
+            [["2020-01-01", 0.00]], columns=["timestamp", "data"]
+        )
+        expected_response_df = expected_response_df.set_index("timestamp")
+
+        assert_frame_equal(response_df, expected_response_df)
+
+
+class TestUtils(TestCase):
     output = {
         "COMPUTATIONAL_BLOCK-1-2": [
             {"timestamp": "01/01/2020", "close": "12.00"},
