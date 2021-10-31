@@ -1,4 +1,5 @@
 import json
+from typing import List
 
 import pandas as pd
 
@@ -32,6 +33,15 @@ def format_request(request_json: dict, key: str) -> pd.DataFrame:
 
 
 def format_response(response_df: pd.DataFrame, index_key: str, index_data: str):
+    """
+    Formats response for COMPUTATIONAL_BLOCKS into a JSON Payload
+
+    Attributes
+    -----------
+    response_df: Incoming DataFrame
+    index_key: Key data is indexed
+    index_data: Data key that needs to be retrieved
+    """
     response_df.index.name = index_key
     response_df.name = index_data
 
@@ -40,6 +50,28 @@ def format_response(response_df: pd.DataFrame, index_key: str, index_data: str):
     )
     response_json = json.loads(response_json)
 
+    return response_json
+
+
+def format_signal_block_response(
+    response_df: pd.DataFrame, index_key: str, filter_columns: List[str]
+):
+    """
+    Formats response for SIGNAL_BLOCKS into a JSON Payload
+
+    Attributes
+    -----------
+    response_df: Incoming DataFrame
+    index_key: Key data is indexed
+    filter_columns: List of keys to be filtered
+    """
+    response_df = response_df.reset_index(level=index_key)
+    response_df.drop(
+        response_df.columns.difference([index_key] + filter_columns), 1, inplace=True
+    )
+    response_df = response_df.dropna()
+
+    response_json = response_df.to_dict(orient="records")
     return response_json
 
 
