@@ -10,15 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import logging
-import sentry_sdk
-
 from os import environ, path
-from dotenv import load_dotenv
-
 from pathlib import Path
 
-from kombu import Queue, Exchange
-
+import sentry_sdk
+from dotenv import load_dotenv
+from kombu import Exchange, Queue
 from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -65,11 +62,11 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "data_store",
-    "data_blocks",
+    "data_block",
     "bulk_data_block",
-    "computational_blocks",
-    "signal_blocks",
-    "strategy_blocks",
+    "computational_block",
+    "signal_block",
+    "strategy_block",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

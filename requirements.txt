@@ -1,3 +1,4 @@
+autoflake==1.4.0
 aiohttp==3.7.4.post0
 alpha-vantage==2.3.1
 appdirs==1.4.4
@@ -23,6 +24,7 @@ django-six==1.0.4
 djangorestframework==3.12.4
 factory-boy==3.2.1
 idna==2.10
+isort==5.9.3
 multidict==5.2.0
 mypy-extensions==0.4.3
 numpy==1.21.3

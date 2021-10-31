@@ -1,37 +1,7 @@
 from django.test import TestCase
 
 import data_store.factories
-
 from blocks.event import event_ingestor
-
-
-class GetExchange(TestCase):
-    def test_ok(self):
-        response = self.client.get("/BULK_DATA_BLOCK/1/exchange")
-
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    "US",
-                    "KLSE",
-                ]
-            },
-        )
-
-
-class GetCandlestick(TestCase):
-    def test_ok(self):
-        response = self.client.get("/BULK_DATA_BLOCK/1/candlestick")
-
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    "1day",
-                ]
-            },
-        )
 
 
 class RunScreenerData(TestCase):

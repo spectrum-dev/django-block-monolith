@@ -88,7 +88,11 @@ services:
             - default
     test-lint:
         build: .
-        command: python -m black . -t py38 --check
+        command: >
+            bash -c "python -m black . -t py38 --check
+            && python -m autoflake --recursive --check .
+            && python -m isort . --profile=black --check-only
+            "
         environment:
             - ALPHA_VANTAGE_API_KEY=demo
             - DJANGO_SECRET_KEY=django-public-secret-key
