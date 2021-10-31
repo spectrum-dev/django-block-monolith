@@ -1,7 +1,7 @@
 import pandas as pd
 
 from utils.utils import get_block_data_from_dict, _convert_dict_to_df
-from strategy_blocks.simple_backtest.orders import Orders
+from strategy_blocks.one.orders import Orders
 import math
 
 
