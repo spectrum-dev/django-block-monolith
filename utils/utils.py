@@ -1,5 +1,33 @@
 import pandas as pd
 
+from .exceptions import InvalidRequestException, KeyDoesNotExistException
+
+
+def format_request(request_json: dict, key: str) -> pd.DataFrame:
+    """
+    Takes in a JSON List Payload and converts it to a pandas DataFrame
+
+    Attributes
+    -----------
+    request_json: List of Json Objects
+    key: The main key to index DataFrame by
+    """
+    # Ensures request_json is no None and has a value
+    if request_json == None or request_json == []:
+        raise InvalidRequestException
+
+    # Checks if the key exists in the request JSON
+    all_keys = request_json[0].keys()
+    if key not in all_keys:
+        raise KeyDoesNotExistException
+
+    # Converts the JSON into a DataFrame with the key being the index
+    request_df = pd.DataFrame(request_json)
+    request_df = request_df.sort_values(by=key)
+    request_df = request_df.set_index(key)
+
+    return request_df
+
 
 def get_data_from_id_and_field(id_field_string, output):
     """
