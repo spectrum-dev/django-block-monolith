@@ -1,6 +1,6 @@
 from signal_block.four.events.crossover_above import main as crossover_above
 from signal_block.four.events.crossover_below import main as crossover_below
-from utils.utils import get_data_from_id_and_field
+from utils.utils import format_signal_block_response, get_data_from_id_and_field
 
 
 def run(input, output):
@@ -35,14 +35,4 @@ def run(input, output):
         input["event_action"],
         crossover_value=float(input["event_value"]),
     )
-    return _format_response(response_df)
-
-
-def _format_response(response_df):
-    response_df = response_df.reset_index(level="timestamp")
-    response_df.drop(
-        response_df.columns.difference(["timestamp", "order"]), 1, inplace=True
-    )
-    response_df = response_df.dropna()
-    response_json = response_df.to_dict(orient="records")
-    return response_json
+    return format_signal_block_response(response_df, "timestamp", ["order"])

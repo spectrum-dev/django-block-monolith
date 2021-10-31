@@ -4,6 +4,7 @@ import pandas as pd
 
 from signal_block.two.events.downward_saddle import main as downward_saddle
 from signal_block.two.events.upward_saddle import main as upward_saddle
+from utils.utils import format_signal_block_response
 
 
 def run(input, output):
@@ -39,7 +40,7 @@ def run(input, output):
     else:
         pass
 
-    return _format_response(response_df)
+    return format_signal_block_response(response_df, "timestamp", ["order"])
 
 
 def _format_request(data, incoming_data_field):
@@ -54,13 +55,3 @@ def _format_request(data, incoming_data_field):
     df = df.set_index("timestamp")
 
     return df
-
-
-def _format_response(response_df):
-    response_df = response_df.reset_index(level="timestamp")
-    response_df.drop(
-        response_df.columns.difference(["timestamp", "order"]), 1, inplace=True
-    )
-    response_df = response_df.dropna()
-    response_json = response_df.to_dict(orient="records")
-    return response_json

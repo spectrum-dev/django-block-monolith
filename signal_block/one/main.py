@@ -3,6 +3,7 @@ from functools import reduce
 import pandas as pd
 
 from signal_block.one.events.main import handle_intersect
+from utils.utils import format_signal_block_response
 
 
 def run(input, computational_block):
@@ -18,8 +19,9 @@ def run(input, computational_block):
     computational_block_df = _format_request(computational_block)
 
     response_df = handle_intersect(computational_block_df)
+    response_df["order"] = input["event_action"]
 
-    return _format_response(input["event_action"], response_df)
+    return format_signal_block_response(response_df, "timestamp", ["order"])
 
 
 def _format_request(data):
@@ -33,13 +35,3 @@ def _format_request(data):
     df = df.set_index("timestamp")
 
     return df
-
-
-def _format_response(action, response_df):
-    response_df = response_df.reset_index(level="timestamp")
-    response_df["order"] = action
-    response_df.drop(
-        response_df.columns.difference(["timestamp", "order"]), 1, inplace=True
-    )
-    response_json = response_df.to_dict(orient="records")
-    return response_json

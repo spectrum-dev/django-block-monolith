@@ -1,6 +1,7 @@
 import pandas as pd
 
 from signal_block.seven.events.comparison_events import *
+from utils.utils import format_signal_block_response
 
 
 def run(input, output):
@@ -100,7 +101,7 @@ def run(input, output):
         event_action,
     )
 
-    response = _format_response(response_df)
+    response = format_signal_block_response(response_df, "timestamp", ["order"])
     return {"response": response}
 
 
@@ -110,13 +111,3 @@ def _format_request(request_json):
     """
     df = pd.DataFrame.from_records(request_json)
     return df
-
-
-def _format_response(response_df):
-    response_df = response_df.reset_index(level="timestamp")
-    response_df.drop(
-        response_df.columns.difference(["timestamp", "order"]), 1, inplace=True
-    )
-    response_df = response_df.dropna()
-    response_json = response_df.to_dict(orient="records")
-    return response_json
