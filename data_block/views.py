@@ -19,20 +19,6 @@ def get_equity_name(request):
     return JsonResponse(response)
 
 
-def get_crypto_candlesticks(request):
-    response_payload = [
-        "1min",
-        "5min",
-        "15min",
-        "30min",
-        "60min",
-        "1day",
-        "1week",
-        "1month",
-    ]
-    return JsonResponse({"response": response_payload})
-
-
 # Crypto Data (Data Block with ID 2)
 # -----------------------------------
 from data_block.two.supported_crypto import SUPPORTED_CRYPTO
@@ -57,17 +43,3 @@ def get_symbol(request):
             )
 
     return JsonResponse({"response": response})
-
-
-def get_us_stock_data_candlesticks(request):
-    response_payload = [
-        "1min",
-        "5min",
-        "15min",
-        "30min",
-        "60min",
-        "1day",
-        "1week",
-        "1month",
-    ]
-    return JsonResponse({"response": response_payload})
