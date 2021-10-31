@@ -1,9 +1,8 @@
-import pandas as pd
 from functools import reduce
 
-from signal_block.one.events.main import (
-    handle_intersect,
-)
+import pandas as pd
+
+from signal_block.one.events.main import handle_intersect
 
 
 def run(input, computational_block):

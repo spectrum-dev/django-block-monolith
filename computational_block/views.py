@@ -2,7 +2,6 @@ from django.http import JsonResponse
 
 from computational_block.one.mappings import INDICATORS
 
-
 # Technical Analysis (Computational Block with ID 1)
 # --------------------------------------------------
 

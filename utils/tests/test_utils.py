@@ -1,7 +1,9 @@
 import unittest
-from utils.utils import get_data_from_id_and_field
+
 import pandas as pd
 from pandas.util.testing import assert_frame_equal
+
+from utils.utils import get_data_from_id_and_field
 
 
 class TestUtils(unittest.TestCase):

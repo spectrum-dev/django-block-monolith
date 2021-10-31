@@ -1,7 +1,6 @@
 from django.test import TestCase
 
 from blocks.event import event_ingestor
-
 from computational_block.one.tests.fixtures import (
     DATA_BLOCK,
     INTRADAY_DATA_BLOCK,

@@ -1,6 +1,6 @@
-import pandas as pd
-
 from functools import reduce
+
+import pandas as pd
 
 
 def run(outputs):

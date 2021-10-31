@@ -1,7 +1,6 @@
 from django.test import TestCase
 
 import data_store.factories
-
 from blocks.event import event_ingestor
 
 

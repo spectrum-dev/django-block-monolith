@@ -1,6 +1,7 @@
-import pandas as pd
-import operator
 import json
+import operator
+
+import pandas as pd
 
 
 def run(input, output):

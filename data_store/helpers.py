@@ -1,8 +1,7 @@
-import requests
+from datetime import timedelta
 from os import environ
 
-from datetime import timedelta
-
+import requests
 
 EOD_HISTORICAL_DATA_API_KEY = environ["EOD_HISTORICAL_DATA_API_KEY"]
 

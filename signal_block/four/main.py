@@ -1,9 +1,5 @@
-from signal_block.four.events.crossover_above import (
-    main as crossover_above,
-)
-from signal_block.four.events.crossover_below import (
-    main as crossover_below,
-)
+from signal_block.four.events.crossover_above import main as crossover_above
+from signal_block.four.events.crossover_below import main as crossover_below
 from utils.utils import get_data_from_id_and_field
 
 
