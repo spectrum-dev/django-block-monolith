@@ -1,6 +1,5 @@
-import pandas as pd
-
 from signal_block.six.events.close_above_events import *
+from utils import format_request
 
 
 def run(input, output):
@@ -20,7 +19,7 @@ def run(input, output):
             data_block = output[key]
             break
 
-    data_block_df = _format_request(data_block)
+    data_block_df = format_request(data_block, "timestamp")
 
     _candle_close_func = None
     case = lambda x: x == input["event_type"]
@@ -45,17 +44,6 @@ def run(input, output):
 
     response = _format_response(response_df)
     return {"response": response}
-
-
-def _format_request(request_json):
-    """
-    Helper method to format request
-    """
-    request_df = pd.DataFrame(request_json)
-    request_df = request_df.sort_values(by="timestamp")
-    request_df = request_df.set_index("timestamp")
-
-    return request_df
 
 
 def _format_response(response_df):

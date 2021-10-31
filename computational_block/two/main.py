@@ -1,7 +1,7 @@
 import json
 import operator
 
-import pandas as pd
+from utils import format_request
 
 
 def run(input, output):
@@ -39,22 +39,11 @@ def run(input, output):
     elif case("^"):
         operator_func = operator.pow
 
-    data_block_df = _format_request(data_block)
+    data_block_df = format_request(data_block, "timestamp")
     data_block_df["data"] = operator_func(
         data_block_df[data_field].astype(float), float(operation_value)
     )
     return {"response": _format_response(data_block_df[["data"]])}
-
-
-def _format_request(request_json):
-    """
-    Helper method to format request
-    """
-    request_df = pd.DataFrame(request_json)
-    request_df = request_df.sort_values(by="timestamp")
-    request_df = request_df.set_index("timestamp")
-
-    return request_df
 
 
 def _format_response(response_df):

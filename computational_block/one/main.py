@@ -1,7 +1,7 @@
 import json
 
 from computational_block.one.mappings import INDICATORS
-from computational_block.one.momentum import *
+from utils import format_request
 
 
 def run(input, output):
@@ -20,7 +20,7 @@ def run(input, output):
             data_block = output[key]
             break
 
-    data_block_df = _format_request(data_block)
+    data_block_df = format_request(data_block, "timestamp")
     response = calculate_indicator(input, data_block_df)
     return _format_response(response)
 
@@ -61,17 +61,6 @@ def calculate_indicator(
     response = eval(f"{function_name}{parameters}")
 
     return response
-
-
-def _format_request(request_json):
-    """
-    Helper method to format request
-    """
-    request_df = pd.DataFrame(request_json)
-    request_df = request_df.sort_values(by="timestamp")
-    request_df = request_df.set_index("timestamp")
-
-    return request_df
 
 
 def _format_response(response_df):
