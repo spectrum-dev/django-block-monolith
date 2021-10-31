@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import os
 
 from celery import Celery
+from sentry_sdk import capture_exception
 
 # Ingests block run events
 from blocks.event import event_ingestor as event_ingestor_run
@@ -22,7 +23,23 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
 
-@app.task
+class BaseTask(app.Task):
+    "" "Abstract base class for all tasks " ""
+
+    abstract = True
+
+    def on_retry(self, exc, task_id, args, kwargs, einfo):
+        """Log the exceptions to sentry at retry"""
+        capture_exception(exc)
+        super(BaseTask, self).on_retry(exc, task_id, args, kwargs, einfo)
+
+    def on_failure(self, exc, task_id, args, kwargs, einfo):
+        """Log the exceptions to sentry"""
+        capture_exception(exc)
+        super(BaseTask, self).on_failure(exc, task_id, args, kwargs, einfo)
+
+
+@app.task(base=BaseTask)
 def event_ingestor(payload):
     return event_ingestor_run(payload)
 
