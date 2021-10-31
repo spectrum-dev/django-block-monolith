@@ -1,7 +1,7 @@
 import json
 import operator
 
-from utils import format_request
+from utils.utils import format_request
 
 
 def run(input, output):

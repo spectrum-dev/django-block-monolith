@@ -1,5 +1,5 @@
 from signal_block.six.events.close_above_events import *
-from utils import format_request
+from utils.utils import format_request
 
 
 def run(input, output):
