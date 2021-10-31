@@ -1,4 +1,4 @@
-from signal_blocks.one.events.intersect import main
+from signal_block.one.events.intersect import main
 
 
 def handle_intersect(computational_block_df):

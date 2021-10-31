@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from signal_blocks.six.tests.fixture import DATA_BLOCK, DATA_BLOCK_2
+from signal_block.six.tests.fixture import DATA_BLOCK, DATA_BLOCK_2
 
 from blocks.event import event_ingestor
 

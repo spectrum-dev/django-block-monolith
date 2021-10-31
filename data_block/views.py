@@ -3,7 +3,7 @@ from django.http import JsonResponse
 
 # US Stock Data (Data Block with ID 1)
 # -----------------------------------
-from data_blocks.one.alpha_vantage import search_ticker
+from data_block.one.alpha_vantage import search_ticker
 
 # Dropdowns
 def get_equity_name(request):
@@ -35,7 +35,7 @@ def get_crypto_candlesticks(request):
 
 # Crypto Data (Data Block with ID 2)
 # -----------------------------------
-from data_blocks.two.supported_crypto import SUPPORTED_CRYPTO
+from data_block.two.supported_crypto import SUPPORTED_CRYPTO
 
 
 def get_symbol(request):

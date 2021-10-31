@@ -1,7 +1,7 @@
 import json
 
-from computational_blocks.one.momentum import *
-from computational_blocks.one.mappings import INDICATORS
+from computational_block.one.momentum import *
+from computational_block.one.mappings import INDICATORS
 
 
 def run(input, output):

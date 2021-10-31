@@ -1,5 +1,5 @@
 import pandas as pd
-from signal_blocks.six.events.close_above_events import *
+from signal_block.six.events.close_above_events import *
 
 
 def run(input, output):

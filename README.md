@@ -23,4 +23,4 @@ Now, each time you make a commit, git cleans up the directory by linting your fi
 ## Running CLI and Specific Tests
 - `docker-compose run --rm block-monolith /bin/bash`
 - This will now boot up a shell of the block-monolith
-- To run tests specifically on modules of code (for example, Signal Blocks ->  Test Saddle Block -> GetSaddleType), run `./manage.py test signal_blocks.tests.test_saddle_block.GetSaddleType`.
+- To run tests specifically on modules of code (for example, Signal Blocks ->  Test Saddle Block -> GetSaddleType), run `./manage.py test signal_block.tests.test_saddle_block.GetSaddleType`.
