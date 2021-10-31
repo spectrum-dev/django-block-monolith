@@ -1,3 +1,5 @@
+import json
+
 import pandas as pd
 
 from .exceptions import InvalidRequestException, KeyDoesNotExistException
@@ -27,6 +29,18 @@ def format_request(request_json: dict, key: str) -> pd.DataFrame:
     request_df = request_df.set_index(key)
 
     return request_df
+
+
+def format_response(response_df: pd.DataFrame, index_key: str, index_data: str):
+    response_df.index.name = index_key
+    response_df.name = index_data
+
+    response_json = response_df.reset_index().to_json(
+        orient="records", date_format="iso"
+    )
+    response_json = json.loads(response_json)
+
+    return response_json
 
 
 def get_data_from_id_and_field(id_field_string, output):
