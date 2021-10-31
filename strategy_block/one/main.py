@@ -1,7 +1,7 @@
 import pandas as pd
 
-from strategy_blocks.one.orders import Orders
-from strategy_blocks.one.marketsim import run as run_marketsim
+from strategy_block.one.orders import Orders
+from strategy_block.one.marketsim import run as run_marketsim
 
 
 def run(input, output):

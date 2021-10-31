@@ -65,11 +65,11 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "data_store",
-    "data_blocks",
+    "data_block",
     "bulk_data_block",
-    "computational_blocks",
-    "signal_blocks",
-    "strategy_blocks",
+    "computational_block",
+    "signal_block",
+    "strategy_block",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

@@ -1,14 +1,14 @@
 import pandas as pd
 from functools import reduce
 
-from signal_blocks.one.events.main import (
+from signal_block.one.events.main import (
     handle_intersect,
 )
 
 
 def run(input, computational_block):
     """
-    Takes in elements from the form input and multiple COMPUTATIONAL_BLOCKS
+    Takes in elements from the form input and multiple computational_block
     to generates a series of events associated with that block
 
     Attributes
