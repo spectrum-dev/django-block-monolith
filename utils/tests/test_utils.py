@@ -3,7 +3,12 @@ from django.test import TestCase
 from pandas.util.testing import assert_frame_equal
 
 from utils.exceptions import InvalidRequestException, KeyDoesNotExistException
-from utils.utils import format_request, get_data_from_id_and_field
+from utils.utils import (
+    format_computational_block_response,
+    format_request,
+    format_signal_block_response,
+    get_data_from_id_and_field,
+)
 
 
 class TestFormatRequest(TestCase):
@@ -29,6 +34,33 @@ class TestFormatRequest(TestCase):
         expected_response_df = expected_response_df.set_index("timestamp")
 
         assert_frame_equal(response_df, expected_response_df)
+
+
+class FormatComputationalBlockResponse(TestCase):
+    def test_ok(self):
+        response_df = pd.DataFrame(
+            [["2020-01-01", 0.00]], columns=["timestamp", "data"]
+        )
+        response_df = response_df.set_index("timestamp")
+        response_json = format_computational_block_response(
+            response_df, "timestamp", "data"
+        )
+
+        self.assertEqual(response_json, [{"timestamp": "2020-01-01", "data": 0.0}])
+
+
+class FormatSignalBlockResponse(TestCase):
+    def test_ok(self):
+        response_df = pd.DataFrame(
+            [["2020-01-01", "BUY"]], columns=["timestamp", "order"]
+        )
+        response_df = response_df.set_index("timestamp")
+
+        response_json = format_signal_block_response(
+            response_df, "timestamp", ["order"]
+        )
+
+        self.assertEqual(response_json, [{"timestamp": "2020-01-01", "order": "BUY"}])
 
 
 class TestUtils(TestCase):

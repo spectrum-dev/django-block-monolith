@@ -32,7 +32,9 @@ def format_request(request_json: dict, key: str) -> pd.DataFrame:
     return request_df
 
 
-def format_response(response_df: pd.DataFrame, index_key: str, index_data: str):
+def format_computational_block_response(
+    response_df: pd.DataFrame, index_key: str, index_data: str
+):
     """
     Formats response for COMPUTATIONAL_BLOCKS into a JSON Payload
 

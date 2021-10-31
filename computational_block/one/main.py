@@ -1,4 +1,4 @@
-from utils.utils import format_request, format_response
+from utils.utils import format_computational_block_response, format_request
 
 from .mappings import INDICATORS
 
@@ -23,7 +23,7 @@ def run(input, output):
 
     data_block_df = format_request(data_block, "timestamp")
     response = calculate_indicator(input, data_block_df)
-    return format_response(response, "timestamp", "data")
+    return format_computational_block_response(response, "timestamp", "data")
 
 
 def calculate_indicator(

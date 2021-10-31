@@ -1,6 +1,6 @@
 import operator
 
-from utils.utils import format_request, format_response
+from utils.utils import format_computational_block_response, format_request
 
 
 def run(input, output):
@@ -42,4 +42,8 @@ def run(input, output):
     data_block_df["data"] = operator_func(
         data_block_df[data_field].astype(float), float(operation_value)
     )
-    return {"response": format_response(data_block_df[["data"]], "timestamp", "data")}
+    return {
+        "response": format_computational_block_response(
+            data_block_df[["data"]], "timestamp", "data"
+        )
+    }
