@@ -1,9 +1,9 @@
 from django.http import JsonResponse
 
-
 # US Stock Data (Data Block with ID 1)
 # -----------------------------------
 from data_block.one.alpha_vantage import search_ticker
+
 
 # Dropdowns
 def get_equity_name(request):

@@ -18,3 +18,8 @@ repos:
           - --in-place
           - --remove-all-unused-imports
           - --remove-unused-variables
+-   repo: https://github.com/pycqa/isort
+    rev: 5.8.0
+    hooks:
+      - id: isort
+        args: ["--profile", "black"]

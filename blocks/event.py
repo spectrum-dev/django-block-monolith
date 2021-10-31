@@ -1,28 +1,15 @@
-# Data Blocks
+from bulk_data_block.one.main import run as bulk_data_block_1_run
+from computational_block.one.main import run as computational_block_1_run
+from computational_block.two.main import run as computational_block_2_run
 from data_block.one.main import run as data_block_1_run
 from data_block.two.main import run as data_block_2_run
-
-# Bulk Data Blocks
-from bulk_data_block.one.main import run as bulk_data_block_1_run
-
-# Computational Blocks
-from computational_block.one.main import (
-    run as computational_block_1_run,
-)
-from computational_block.two.main import (
-    run as computational_block_2_run,
-)
-
-# Signal Blocks
-from signal_block.one.main import run as signal_block_1_run
-from signal_block.two.main import run as signal_block_2_run
-from signal_block.three.main import run as signal_block_3_run
-from signal_block.four.main import run as signal_block_4_run
 from signal_block.five.main import run as signal_block_5_run
-from signal_block.six.main import run as signal_block_6_run
+from signal_block.four.main import run as signal_block_4_run
+from signal_block.one.main import run as signal_block_1_run
 from signal_block.seven.main import run as signal_block_7_run
-
-# Strategy Blocks
+from signal_block.six.main import run as signal_block_6_run
+from signal_block.three.main import run as signal_block_3_run
+from signal_block.two.main import run as signal_block_2_run
 from strategy_block.one.main import run as strategy_block_1_run
 
 

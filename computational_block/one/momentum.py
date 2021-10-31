@@ -1,7 +1,6 @@
 import pandas as pd
-
-from talib import EMA, ADX, ADXR, APO, AROONOSC, BOP, CCI, CMO, DX, RSI
 import ta
+from talib import ADX, ADXR, APO, AROONOSC, BOP, CCI, CMO, DX, EMA, RSI
 
 """
     Documentation

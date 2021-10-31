@@ -1,7 +1,7 @@
-import pandas as pd
 from os import environ
-import requests
 
+import pandas as pd
+import requests
 from alpha_vantage.cryptocurrencies import CryptoCurrencies
 
 

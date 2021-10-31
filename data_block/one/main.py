@@ -1,5 +1,4 @@
 import pandas as pd
-
 from pydantic import BaseModel
 
 from data_block.one.alpha_vantage import get_us_stock_data

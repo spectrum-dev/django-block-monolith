@@ -1,4 +1,5 @@
 import pandas as pd
+
 from signal_block.seven.events.comparison_events import *
 
 

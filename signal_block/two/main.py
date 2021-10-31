@@ -1,10 +1,9 @@
-import pandas as pd
 from functools import reduce
 
+import pandas as pd
+
+from signal_block.two.events.downward_saddle import main as downward_saddle
 from signal_block.two.events.upward_saddle import main as upward_saddle
-from signal_block.two.events.downward_saddle import (
-    main as downward_saddle,
-)
 
 
 def run(input, output):
