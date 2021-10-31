@@ -4,40 +4,6 @@ from blocks.event import event_ingestor
 from signal_block.six.tests.fixture import DATA_BLOCK, DATA_BLOCK_2
 
 
-class GetEventAction(TestCase):
-    def test_ok(self):
-        response = self.client.get(f"/SIGNAL_BLOCK/6/eventAction")
-
-        self.assertEqual(
-            response.json(),
-            {
-                "response": [
-                    "BUY",
-                    "SELL",
-                ]
-            },
-        )
-
-
-class GetEventType(TestCase):
-    def test_ok(self):
-        response = self.client.get(f"/SIGNAL_BLOCK/6/candleCloseType")
-
-        self.assertEqual(
-            response.json(),
-            {
-                "response": [
-                    "CLOSE_ABOVE_OPEN",
-                    "CLOSE_BELOW_OPEN",
-                    "CLOSE_EQ_HIGH",
-                    "CLOSE_BELOW_HIGH",
-                    "CLOSE_ABOVE_LOW",
-                    "CLOSE_EQ_LOW",
-                ]
-            },
-        )
-
-
 class PostRun(TestCase):
     def setUp(self):
         self.payload = {"blockType": "SIGNAL_BLOCK", "blockId": 6}

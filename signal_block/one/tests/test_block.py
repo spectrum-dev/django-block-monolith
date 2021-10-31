@@ -3,13 +3,6 @@ from django.test import TestCase
 from blocks.event import event_ingestor
 
 
-class GetEventAction(TestCase):
-    def test_ok(self):
-        response = self.client.get("/SIGNAL_BLOCK/1/eventAction")
-
-        self.assertEqual(response.json(), {"response": ["BUY", "SELL"]})
-
-
 class PostRun(TestCase):
     def setUp(self):
         self.payload = {

@@ -51,30 +51,6 @@ DATA_BLOCK = [
 ]
 
 
-class GetComparisonType(TestCase):
-    def test_ok(self):
-        response = self.client.get("/SIGNAL_BLOCK/7/comparisonType")
-
-        self.assertEqual(
-            response.json(),
-            {
-                "response": [
-                    "<",
-                    "<=",
-                    ">",
-                    ">=",
-                ]
-            },
-        )
-
-
-class GetEventAction(TestCase):
-    def test_ok(self):
-        response = self.client.get("/SIGNAL_BLOCK/7/eventAction")
-
-        self.assertEqual(response.json(), {"response": ["BUY", "SELL"]})
-
-
 class TriggerEvent(TestCase):
     def test_success_json_less_than_buy(self):
         payload = {
