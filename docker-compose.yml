@@ -91,7 +91,7 @@ services:
         command: >
             bash -c "python -m black . -t py38 --check
             && python -m autoflake --recursive --check .
-            && python -m isort -rc . --check-only
+            && python -m isort . --profile=black --check-only
             "
         environment:
             - ALPHA_VANTAGE_API_KEY=demo
