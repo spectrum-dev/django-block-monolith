@@ -99,24 +99,6 @@ POWER_DATA_BLOCK = [
 ]
 
 
-class GetOperationType(TestCase):
-    def test_ok(self):
-        response = self.client.get(f"/COMPUTATIONAL_BLOCK/2/operationType")
-
-        self.assertEqual(
-            response.json(),
-            {
-                "response": [
-                    "+",
-                    "-",
-                    "*",
-                    "/",
-                    "^",
-                ]
-            },
-        )
-
-
 class TriggerEvent(TestCase):
     def test_success_json_add(self):
         payload = {

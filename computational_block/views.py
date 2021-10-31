@@ -21,20 +21,3 @@ def get_indiciator_fields(request):
         return JsonResponse({"error": f"The indicator {indicator_name} was not found"})
 
     return JsonResponse({"response": indicator_information["params"]})
-
-
-# Operation Block (Computational Block with ID 2)
-# --------------------------------------------------
-
-# Dropdowns
-def get_operation_types(request):
-    response = {
-        "response": [
-            "+",
-            "-",
-            "*",
-            "/",
-            "^",
-        ]
-    }
-    return JsonResponse(response)

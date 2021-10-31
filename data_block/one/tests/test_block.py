@@ -73,27 +73,6 @@ class GetEquityName(TestCase):
         pass
 
 
-class GetCandlestick(TestCase):
-    def test_ok(self):
-        response = self.client.get("/DATA_BLOCK/1/candlestick")
-
-        self.assertDictEqual(
-            response.json(),
-            {
-                "response": [
-                    "1min",
-                    "5min",
-                    "15min",
-                    "30min",
-                    "60min",
-                    "1day",
-                    "1week",
-                    "1month",
-                ]
-            },
-        )
-
-
 class PostRun(TestCase):
     def setUp(self):
         self.payload = {

@@ -3,20 +3,6 @@ from django.test import TestCase
 from blocks.event import event_ingestor
 
 
-class GetSaddleType(TestCase):
-    def test_ok(self):
-        response = self.client.get("/SIGNAL_BLOCK/2/saddleType")
-
-        self.assertEqual(response.json(), {"response": ["DOWNWARD", "UPWARD"]})
-
-
-class GetEventAction(TestCase):
-    def test_ok(self):
-        response = self.client.get("/SIGNAL_BLOCK/2/eventAction")
-
-        self.assertEqual(response.json(), {"response": ["BUY", "SELL"]})
-
-
 class PostRun(TestCase):
     def setUp(self):
         self.payload = {"blockType": "SIGNAL_BLOCK", "blockId": 2}
