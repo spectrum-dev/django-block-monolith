@@ -1,8 +1,6 @@
-from django.shortcuts import render
-
 from django.http import JsonResponse
 
-from computational_blocks.technical_analysis.mappings import INDICATORS
+from computational_blocks.one.mappings import INDICATORS
 
 
 # Technical Analysis (Computational Block with ID 1)

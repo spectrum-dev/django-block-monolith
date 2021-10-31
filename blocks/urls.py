@@ -22,6 +22,7 @@ from django.views.static import serve
 import computational_blocks.views
 import signal_blocks.views
 import data_blocks.views
+import bulk_data_block.views
 
 urlpatterns = [
     url(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
@@ -30,8 +31,10 @@ urlpatterns = [
     path("DATA_BLOCK/1/candlestick", data_blocks.views.get_us_stock_data_candlesticks),
     path("DATA_BLOCK/2/cryptoName", data_blocks.views.get_symbol),
     path("DATA_BLOCK/2/candlestick", data_blocks.views.get_crypto_candlesticks),
-    path("BULK_DATA_BLOCK/1/exchange", data_blocks.views.get_screener_exchanges),
-    path("BULK_DATA_BLOCK/1/candlestick", data_blocks.views.get_screener_candlesticks),
+    path("BULK_DATA_BLOCK/1/exchange", bulk_data_block.views.get_screener_exchanges),
+    path(
+        "BULK_DATA_BLOCK/1/candlestick", bulk_data_block.views.get_screener_candlesticks
+    ),
     path("COMPUTATIONAL_BLOCK/1/indicator", computational_blocks.views.get_indicators),
     path(
         "COMPUTATIONAL_BLOCK/1/indicatorField",
@@ -42,18 +45,12 @@ urlpatterns = [
         computational_blocks.views.get_operation_types,
     ),
     path("SIGNAL_BLOCK/1/eventAction", signal_blocks.views.get_event_actions),
-    path("SIGNAL_BLOCK/1/run", signal_blocks.views.PostRun.as_view()),
     path("SIGNAL_BLOCK/2/eventAction", signal_blocks.views.get_event_actions),
     path("SIGNAL_BLOCK/2/saddleType", signal_blocks.views.get_saddle_types),
-    path("SIGNAL_BLOCK/2/run", signal_blocks.views.PostSaddleRun.as_view()),
-    path("SIGNAL_BLOCK/3/run", signal_blocks.views.PostAndRunView.as_view()),
     path("SIGNAL_BLOCK/4/eventAction", signal_blocks.views.get_event_actions),
     path("SIGNAL_BLOCK/4/crossoverType", signal_blocks.views.get_crossover_types),
-    path("SIGNAL_BLOCK/4/run", signal_blocks.views.PostCrossoverRun.as_view()),
-    path("SIGNAL_BLOCK/5/run", signal_blocks.views.PostOrRunView.as_view()),
     path("SIGNAL_BLOCK/6/eventAction", signal_blocks.views.get_event_actions),
     path("SIGNAL_BLOCK/6/candleCloseType", signal_blocks.views.get_candle_close_types),
-    path("SIGNAL_BLOCK/6/run", signal_blocks.views.PostCandleCloseRunView.as_view()),
     path("SIGNAL_BLOCK/7/eventAction", signal_blocks.views.get_event_actions),
     path("SIGNAL_BLOCK/7/comparisonType", signal_blocks.views.get_comparison_types),
 ]

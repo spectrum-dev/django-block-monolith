@@ -9,3 +9,12 @@ repos:
     rev: 21.8b0
     hooks:
     -   id: black
+-   repo: https://github.com/myint/autoflake
+    rev: v1.4
+    hooks:
+      - id: autoflake
+        name: Removes unused variables
+        args:
+          - --in-place
+          - --remove-all-unused-imports
+          - --remove-unused-variables

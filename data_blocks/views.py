@@ -1,17 +1,9 @@
-import json
-import enum
-
-from django.shortcuts import render
 from django.http import JsonResponse
-from rest_framework import serializers
-from rest_framework.views import APIView
-from rest_enumfield import EnumField
 
 
 # US Stock Data (Data Block with ID 1)
 # -----------------------------------
-from data_blocks.us_stock_data.alpha_vantage import search_ticker
-from data_blocks.us_stock_data.main import run as us_stock_data_run
+from data_blocks.one.alpha_vantage import search_ticker
 
 # Dropdowns
 def get_equity_name(request):
@@ -43,8 +35,7 @@ def get_crypto_candlesticks(request):
 
 # Crypto Data (Data Block with ID 2)
 # -----------------------------------
-from data_blocks.crypto_data.supported_crypto import SUPPORTED_CRYPTO
-from data_blocks.crypto_data.main import run as crypto_run
+from data_blocks.two.supported_crypto import SUPPORTED_CRYPTO
 
 
 def get_symbol(request):
@@ -78,24 +69,5 @@ def get_us_stock_data_candlesticks(request):
         "1day",
         "1week",
         "1month",
-    ]
-    return JsonResponse({"response": response_payload})
-
-
-# Screener Data (Data Block with ID 3)
-# -----------------------------------
-
-
-def get_screener_exchanges(request):
-    response_payload = [
-        "US",
-        "KLSE",
-    ]
-    return JsonResponse({"response": response_payload})
-
-
-def get_screener_candlesticks(request):
-    response_payload = [
-        "1day",
     ]
     return JsonResponse({"response": response_payload})

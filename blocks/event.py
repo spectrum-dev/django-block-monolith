@@ -1,30 +1,30 @@
 # Data Blocks
-from data_blocks.us_stock_data.main import run as data_block_1_run
-from data_blocks.crypto_data.main import run as data_block_2_run
+from data_blocks.one.main import run as data_block_1_run
+from data_blocks.two.main import run as data_block_2_run
 
 # Bulk Data Blocks
-from data_blocks.screener_data.main import run as bulk_data_block_1_run
+from bulk_data_block.one.main import run as bulk_data_block_1_run
 
 # Computational Blocks
-from computational_blocks.technical_analysis.main import (
+from computational_blocks.one.main import (
     run as computational_block_1_run,
 )
-from computational_blocks.operation_block.main import (
+from computational_blocks.two.main import (
     run as computational_block_2_run,
 )
 
 # Signal Blocks
-from signal_blocks.blocks.intersect_block.main import run as signal_block_1_run
-from signal_blocks.blocks.saddle_block.main import run as signal_block_2_run
-from signal_blocks.blocks.and_block.main import run as signal_block_3_run
-from signal_blocks.blocks.crossover_block.main import run as signal_block_4_run
-from signal_blocks.blocks.or_block.main import run as signal_block_5_run
-from signal_blocks.blocks.candle_close_block.main import run as signal_block_6_run
-from signal_blocks.blocks.comparison_block.main import run as signal_block_7_run
+from signal_blocks.one.main import run as signal_block_1_run
+from signal_blocks.two.main import run as signal_block_2_run
+from signal_blocks.three.main import run as signal_block_3_run
+from signal_blocks.four.main import run as signal_block_4_run
+from signal_blocks.five.main import run as signal_block_5_run
+from signal_blocks.six.main import run as signal_block_6_run
+from signal_blocks.seven.main import run as signal_block_7_run
 
 # Strategy Blocks
-from strategy_blocks.simple_backtest.main import run as strategy_block_1_run
-from strategy_blocks.advance_backtest.main import run as strategy_block_2_run
+from strategy_blocks.one.main import run as strategy_block_1_run
+from strategy_blocks.two.main import run as strategy_block_2_run
 
 
 def event_ingestor(payload):
