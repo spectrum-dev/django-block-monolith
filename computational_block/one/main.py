@@ -1,7 +1,10 @@
 import json
 
-from computational_block.one.mappings import INDICATORS
-from utils import format_request
+from utils.utils import format_request
+
+from .mappings import INDICATORS
+
+from .momentum import *  # isort:skip
 
 
 def run(input, output):

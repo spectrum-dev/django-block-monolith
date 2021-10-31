@@ -18,7 +18,7 @@ def format_request(request_json: dict, key: str) -> pd.DataFrame:
 
     # Checks if the key exists in the request JSON
     all_keys = request_json[0].keys()
-    if key in all_keys:
+    if key not in all_keys:
         raise KeyDoesNotExistException
 
     # Converts the JSON into a DataFrame with the key being the index
