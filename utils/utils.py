@@ -3,7 +3,11 @@ from typing import List
 
 import pandas as pd
 
-from .exceptions import InvalidRequestException, KeyDoesNotExistException
+from .exceptions import (
+    BlockDataDoesNotExistException,
+    InvalidRequestException,
+    KeyDoesNotExistException,
+)
 
 
 def format_request(request_json: dict, key: str) -> pd.DataFrame:
@@ -75,6 +79,34 @@ def format_signal_block_response(
 
     response_json = response_df.to_dict(orient="records")
     return response_json
+
+
+def retrieve_block_data(selectable_data, incoming_data):
+    """
+    Provided a dictionary of blocks it pulls data from the incoming payload
+
+    Attributes
+    ----------
+    selectable_data: Dictionary containing block data that needs to be pulled in
+    incoming_data: Full output payload
+    """
+
+    visited_keys = []
+
+    response = {}
+    for key, accepted_blocks in selectable_data.items():
+        is_found = False
+        for incoming_data_key, output_data in incoming_data.items():
+            block_type = incoming_data_key.split("-")[0]
+            if block_type in accepted_blocks and incoming_data_key not in visited_keys:
+                visited_keys.append(incoming_data_key)
+                response[key] = output_data
+                is_found = True
+
+        if not is_found:
+            raise BlockDataDoesNotExistException
+
+    return response
 
 
 def get_data_from_id_and_field(id_field_string, output):

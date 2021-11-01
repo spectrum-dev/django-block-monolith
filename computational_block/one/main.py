@@ -1,4 +1,8 @@
-from utils.utils import format_computational_block_response, format_request
+from utils.utils import (
+    format_computational_block_response,
+    format_request,
+    retrieve_block_data,
+)
 
 from .mappings import INDICATORS
 
@@ -14,14 +18,11 @@ def run(input, output):
     input: Form inputs provided in metadata
     data_block: Data from a data_block stream
     """
-    data_block = None
-    for key in output.keys():
-        key_breakup = key.split("-")
-        if key_breakup[0] == "DATA_BLOCK" or key_breakup[0] == "BULK_DATA_BLOCK":
-            data_block = output[key]
-            break
+    selectable_data = {"data_block": ["DATA_BLOCK", "BULK_DATA_BLOCK"]}
 
-    data_block_df = format_request(data_block, "timestamp")
+    block_data = retrieve_block_data(selectable_data, output)
+
+    data_block_df = format_request(block_data["data_block"], "timestamp")
     response = calculate_indicator(input, data_block_df)
     return format_computational_block_response(response, "timestamp", "data")
 

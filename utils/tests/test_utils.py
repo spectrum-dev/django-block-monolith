@@ -2,12 +2,17 @@ import pandas as pd
 from django.test import TestCase
 from pandas.util.testing import assert_frame_equal
 
-from utils.exceptions import InvalidRequestException, KeyDoesNotExistException
+from utils.exceptions import (
+    BlockDataDoesNotExistException,
+    InvalidRequestException,
+    KeyDoesNotExistException,
+)
 from utils.utils import (
     format_computational_block_response,
     format_request,
     format_signal_block_response,
     get_data_from_id_and_field,
+    retrieve_block_data,
 )
 
 
@@ -61,6 +66,37 @@ class FormatSignalBlockResponse(TestCase):
         )
 
         self.assertEqual(response_json, [{"timestamp": "2020-01-01", "order": "BUY"}])
+
+
+class TestRetrieveBlockData(TestCase):
+    def test_single_block_ok(self):
+        selectable_data = {"data_block": ["DATA_BLOCK"]}
+        incoming_data = {"DATA_BLOCK": []}
+
+        response = retrieve_block_data(selectable_data, incoming_data)
+
+        self.assertDictEqual(response, {"data_block": []})
+
+    def test_multiple_block_ok(self):
+        selectable_data = {
+            "data_block": ["DATA_BLOCK"],
+            "signal_block": ["SIGNAL_BLOCK"],
+        }
+        incoming_data = {"DATA_BLOCK": [], "SIGNAL_BLOCK": []}
+
+        response = retrieve_block_data(selectable_data, incoming_data)
+
+        self.assertDictEqual(response, {"data_block": [], "signal_block": []})
+
+    def test_raises_exception_when_block_not_found(self):
+        selectable_data = {
+            "data_block": ["DATA_BLOCK"],
+            "signal_block": ["SIGNAL_BLOCK"],
+        }
+        incoming_data = {"DATA_BLOCK": []}
+
+        with self.assertRaises(BlockDataDoesNotExistException):
+            retrieve_block_data(selectable_data, incoming_data)
 
 
 class TestUtils(TestCase):
