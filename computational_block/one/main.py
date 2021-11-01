@@ -1,7 +1,8 @@
-import json
+from utils.utils import format_computational_block_response, format_request
 
-from computational_block.one.mappings import INDICATORS
-from computational_block.one.momentum import *
+from .mappings import INDICATORS
+
+from .momentum import *  # isort:skip
 
 
 def run(input, output):
@@ -20,9 +21,9 @@ def run(input, output):
             data_block = output[key]
             break
 
-    data_block_df = _format_request(data_block)
+    data_block_df = format_request(data_block, "timestamp")
     response = calculate_indicator(input, data_block_df)
-    return _format_response(response)
+    return format_computational_block_response(response, "timestamp", "data")
 
 
 def calculate_indicator(
@@ -61,28 +62,3 @@ def calculate_indicator(
     response = eval(f"{function_name}{parameters}")
 
     return response
-
-
-def _format_request(request_json):
-    """
-    Helper method to format request
-    """
-    request_df = pd.DataFrame(request_json)
-    request_df = request_df.sort_values(by="timestamp")
-    request_df = request_df.set_index("timestamp")
-
-    return request_df
-
-
-def _format_response(response_df):
-    """
-    Helper method to format response
-    """
-    response_df.index.name = "timestamp"
-    response_df.name = "data"
-    response_json = response_df.reset_index().to_json(
-        orient="records", date_format="iso"
-    )
-    response_json = json.loads(response_json)
-
-    return response_json
