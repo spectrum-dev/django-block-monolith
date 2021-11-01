@@ -77,6 +77,29 @@ def format_signal_block_response(
     return response_json
 
 
+def retrieve_block_data(selectable_data, incoming_data):
+    """
+    Provided a dictionary of blocks it pulls data from the incoming payload
+
+    Attributes
+    ----------
+    selectable_data: Dictionary containing block data that needs to be pulled in
+    incoming_data: Full output payload
+    """
+
+    visited_keys = []
+
+    response = {}
+    for key, accepted_blocks in selectable_data.items():
+        for incoming_data_key, output_data in incoming_data.items():
+            block_type = incoming_data_key.split("-")[0]
+            if block_type in accepted_blocks and incoming_data_key not in visited_keys:
+                visited_keys.append(incoming_data_key)
+                response[key] = output_data
+
+    return response
+
+
 def get_data_from_id_and_field(id_field_string, output):
     """
     id_field_string: string of form '1-volume' for example, DATA-BLOCK with a volume column.
