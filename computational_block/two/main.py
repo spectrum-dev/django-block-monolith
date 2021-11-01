@@ -1,6 +1,10 @@
 import operator
 
-from utils.utils import format_computational_block_response, format_request
+from utils.utils import (
+    format_computational_block_response,
+    format_request,
+    retrieve_block_data,
+)
 
 
 def run(input, output):
@@ -13,16 +17,14 @@ def run(input, output):
     output: Data from a data_block or computational_block stream (has to be numeric so to apply mathematical operation on)
     """
 
-    data_block = None
-    for key in output.keys():
-        key_breakup = key.split("-")
-        if (
-            key_breakup[0] == "DATA_BLOCK"
-            or key_breakup[0] == "BULK_DATA_BLOCK"
-            or key_breakup[0] == "COMPUTATIONAL_BLOCK"
-        ):
-            data_block = output[key]
-            break
+    selectable_data = {
+        "data_or_computational_block": [
+            "DATA_BLOCK",
+            "BULK_DATA_BLOCK",
+            "COMPUTATIONAL_BLOCK",
+        ]
+    }
+    block_data = retrieve_block_data(selectable_data, output)
 
     data_field = input["data_field"]
     operation_value = input["operation_value"]
@@ -38,7 +40,9 @@ def run(input, output):
     elif case("^"):
         operator_func = operator.pow
 
-    data_block_df = format_request(data_block, "timestamp")
+    data_block_df = format_request(
+        block_data["data_or_computational_block"], "timestamp"
+    )
     data_block_df["data"] = operator_func(
         data_block_df[data_field].astype(float), float(operation_value)
     )
