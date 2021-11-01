@@ -2,6 +2,7 @@ import pandas as pd
 
 from strategy_block.one.marketsim import run as run_marketsim
 from strategy_block.one.orders import Orders
+from utils.utils import retrieve_block_data
 
 
 def run(input, output):
@@ -13,25 +14,17 @@ def run(input, output):
     input: Form Input Values
     output: Output Cache Values
     """
-    data_block = None
-    for key in output.keys():
-        key_breakup = key.split("-")
-        if key_breakup[0] == "DATA_BLOCK" or key_breakup[0] == "BULK_DATA_BLOCK":
-            data_block = output[key]
-            break
+    selectable_data = {
+        "data_block": ["DATA_BLOCK", "BULK_DATA_BLOCK"],
+        "signal_block": ["SIGNAL_BLOCK"],
+    }
+    block_data = retrieve_block_data(selectable_data, output)
 
-    signal_block = None
-    for key in output.keys():
-        key_breakup = key.split("-")
-        if key_breakup[0] == "SIGNAL_BLOCK":
-            signal_block = output[key]
-            break
-
-    if len(signal_block) <= 0 or len(data_block) <= 0:
+    if len(block_data["data_block"]) <= 0 or len(block_data["signal_block"]) <= 0:
         return {"response": {"portVals": [], "trades": []}}
 
-    data_block_df = _generate_data_block_df(data_block)
-    signal_block_df = _generate_signal_block_df(signal_block)
+    data_block_df = _generate_data_block_df(block_data["data_block"])
+    signal_block_df = _generate_signal_block_df(block_data["signal_block"])
     trades_df = _generate_trades_df(input, signal_block_df)
 
     # TODO: Implement the marketsim
