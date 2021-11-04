@@ -8,3 +8,11 @@ class KeyDoesNotExistException(Exception):
 
 class BlockDataDoesNotExistException(Exception):
     pass
+
+
+class BlockDoesNotExistException(Exception):
+    pass
+
+
+class FieldDoesNotExistException(Exception):
+    pass

@@ -5,6 +5,8 @@ import pandas as pd
 
 from .exceptions import (
     BlockDataDoesNotExistException,
+    BlockDoesNotExistException,
+    FieldDoesNotExistException,
     InvalidRequestException,
     KeyDoesNotExistException,
 )
@@ -109,22 +111,24 @@ def retrieve_block_data(selectable_data, incoming_data):
     return response
 
 
-def get_data_from_id_and_field(id_field_string, output):
+def get_data_from_id_and_field(id_field_string: str, output: dict) -> pd.DataFrame:
     """
+    Provided a dictionary of blocks data and string denoting block ID and column-to-use, returns a dataframe with timestamp and data column.
+
+    Attributes
+    ----------
     id_field_string: string of form '1-volume' for example, DATA-BLOCK with a volume column.
     output: dictionary of connecting output datasets
-    Returns a dataframe with timestamp and data column
     """
     block_id, data_field = id_field_string.split("-")
-    # try:
-    block_name = [x for x in output.keys() if x.endswith(block_id)][0]
-    # except KeyError:
-    #     # TODO throw error here for non existing block ID in output dictionary
-    #     pass
+    block_names = [x for x in output.keys() if x.endswith(block_id)]
+    # Has to have at least 1 block name that matches with block_id
+    if not block_names:
+        raise BlockDoesNotExistException
+    block_name = block_names[0]
     data = pd.DataFrame.from_records(output[block_name])
-    # if data_field not in data.columns:
-    #     # TODO throw error for field not in dataframe
-    #     pass
+    if data_field not in data.columns:
+        raise FieldDoesNotExistException
     data = data[["timestamp", data_field]]
     data = data.set_index("timestamp")
     data = data.rename(columns={data_field: "data"})

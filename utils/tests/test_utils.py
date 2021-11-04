@@ -4,6 +4,8 @@ from pandas.util.testing import assert_frame_equal
 
 from utils.exceptions import (
     BlockDataDoesNotExistException,
+    BlockDoesNotExistException,
+    FieldDoesNotExistException,
     InvalidRequestException,
     KeyDoesNotExistException,
 )
@@ -126,9 +128,9 @@ class TestUtils(TestCase):
         assert_frame_equal(data, expected_df)
 
     def test_failure_error_non_existing_block_id(self):
-        # TODO
-        pass
+        with self.assertRaises(BlockDoesNotExistException):
+            get_data_from_id_and_field("3-close", self.output)
 
     def test_failure_error_non_existing_field(self):
-        # TODO
-        pass
+        with self.assertRaises(FieldDoesNotExistException):
+            get_data_from_id_and_field("2-test", self.output)
