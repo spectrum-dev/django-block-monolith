@@ -16,3 +16,7 @@ class BlockDoesNotExistException(Exception):
 
 class FieldDoesNotExistException(Exception):
     pass
+
+
+class MoreThanOneIncomingDataBlockException(Exception):
+    pass

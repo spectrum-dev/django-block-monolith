@@ -17,6 +17,19 @@ from .exceptions import (
     ComputationalBlockTwoOperationValueNotFloatException,
 )
 
+from .exceptions import (
+    DataValueNotFloatException,
+    FieldDoesNotExistException,
+    InvalidOperationTypeException,
+    OperationValueNotFloatException,
+)
+
+
+class InputPayload(BaseModel):
+    data_field: str
+    operation_value: str
+    operation_type: str
+
 
 class InputPayload(BaseModel):
     data_field: str
@@ -43,14 +56,22 @@ def run(input, output):
     }
     block_data = retrieve_block_data(selectable_data, output)
 
+<<<<<<< HEAD
     input = validate_payload(
         InputPayload, input, ComputationalBlockTwoInputPayloadInvalidException
     )
+=======
+    input = InputPayload(**input)
+>>>>>>> cffef1f... added more validation for computational block 2
     data_field = input.data_field
     try:
         operation_value = float(input.operation_value)
     except ValueError:
+<<<<<<< HEAD
         raise ComputationalBlockTwoOperationValueNotFloatException
+=======
+        raise OperationValueNotFloatException
+>>>>>>> cffef1f... added more validation for computational block 2
     case = lambda x: x == input.operation_type
     if case("+"):
         operator_func = operator.add
@@ -63,19 +84,31 @@ def run(input, output):
     elif case("^"):
         operator_func = operator.pow
     else:
+<<<<<<< HEAD
         raise ComputationalBlockTwoInvalidOperationTypeException
+=======
+        raise InvalidOperationTypeException
+>>>>>>> cffef1f... added more validation for computational block 2
 
     data_block_df = format_request(
         block_data["data_or_computational_block"], "timestamp"
     )
 
     if data_field not in data_block_df.columns:
+<<<<<<< HEAD
         raise ComputationalBlockTwoFieldDoesNotExistException
+=======
+        raise FieldDoesNotExistException
+>>>>>>> cffef1f... added more validation for computational block 2
 
     try:
         operation_lhs = data_block_df[data_field].astype(float)
     except ValueError:
+<<<<<<< HEAD
         raise ComputationalBlockTwoDataValueNotFloatException
+=======
+        raise DataValueNotFloatException
+>>>>>>> cffef1f... added more validation for computational block 2
 
     data_block_df["data"] = operator_func(operation_lhs, operation_value)
 
