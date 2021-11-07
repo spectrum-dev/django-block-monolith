@@ -2,12 +2,6 @@ import pandas as pd
 from pydantic import BaseModel
 
 from data_block.one.alpha_vantage import get_us_stock_data
-from utils.utils import validate_payload
-
-from .exceptions import (
-    DataBlockOneInvalidCandlestickException,
-    DataBlockOneInvalidInputPayloadException,
-)
 
 
 class InputPayload(BaseModel):
@@ -44,12 +38,8 @@ def run(input):
             return "D"
         elif case("1month"):
             return "D"
-        else:
-            raise DataBlockOneInvalidCandlestickException
 
-    input = validate_payload(
-        InputPayload, input, DataBlockOneInvalidInputPayloadException
-    )
+    input = InputPayload(**input)
 
     response_df = get_us_stock_data(input.equity_name, data_type=input.candlestick)
 
