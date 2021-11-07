@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from signal_block.one.events.main import handle_intersect
 from utils.utils import format_signal_block_response, validate_payload
 
-from .exceptions import SignalBlockOneInvalidInputException
+from .exceptions import SignalBlockOneInvalidInputPayloadException
 
 
 class InputPayload(BaseModel):
@@ -26,7 +26,9 @@ def run(input, computational_block):
     computational_block_df = _format_request(computational_block)
 
     response_df = handle_intersect(computational_block_df)
-    input = validate_payload(InputPayload, input, SignalBlockOneInvalidInputException)
+    input = validate_payload(
+        InputPayload, input, SignalBlockOneInvalidInputPayloadException
+    )
     response_df["order"] = input.event_action
 
     return format_signal_block_response(response_df, "timestamp", ["order"])
