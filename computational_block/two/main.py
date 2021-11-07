@@ -46,7 +46,6 @@ def run(input, output):
     input = validate_payload(
         InputPayload, input, ComputationalBlockTwoInputPayloadInvalidException
     )
-    input = InputPayload(**input)
     data_field = input.data_field
     try:
         operation_value = float(input.operation_value)
