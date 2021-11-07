@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from blocks.event import event_ingestor
+from signal_block.two.exceptions import SignalBlockTwoInvalidSaddleTypeException
 
 
 class PostRun(TestCase):
@@ -178,3 +179,28 @@ class PostRun(TestCase):
         response = event_ingestor(payload)
 
         self.assertEqual(response, [])
+
+    def test_failure_invalid_saddle_type(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "incoming_data": "data",
+                "saddle_type": "INVALID",
+                "event_action": "BUY",
+                "consecutive_down": 2,
+                "consecutive_up": 1,
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": [
+                    {"timestamp": "2020-01-01", "data": 10.00},
+                    {"timestamp": "2020-01-02", "data": 9.00},
+                    {"timestamp": "2020-01-03", "data": 8.00},
+                    {"timestamp": "2020-01-04", "data": 7.00},
+                    {"timestamp": "2020-01-05", "data": 6.00},
+                    {"timestamp": "2020-01-06", "data": 5.00},
+                ]
+            },
+        }
+
+        with self.assertRaises(SignalBlockTwoInvalidSaddleTypeException):
+            event_ingestor(payload)
