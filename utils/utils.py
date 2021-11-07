@@ -2,7 +2,6 @@ import json
 from typing import List
 
 import pandas as pd
-from pydantic import BaseModel, ValidationError
 
 from .exceptions import (
     BlockDataDoesNotExistException,
@@ -134,6 +133,7 @@ def get_data_from_id_and_field(id_field_string: str, output: dict) -> pd.DataFra
     data = data.set_index("timestamp")
     data = data.rename(columns={data_field: "data"})
     return data
+<<<<<<< HEAD
 
 
 def validate_payload(
@@ -149,3 +149,5 @@ def validate_payload(
         raise exception_raised(str(e.json()))
 
     return response
+=======
+>>>>>>> bfb436f... remove and split up into different PRS
