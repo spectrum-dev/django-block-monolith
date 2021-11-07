@@ -7,17 +7,6 @@ from utils.utils import (
     format_request,
     retrieve_block_data,
     validate_payload,
-<<<<<<< HEAD
-)
-
-from .exceptions import (
-    ComputationalBlockTwoDataValueNotFloatException,
-    ComputationalBlockTwoFieldDoesNotExistException,
-    ComputationalBlockTwoInputPayloadInvalidException,
-    ComputationalBlockTwoInvalidOperationTypeException,
-    ComputationalBlockTwoOperationValueNotFloatException,
-=======
->>>>>>> 783eab5... make named exception more verbose and remove redundant exception
 )
 
 from .exceptions import (
@@ -27,12 +16,6 @@ from .exceptions import (
     ComputationalBlockTwoInvalidOperationTypeException,
     ComputationalBlockTwoOperationValueNotFloatException,
 )
-
-
-class InputPayload(BaseModel):
-    data_field: str
-    operation_value: str
-    operation_type: str
 
 
 class InputPayload(BaseModel):
@@ -60,35 +43,14 @@ def run(input, output):
     }
     block_data = retrieve_block_data(selectable_data, output)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     input = validate_payload(
         InputPayload, input, ComputationalBlockTwoInputPayloadInvalidException
     )
-=======
-=======
-    input = validate_payload(
-        InputPayload, input, ComputationalBlockTwoInputPayloadInvalidException
-    )
-<<<<<<< HEAD
->>>>>>> 783eab5... make named exception more verbose and remove redundant exception
-    input = InputPayload(**input)
->>>>>>> cffef1f... added more validation for computational block 2
-=======
->>>>>>> 51612e1... removed redundant code
     data_field = input.data_field
     try:
         operation_value = float(input.operation_value)
     except ValueError:
-<<<<<<< HEAD
-<<<<<<< HEAD
         raise ComputationalBlockTwoOperationValueNotFloatException
-=======
-        raise OperationValueNotFloatException
->>>>>>> cffef1f... added more validation for computational block 2
-=======
-        raise ComputationalBlockTwoOperationValueNotFloatException
->>>>>>> 783eab5... make named exception more verbose and remove redundant exception
     case = lambda x: x == input.operation_type
     if case("+"):
         operator_func = operator.add
@@ -101,43 +63,19 @@ def run(input, output):
     elif case("^"):
         operator_func = operator.pow
     else:
-<<<<<<< HEAD
-<<<<<<< HEAD
         raise ComputationalBlockTwoInvalidOperationTypeException
-=======
-        raise InvalidOperationTypeException
->>>>>>> cffef1f... added more validation for computational block 2
-=======
-        raise ComputationalBlockTwoInvalidOperationTypeException
->>>>>>> 783eab5... make named exception more verbose and remove redundant exception
 
     data_block_df = format_request(
         block_data["data_or_computational_block"], "timestamp"
     )
 
     if data_field not in data_block_df.columns:
-<<<<<<< HEAD
-<<<<<<< HEAD
         raise ComputationalBlockTwoFieldDoesNotExistException
-=======
-        raise FieldDoesNotExistException
->>>>>>> cffef1f... added more validation for computational block 2
-=======
-        raise ComputationalBlockTwoFieldDoesNotExistException
->>>>>>> 783eab5... make named exception more verbose and remove redundant exception
 
     try:
         operation_lhs = data_block_df[data_field].astype(float)
     except ValueError:
-<<<<<<< HEAD
-<<<<<<< HEAD
         raise ComputationalBlockTwoDataValueNotFloatException
-=======
-        raise DataValueNotFloatException
->>>>>>> cffef1f... added more validation for computational block 2
-=======
-        raise ComputationalBlockTwoDataValueNotFloatException
->>>>>>> 783eab5... make named exception more verbose and remove redundant exception
 
     data_block_df["data"] = operator_func(operation_lhs, operation_value)
 
