@@ -2,15 +2,12 @@ from django.test import TestCase
 
 from blocks.event import event_ingestor
 from computational_block.two.exceptions import (
-    DataValueNotFloatException,
-    FieldDoesNotExistException,
-    InvalidOperationTypeException,
-    OperationValueNotFloatException,
+    ComputationalBlockTwoDataValueNotFloatException,
+    ComputationalBlockTwoFieldDoesNotExistException,
+    ComputationalBlockTwoInvalidOperationTypeException,
+    ComputationalBlockTwoOperationValueNotFloatException,
 )
-from utils.exceptions import (
-    BlockDataDoesNotExistException,
-    MoreThanOneIncomingDataBlockException,
-)
+from utils.exceptions import BlockDataDoesNotExistException
 
 DATA_BLOCK = [
     {
@@ -556,23 +553,6 @@ class TriggerEvent(TestCase):
         with self.assertRaises(BlockDataDoesNotExistException):
             event_ingestor(payload)
 
-    def test_failure_more_than_one_data(self):
-        payload = {
-            "blockType": "COMPUTATIONAL_BLOCK",
-            "blockId": 2,
-            "inputs": {
-                "data_field": "volume",
-                "operation_type": "*",
-                "operation_value": "5",
-            },
-            "outputs": {
-                "DATA_BLOCK-1-1": DATA_BLOCK,
-                "DATA_BLOCK-1-2": DATA_BLOCK,
-            },
-        }
-        with self.assertRaises(MoreThanOneIncomingDataBlockException):
-            event_ingestor(payload)
-
     def test_failure_non_number_operation_value(self):
         payload = {
             "blockType": "COMPUTATIONAL_BLOCK",
@@ -586,7 +566,7 @@ class TriggerEvent(TestCase):
                 "DATA_BLOCK-1-1": DATA_BLOCK,
             },
         }
-        with self.assertRaises(OperationValueNotFloatException):
+        with self.assertRaises(ComputationalBlockTwoOperationValueNotFloatException):
             event_ingestor(payload)
 
     def test_failure_non_existent_operation_type(self):
@@ -602,7 +582,7 @@ class TriggerEvent(TestCase):
                 "DATA_BLOCK-1-1": DATA_BLOCK,
             },
         }
-        with self.assertRaises(InvalidOperationTypeException):
+        with self.assertRaises(ComputationalBlockTwoInvalidOperationTypeException):
             event_ingestor(payload)
 
     def test_failure_non_existent_data_field(self):
@@ -618,7 +598,7 @@ class TriggerEvent(TestCase):
                 "DATA_BLOCK-1-1": DATA_BLOCK,
             },
         }
-        with self.assertRaises(FieldDoesNotExistException):
+        with self.assertRaises(ComputationalBlockTwoFieldDoesNotExistException):
             event_ingestor(payload)
 
     def test_failure_data_column_not_number(self):
@@ -634,5 +614,5 @@ class TriggerEvent(TestCase):
                 "DATA_BLOCK-1-1": DATA_BLOCK,
             },
         }
-        with self.assertRaises(DataValueNotFloatException):
+        with self.assertRaises(ComputationalBlockTwoDataValueNotFloatException):
             event_ingestor(payload)
