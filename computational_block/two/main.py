@@ -70,9 +70,12 @@ def run(input, output):
     input = validate_payload(
         InputPayload, input, ComputationalBlockTwoInputPayloadInvalidException
     )
+<<<<<<< HEAD
 >>>>>>> 783eab5... make named exception more verbose and remove redundant exception
     input = InputPayload(**input)
 >>>>>>> cffef1f... added more validation for computational block 2
+=======
+>>>>>>> 51612e1... removed redundant code
     data_field = input.data_field
     try:
         operation_value = float(input.operation_value)
