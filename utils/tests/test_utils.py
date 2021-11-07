@@ -1,6 +1,7 @@
 import pandas as pd
 from django.test import TestCase
 from pandas.util.testing import assert_frame_equal
+from pydantic import BaseModel, StrictStr
 
 from utils.exceptions import (
     BlockDataDoesNotExistException,
@@ -15,6 +16,7 @@ from utils.utils import (
     format_signal_block_response,
     get_data_from_id_and_field,
     retrieve_block_data,
+    validate_payload,
 )
 
 
@@ -134,3 +136,47 @@ class TestUtils(TestCase):
     def test_failure_error_non_existing_field(self):
         with self.assertRaises(FieldDoesNotExistException):
             get_data_from_id_and_field("2-test", self.output)
+
+
+class TestValidatePayload(TestCase):
+    class InputPayload(BaseModel):
+        foo: str
+        bar: StrictStr
+        foobar: int
+
+    class CustomException(Exception):
+        pass
+
+    def test_ok(self):
+        input = validate_payload(
+            self.InputPayload,
+            {"foo": "foo_str", "bar": "bar_str", "foobar": 1},
+            Exception,
+        )
+        self.assertEqual(
+            input, self.InputPayload(foo="foo_str", bar="bar_str", foobar=1)
+        )
+
+    def test_success_casted_type(self):
+        input = validate_payload(
+            self.InputPayload, {"foo": 5, "bar": "bar_str", "foobar": "1"}, Exception
+        )
+        self.assertEqual(input, self.InputPayload(foo="5", bar="bar_str", foobar=1))
+
+    def test_failure_strict_type(self):
+        with self.assertRaises(self.CustomException) as ctx:
+            input = validate_payload(
+                self.InputPayload,
+                {"foo": "foo_str", "bar": 5, "foobar": "1"},
+                self.CustomException,
+            )
+        # TODO: Compare with actual exception from pydantic
+        # self.assertEqual(ctx.exception, ...)
+
+    def test_failure_missing_variable(self):
+        with self.assertRaises(self.CustomException) as ctx:
+            input = validate_payload(
+                self.InputPayload, {"foo": "foo_str", "bar": 5}, self.CustomException
+            )
+        # TODO: Compare with actual exception from pydantic
+        # self.assertEqual(ctx.exception, ...)
