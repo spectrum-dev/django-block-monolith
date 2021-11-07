@@ -63,7 +63,7 @@ services:
             - default
     test-coverage:
         build: .
-        command: bash -c "python -m coverage run manage.py test && python -m coverage report --fail-under 100"
+        command: bash -c "python -m coverage run manage.py test && python -m coverage report --fail-under 100 --show-missing"
         environment:
             - ALPHA_VANTAGE_API_KEY=demo
             - DJANGO_SECRET_KEY=django-public-secret-key
