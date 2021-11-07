@@ -2,6 +2,7 @@ import json
 from typing import List
 
 import pandas as pd
+from pydantic import BaseModel, ValidationError
 
 from .exceptions import (
     BlockDataDoesNotExistException,
@@ -133,3 +134,14 @@ def get_data_from_id_and_field(id_field_string: str, output: dict) -> pd.DataFra
     data = data.set_index("timestamp")
     data = data.rename(columns={data_field: "data"})
     return data
+
+
+def validate_payload(
+    input_payload: BaseModel, incoming_payload: dict, exception_raised: Exception
+):
+    try:
+        response = input_payload(**incoming_payload)
+    except ValidationError as e:
+        raise exception_raised(str(e.json()))
+
+    return response
