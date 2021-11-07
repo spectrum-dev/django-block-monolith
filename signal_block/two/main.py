@@ -8,7 +8,7 @@ from signal_block.two.events.upward_saddle import main as upward_saddle
 from utils.utils import format_signal_block_response, validate_payload
 
 from .exceptions import (
-    SignalBlockTwoInvalidInputException,
+    SignalBlockTwoInvalidInputPayloadException,
     SignalBlockTwoInvalidSaddleTypeException,
 )
 
@@ -32,7 +32,9 @@ def run(input, output):
     output: Time series data from a block
     """
 
-    input = validate_payload(InputPayload, input, SignalBlockTwoInvalidInputException)
+    input = validate_payload(
+        InputPayload, input, SignalBlockTwoInvalidInputPayloadException
+    )
     output_df = _format_request(output, input.incoming_data)
 
     response_df = None

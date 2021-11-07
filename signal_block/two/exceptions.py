@@ -1,4 +1,4 @@
-class SignalBlockTwoInvalidInputException(Exception):
+class SignalBlockTwoInvalidInputPayloadException(Exception):
     pass
 
 
