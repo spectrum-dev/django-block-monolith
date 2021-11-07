@@ -1,4 +1,4 @@
-class DataBlockOneInputPayloadInvalidException(Exception):
+class DataBlockOneInvalidInputPayloadException(Exception):
     pass
 
 

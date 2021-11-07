@@ -5,8 +5,8 @@ from data_block.one.alpha_vantage import get_us_stock_data
 from utils.utils import validate_payload
 
 from .exceptions import (
-    DataBlockOneInputPayloadInvalidException,
     DataBlockOneInvalidCandlestickException,
+    DataBlockOneInvalidInputPayloadException,
 )
 
 
@@ -48,7 +48,7 @@ def run(input):
             raise DataBlockOneInvalidCandlestickException
 
     input = validate_payload(
-        InputPayload, input, DataBlockOneInputPayloadInvalidException
+        InputPayload, input, DataBlockOneInvalidInputPayloadException
     )
 
     response_df = get_us_stock_data(input.equity_name, data_type=input.candlestick)
