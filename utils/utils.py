@@ -138,7 +138,7 @@ def get_data_from_id_and_field(id_field_string: str, output: dict) -> pd.DataFra
 
 def validate_payload(
     input_payload: BaseModel, incoming_payload: dict, exception_raised: Exception
-):
+) -> BaseModel:
     try:
         response = input_payload(**incoming_payload)
     except ValidationError as e:
