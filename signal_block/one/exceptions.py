@@ -1,0 +1,2 @@
+class SignalBlockOneInvalidInputException(Exception):
+    pass
