@@ -10,7 +10,6 @@ from .exceptions import (
     FieldDoesNotExistException,
     InvalidRequestException,
     KeyDoesNotExistException,
-    MoreThanOneIncomingDataBlockException,
 )
 
 
@@ -103,9 +102,6 @@ def retrieve_block_data(selectable_data, incoming_data):
         for incoming_data_key, output_data in incoming_data.items():
             block_type = incoming_data_key.split("-")[0]
             if block_type in accepted_blocks and incoming_data_key not in visited_keys:
-                # TODO: Understand how to handle 2 DATA BLOCKS coming in being assigned the same key in response
-                if is_found:
-                    raise MoreThanOneIncomingDataBlockException
                 visited_keys.append(incoming_data_key)
                 response[key] = output_data
                 is_found = True
@@ -142,7 +138,11 @@ def get_data_from_id_and_field(id_field_string: str, output: dict) -> pd.DataFra
 
 def validate_payload(
     input_payload: BaseModel, incoming_payload: dict, exception_raised: Exception
+<<<<<<< HEAD
 ) -> BaseModel:
+=======
+):
+>>>>>>> 783eab5... make named exception more verbose and remove redundant exception
     try:
         response = input_payload(**incoming_payload)
     except ValidationError as e:
