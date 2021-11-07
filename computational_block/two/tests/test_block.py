@@ -3,10 +3,14 @@ from django.test import TestCase
 from blocks.event import event_ingestor
 from computational_block.two.exceptions import (
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ae5fbe8... removed redundant test
     ComputationalBlockTwoDataValueNotFloatException,
     ComputationalBlockTwoFieldDoesNotExistException,
     ComputationalBlockTwoInvalidOperationTypeException,
     ComputationalBlockTwoOperationValueNotFloatException,
+<<<<<<< HEAD
 )
 from utils.exceptions import BlockDataDoesNotExistException
 =======
@@ -20,6 +24,10 @@ from utils.exceptions import (
     MoreThanOneIncomingDataBlockException,
 )
 >>>>>>> cffef1f... added more validation for computational block 2
+=======
+)
+from utils.exceptions import BlockDataDoesNotExistException
+>>>>>>> ae5fbe8... removed redundant test
 
 DATA_BLOCK = [
     {
@@ -566,6 +574,7 @@ class TriggerEvent(TestCase):
             event_ingestor(payload)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     def test_failure_more_than_one_data(self):
         payload = {
@@ -585,6 +594,8 @@ class TriggerEvent(TestCase):
             event_ingestor(payload)
 
 >>>>>>> cffef1f... added more validation for computational block 2
+=======
+>>>>>>> ae5fbe8... removed redundant test
     def test_failure_non_number_operation_value(self):
         payload = {
             "blockType": "COMPUTATIONAL_BLOCK",
@@ -599,10 +610,14 @@ class TriggerEvent(TestCase):
             },
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         with self.assertRaises(ComputationalBlockTwoOperationValueNotFloatException):
 =======
         with self.assertRaises(OperationValueNotFloatException):
 >>>>>>> cffef1f... added more validation for computational block 2
+=======
+        with self.assertRaises(ComputationalBlockTwoOperationValueNotFloatException):
+>>>>>>> ae5fbe8... removed redundant test
             event_ingestor(payload)
 
     def test_failure_non_existent_operation_type(self):
@@ -619,10 +634,14 @@ class TriggerEvent(TestCase):
             },
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         with self.assertRaises(ComputationalBlockTwoInvalidOperationTypeException):
 =======
         with self.assertRaises(InvalidOperationTypeException):
 >>>>>>> cffef1f... added more validation for computational block 2
+=======
+        with self.assertRaises(ComputationalBlockTwoInvalidOperationTypeException):
+>>>>>>> ae5fbe8... removed redundant test
             event_ingestor(payload)
 
     def test_failure_non_existent_data_field(self):
@@ -639,10 +658,14 @@ class TriggerEvent(TestCase):
             },
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         with self.assertRaises(ComputationalBlockTwoFieldDoesNotExistException):
 =======
         with self.assertRaises(FieldDoesNotExistException):
 >>>>>>> cffef1f... added more validation for computational block 2
+=======
+        with self.assertRaises(ComputationalBlockTwoFieldDoesNotExistException):
+>>>>>>> ae5fbe8... removed redundant test
             event_ingestor(payload)
 
     def test_failure_data_column_not_number(self):
@@ -659,8 +682,12 @@ class TriggerEvent(TestCase):
             },
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         with self.assertRaises(ComputationalBlockTwoDataValueNotFloatException):
 =======
         with self.assertRaises(DataValueNotFloatException):
 >>>>>>> cffef1f... added more validation for computational block 2
+=======
+        with self.assertRaises(ComputationalBlockTwoDataValueNotFloatException):
+>>>>>>> ae5fbe8... removed redundant test
             event_ingestor(payload)
