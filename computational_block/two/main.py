@@ -6,13 +6,15 @@ from utils.utils import (
     format_computational_block_response,
     format_request,
     retrieve_block_data,
+    validate_payload,
 )
 
 from .exceptions import (
-    DataValueNotFloatException,
-    FieldDoesNotExistException,
-    InvalidOperationTypeException,
-    OperationValueNotFloatException,
+    ComputationalBlockTwoDataValueNotFloatException,
+    ComputationalBlockTwoFieldDoesNotExistException,
+    ComputationalBlockTwoInputPayloadInvalidException,
+    ComputationalBlockTwoInvalidOperationTypeException,
+    ComputationalBlockTwoOperationValueNotFloatException,
 )
 
 
@@ -41,12 +43,15 @@ def run(input, output):
     }
     block_data = retrieve_block_data(selectable_data, output)
 
+    input = validate_payload(
+        InputPayload, input, ComputationalBlockTwoInputPayloadInvalidException
+    )
     input = InputPayload(**input)
     data_field = input.data_field
     try:
         operation_value = float(input.operation_value)
     except ValueError:
-        raise OperationValueNotFloatException
+        raise ComputationalBlockTwoOperationValueNotFloatException
     case = lambda x: x == input.operation_type
     if case("+"):
         operator_func = operator.add
@@ -59,19 +64,19 @@ def run(input, output):
     elif case("^"):
         operator_func = operator.pow
     else:
-        raise InvalidOperationTypeException
+        raise ComputationalBlockTwoInvalidOperationTypeException
 
     data_block_df = format_request(
         block_data["data_or_computational_block"], "timestamp"
     )
 
     if data_field not in data_block_df.columns:
-        raise FieldDoesNotExistException
+        raise ComputationalBlockTwoFieldDoesNotExistException
 
     try:
         operation_lhs = data_block_df[data_field].astype(float)
     except ValueError:
-        raise DataValueNotFloatException
+        raise ComputationalBlockTwoDataValueNotFloatException
 
     data_block_df["data"] = operator_func(operation_lhs, operation_value)
 

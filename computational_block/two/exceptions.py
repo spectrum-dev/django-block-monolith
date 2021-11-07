@@ -1,14 +1,18 @@
-class InvalidOperationTypeException(Exception):
+class ComputationalBlockTwoInvalidOperationTypeException(Exception):
     pass
 
 
-class FieldDoesNotExistException(Exception):
+class ComputationalBlockTwoFieldDoesNotExistException(Exception):
     pass
 
 
-class OperationValueNotFloatException(Exception):
+class ComputationalBlockTwoOperationValueNotFloatException(Exception):
     pass
 
 
-class DataValueNotFloatException(Exception):
+class ComputationalBlockTwoDataValueNotFloatException(Exception):
+    pass
+
+
+class ComputationalBlockTwoInputPayloadInvalidException(Exception):
     pass
