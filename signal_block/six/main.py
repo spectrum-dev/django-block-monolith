@@ -1,5 +1,17 @@
+from pydantic import BaseModel
+
 from signal_block.six.events.close_above_events import *
-from utils.utils import format_request, format_signal_block_response
+from utils.utils import format_request, format_signal_block_response, validate_payload
+
+from .exceptions import (
+    SignalBlockSixInvalidEventTypeException,
+    SignalBlockSixInvalidInputPayloadException,
+)
+
+
+class InputPayload(BaseModel):
+    event_type: str
+    event_action: str
 
 
 def run(input, output):
@@ -12,6 +24,10 @@ def run(input, output):
     input: Form Inputs
     computational_block: Time series data from a computational block
     """
+    input = validate_payload(
+        InputPayload, input, SignalBlockSixInvalidInputPayloadException
+    )
+
     data_block = None
     for key in output.keys():
         key_breakup = key.split("-")
@@ -22,7 +38,7 @@ def run(input, output):
     data_block_df = format_request(data_block, "timestamp")
 
     _candle_close_func = None
-    case = lambda x: x == input["event_type"]
+    case = lambda x: x == input.event_type
 
     if case("CLOSE_ABOVE_OPEN"):
         _candle_close_func = close_above_open
@@ -36,10 +52,12 @@ def run(input, output):
         _candle_close_func = close_above_low
     elif case("CLOSE_EQ_LOW"):
         _candle_close_func = close_eq_low
+    else:
+        raise SignalBlockSixInvalidEventTypeException
 
     response_df = _candle_close_func(
         data_block_df,
-        input["event_action"],
+        input.event_action,
     )
 
     response = format_signal_block_response(response_df, "timestamp", ["order"])
