@@ -516,3 +516,34 @@ class TriggerEvent(TestCase):
 
         with self.assertRaises(SignalBlockSevenInvalidComparisonTypeException):
             event_ingestor(payload)
+
+    def test_failure_invalid_event_action(self):
+        payload = {
+            "blockType": "SIGNAL_BLOCK",
+            "blockId": 7,
+            "inputs": {
+                "incoming_data_one": "1-value",
+                "incoming_data_two": "2-field",
+                "comparison_type": ">=",
+                "event_action": "FOO",
+            },
+            "outputs": {
+                "COMPUTATIONAL_BLOCK-1-1": [
+                    {"timestamp": "01/01/2020", "value": "13.00"},
+                    {"timestamp": "01/02/2020", "value": "13.00"},
+                    {"timestamp": "01/03/2020", "value": "7.00"},
+                    {"timestamp": "01/04/2020", "value": "19.00"},
+                    {"timestamp": "01/05/2020", "value": "20.00"},
+                ],
+                "COMPUTATIONAL_BLOCK-1-2": [
+                    {"timestamp": "01/01/2020", "field": "12.00"},
+                    {"timestamp": "01/02/2020", "field": "12.00"},
+                    {"timestamp": "01/03/2020", "field": "12.00"},
+                    {"timestamp": "01/04/2020", "field": "12.00"},
+                    {"timestamp": "01/05/2020", "field": "21.00"},
+                ],
+            },
+        }
+
+        with self.assertRaises(SignalBlockSevenInvalidInputPayloadException):
+            event_ingestor(payload)
