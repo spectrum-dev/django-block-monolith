@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from blocks.event import event_ingestor
+from signal_block.four.exceptions import SignalBlockFourInvalidInputPayloadException
 
 
 class PostRun(TestCase):
@@ -152,3 +153,54 @@ class PostRun(TestCase):
                 {"timestamp": "2020-01-07", "order": "BUY"},
             ],
         )
+
+    def test_failure_missing_variable(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "event_type": "BELOW",
+                "event_action": "BUY",
+                "incoming_data": "1-data",
+            },
+            "outputs": {
+                "COMPUTATIONAL_BLOCK-1-1": [
+                    {"timestamp": "2020-01-01", "data": 10.00},
+                    {"timestamp": "2020-01-02", "data": 10.00},
+                    {"timestamp": "2020-01-03", "data": 10.00},
+                    {"timestamp": "2020-01-04", "data": 21.00},
+                    {"timestamp": "2020-01-05", "data": 35.00},
+                    {"timestamp": "2020-01-06", "data": 42.00},
+                    {"timestamp": "2020-01-07", "data": 10.00},
+                    {"timestamp": "2020-01-08", "data": 8.00},
+                ]
+            },
+        }
+
+        with self.assertRaises(SignalBlockFourInvalidInputPayloadException):
+            event_ingestor(payload)
+
+    def test_failure_event_value_not_castable_to_float(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "event_type": "BELOW",
+                "event_action": "BUY",
+                "event_value": "foo",
+                "incoming_data": "1-data",
+            },
+            "outputs": {
+                "COMPUTATIONAL_BLOCK-1-1": [
+                    {"timestamp": "2020-01-01", "data": 10.00},
+                    {"timestamp": "2020-01-02", "data": 10.00},
+                    {"timestamp": "2020-01-03", "data": 10.00},
+                    {"timestamp": "2020-01-04", "data": 21.00},
+                    {"timestamp": "2020-01-05", "data": 35.00},
+                    {"timestamp": "2020-01-06", "data": 42.00},
+                    {"timestamp": "2020-01-07", "data": 10.00},
+                    {"timestamp": "2020-01-08", "data": 8.00},
+                ]
+            },
+        }
+
+        with self.assertRaises(SignalBlockFourInvalidInputPayloadException):
+            event_ingestor(payload)
