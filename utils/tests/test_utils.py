@@ -103,7 +103,7 @@ class TestRetrieveBlockData(TestCase):
             retrieve_block_data(selectable_data, incoming_data)
 
 
-class TestUtils(TestCase):
+class TestGetDataFromIdAndField(TestCase):
     output = {
         "COMPUTATIONAL_BLOCK-1-2": [
             {"timestamp": "01/01/2020", "close": "12.00"},
