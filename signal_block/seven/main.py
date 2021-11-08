@@ -5,13 +5,14 @@ from signal_block.seven.events.comparison_events import *
 from utils.utils import format_signal_block_response, validate_payload
 
 from .exceptions import (
+    SignalBlockSevenInputBlockOneInvalidDataStringException,
     SignalBlockSevenInputBlockOneMissingDataFieldException,
+    SignalBlockSevenInputBlockTwoInvalidDataStringException,
     SignalBlockSevenInputBlockTwoMissingDataFieldException,
     SignalBlockSevenInvalidComparisonTypeException,
     SignalBlockSevenInvalidInputPayloadException,
     SignalBlockSevenMissingInputBlockOneException,
     SignalBlockSevenMissingInputBlockTwoException,
-    SignalBlockSevenMissingInputException,
 )
 
 
@@ -38,8 +39,14 @@ def run(input, output):
     # Data comes in as BlockIDInFlow, we have to parse the available outputs to get the right dataset name
     # Field name and block ID also comes in as 1 variable split by '-'
     # E.g. Flow BlockID 2 means COMPUTATIONAL_BLOCK-1-2
-    input_block_1_id, input_block_1_field = input.incoming_data_one.split("-")
-    input_block_2_id, input_block_2_field = input.incoming_data_two.split("-")
+    try:
+        input_block_1_id, input_block_1_field = input.incoming_data_one.split("-")
+    except ValueError:
+        raise SignalBlockSevenInputBlockOneInvalidDataStringException
+    try:
+        input_block_2_id, input_block_2_field = input.incoming_data_two.split("-")
+    except ValueError:
+        raise SignalBlockSevenInputBlockTwoInvalidDataStringException
 
     # Extracts Block Name from Block ID in Flow
     try:
@@ -57,19 +64,6 @@ def run(input, output):
 
     comparison_type = input.comparison_type
     event_action = input.event_action
-
-    if not all(
-        x
-        for x in [
-            input_block_1_name,
-            input_block_1_field,
-            input_block_2_name,
-            input_block_2_field,
-            comparison_type,
-            event_action,
-        ]
-    ):
-        raise SignalBlockSevenMissingInputException
 
     if any(
         x not in output[input_block_1_name][0].keys()

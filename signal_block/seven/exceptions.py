@@ -6,7 +6,11 @@ class SignalBlockSevenInvalidComparisonTypeException(Exception):
     pass
 
 
-class SignalBlockSevenMissingInputException(Exception):
+class SignalBlockSevenInputBlockOneInvalidDataStringException(Exception):
+    pass
+
+
+class SignalBlockSevenInputBlockTwoInvalidDataStringException(Exception):
     pass
 
 
