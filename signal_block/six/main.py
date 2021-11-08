@@ -3,7 +3,10 @@ from pydantic import BaseModel
 from signal_block.six.events.close_above_events import *
 from utils.utils import format_request, format_signal_block_response, validate_payload
 
-from .exceptions import SignalBlockSixInvalidInputPayloadException
+from .exceptions import (
+    SignalBlockSixInvalidEventTypeException,
+    SignalBlockSixInvalidInputPayloadException,
+)
 
 
 class InputPayload(BaseModel):
@@ -49,6 +52,8 @@ def run(input, output):
         _candle_close_func = close_above_low
     elif case("CLOSE_EQ_LOW"):
         _candle_close_func = close_eq_low
+    else:
+        raise SignalBlockSixInvalidEventTypeException
 
     response_df = _candle_close_func(
         data_block_df,
