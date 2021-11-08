@@ -43,9 +43,9 @@ def run(input):
     elif case("1day"):
         formatted_candlestick = "D"
     elif case("1week"):
-        formatted_candlestick = "D"
+        formatted_candlestick = "W"
     elif case("1month"):
-        formatted_candlestick = "D"
+        formatted_candlestick = "M"
     else:
         raise DataBlockTwoInvalidCandlestickException
 
