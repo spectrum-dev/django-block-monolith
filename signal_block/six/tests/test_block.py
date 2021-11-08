@@ -1,6 +1,10 @@
 from django.test import TestCase
 
 from blocks.event import event_ingestor
+from signal_block.six.exceptions import (
+    SignalBlockSixInvalidEventTypeException,
+    SignalBlockSixInvalidInputPayloadException,
+)
 from signal_block.six.tests.fixture import DATA_BLOCK, DATA_BLOCK_2
 
 
@@ -196,3 +200,32 @@ class PostRun(TestCase):
             response,
             {"response": []},
         )
+
+    def test_missing_input(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "event_type": "CLOSE_ABOVE_OPEN",
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": DATA_BLOCK_2,
+            },
+        }
+
+        with self.assertRaises(SignalBlockSixInvalidInputPayloadException):
+            event_ingestor(payload)
+
+    def test_invalid_event_type(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "event_action": "BUY",
+                "event_type": "FOO",
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": DATA_BLOCK_2,
+            },
+        }
+
+        with self.assertRaises(SignalBlockSixInvalidEventTypeException):
+            event_ingestor(payload)
