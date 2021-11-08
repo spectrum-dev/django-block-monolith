@@ -1,7 +1,27 @@
 import pandas as pd
+from pydantic import BaseModel
 
 from signal_block.seven.events.comparison_events import *
-from utils.utils import format_signal_block_response
+from utils.types import EventActionEnum
+from utils.utils import format_signal_block_response, validate_payload
+
+from .exceptions import (
+    SignalBlockSevenInputBlockOneInvalidDataStringException,
+    SignalBlockSevenInputBlockOneMissingDataFieldException,
+    SignalBlockSevenInputBlockTwoInvalidDataStringException,
+    SignalBlockSevenInputBlockTwoMissingDataFieldException,
+    SignalBlockSevenInvalidComparisonTypeException,
+    SignalBlockSevenInvalidInputPayloadException,
+    SignalBlockSevenMissingInputBlockOneException,
+    SignalBlockSevenMissingInputBlockTwoException,
+)
+
+
+class InputPayload(BaseModel):
+    incoming_data_one: str
+    incoming_data_two: str
+    comparison_type: str
+    event_action: EventActionEnum
 
 
 def run(input, output):
@@ -14,59 +34,49 @@ def run(input, output):
     input: Form Inputs
     input_blocks: Time series data from 2 blocks (either can be computational or data)
     """
+    input = validate_payload(
+        InputPayload, input, SignalBlockSevenInvalidInputPayloadException
+    )
     # Data comes in as BlockIDInFlow, we have to parse the available outputs to get the right dataset name
     # Field name and block ID also comes in as 1 variable split by '-'
     # E.g. Flow BlockID 2 means COMPUTATIONAL_BLOCK-1-2
-    input_block_1_id, input_block_1_field = input.get("incoming_data_one", "").split(
-        "-"
-    )
-    input_block_2_id, input_block_2_field = input.get("incoming_data_two", "").split(
-        "-"
-    )
+    try:
+        input_block_1_id, input_block_1_field = input.incoming_data_one.split("-")
+    except ValueError:
+        raise SignalBlockSevenInputBlockOneInvalidDataStringException
+    try:
+        input_block_2_id, input_block_2_field = input.incoming_data_two.split("-")
+    except ValueError:
+        raise SignalBlockSevenInputBlockTwoInvalidDataStringException
 
     # Extracts Block Name from Block ID in Flow
-    input_block_1_name = [x for x in output.keys() if x.endswith(input_block_1_id)][0]
-    input_block_2_name = [x for x in output.keys() if x.endswith(input_block_2_id)][0]
-
-    comparison_type = input.get("comparison_type")
-    event_action = input.get("event_action")
-
-    if any(
-        x is None
-        for x in [
-            input_block_1_name,
-            input_block_1_field,
-            input_block_2_name,
-            input_block_2_field,
-            comparison_type,
-            event_action,
+    try:
+        input_block_1_name = [x for x in output.keys() if x.endswith(input_block_1_id)][
+            0
         ]
-    ):
-        # TODO: validation to check that all required fields are populated
-        # Possibly can be redundant if serializer takes care of this
-        pass
+    except IndexError:
+        raise SignalBlockSevenMissingInputBlockOneException
+    try:
+        input_block_2_name = [x for x in output.keys() if x.endswith(input_block_2_id)][
+            0
+        ]
+    except IndexError:
+        raise SignalBlockSevenMissingInputBlockTwoException
 
-    if input_block_1_name not in output.keys():
-        # TODO: validation for block not available as part of data
-        pass
-
-    if any(
-        x in ["timestamp", input_block_1_field]
-        for x in output[input_block_1_name][0].keys()
-    ):
-        # TODO: validation for field not present in dataset
-        pass
-
-    if input_block_2_name not in output.keys():
-        # TODO: validation for block not available as part of data
-        pass
+    comparison_type = input.comparison_type
+    event_action = input.event_action
 
     if any(
-        x in ["timestamp", input_block_2_field]
-        for x in output[input_block_2_name][0].keys()
+        x not in output[input_block_1_name][0].keys()
+        for x in ["timestamp", input_block_1_field]
     ):
-        # TODO: validation for field not present in dataset
-        pass
+        raise SignalBlockSevenInputBlockOneMissingDataFieldException
+
+    if any(
+        x not in output[input_block_2_name][0].keys()
+        for x in ["timestamp", input_block_2_field]
+    ):
+        raise SignalBlockSevenInputBlockTwoMissingDataFieldException
 
     input_block_1 = _format_request(output[input_block_1_name])
     input_block_1 = input_block_1[["timestamp", input_block_1_field]]
@@ -95,6 +105,8 @@ def run(input, output):
         _comparison_func = more_than
     elif case(">="):
         _comparison_func = more_than_equal
+    else:
+        raise SignalBlockSevenInvalidComparisonTypeException
 
     response_df = _comparison_func(
         df_merged,
