@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 from signal_block.two.events.downward_saddle import main as downward_saddle
 from signal_block.two.events.upward_saddle import main as upward_saddle
+from utils.types import EventActionEnum
 from utils.utils import format_signal_block_response, validate_payload
 
 from .exceptions import (
@@ -16,7 +17,7 @@ from .exceptions import (
 class InputPayload(BaseModel):
     incoming_data: str
     saddle_type: str
-    event_action: str
+    event_action: EventActionEnum
     consecutive_up: int
     consecutive_down: int
 
