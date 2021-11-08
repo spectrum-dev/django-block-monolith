@@ -2,6 +2,10 @@ import responses
 from django.test import TestCase
 
 from blocks.event import event_ingestor
+from data_block.two.exceptions import (
+    DataBlockTwoInvalidCandlestickException,
+    DataBlockTwoInvalidInputPayloadException,
+)
 
 
 class GetSymbol(TestCase):
@@ -786,3 +790,46 @@ class PostRun(TestCase):
                 ]
             },
         )
+
+    def test_failure_missing_crypto_name_input(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "candlestick": "1month",
+                "start_date": "2021-06-18 00:00:00",
+                "end_date": "2021-06-22 00:00:00",
+            },
+            "outputs": {},
+        }
+
+        with self.assertRaises(DataBlockTwoInvalidInputPayloadException):
+            event_ingestor(payload)
+
+    def test_failure_missing_candlestick_input(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "crypto_name": "BTC",
+                "start_date": "2021-06-18 00:00:00",
+                "end_date": "2021-06-22 00:00:00",
+            },
+            "outputs": {},
+        }
+
+        with self.assertRaises(DataBlockTwoInvalidInputPayloadException):
+            event_ingestor(payload)
+
+    def test_failure_invalid_candlestick_frequency(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "crypto_name": "BTC",
+                "candlestick": "INVALID",
+                "start_date": "2021-06-18 00:00:00",
+                "end_date": "2021-06-22 00:00:00",
+            },
+            "outputs": {},
+        }
+
+        with self.assertRaises(DataBlockTwoInvalidCandlestickException):
+            event_ingestor(payload)
