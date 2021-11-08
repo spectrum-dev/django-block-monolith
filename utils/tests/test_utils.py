@@ -170,13 +170,19 @@ class TestValidatePayload(TestCase):
                 {"foo": "foo_str", "bar": 5, "foobar": "1"},
                 self.CustomException,
             )
-        # TODO: Compare with actual exception from pydantic
-        # self.assertEqual(ctx.exception, ...)
 
     def test_failure_missing_variable(self):
         with self.assertRaises(self.CustomException) as ctx:
             input = validate_payload(
                 self.InputPayload, {"foo": "foo_str", "bar": 5}, self.CustomException
             )
-        # TODO: Compare with actual exception from pydantic
-        # self.assertEqual(ctx.exception, ...)
+
+    def test_failure_missing_variable_custom_text(self):
+        with self.assertRaises(self.CustomException) as ctx:
+            input = validate_payload(
+                self.InputPayload,
+                {"foo": "foo_str", "bar": 5},
+                self.CustomException,
+                "my custom exception",
+            )
+        self.assertEqual(str(ctx.exception), "my custom exception")

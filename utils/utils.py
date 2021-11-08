@@ -1,5 +1,5 @@
 import json
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 from pydantic import BaseModel, ValidationError
@@ -137,11 +137,15 @@ def get_data_from_id_and_field(id_field_string: str, output: dict) -> pd.DataFra
 
 
 def validate_payload(
-    input_payload: BaseModel, incoming_payload: dict, exception_raised: Exception
+    input_payload: BaseModel,
+    incoming_payload: dict,
+    exception_raised: Exception,
+    custom_exception: Optional[str] = None,
 ) -> BaseModel:
     try:
         response = input_payload(**incoming_payload)
     except ValidationError as e:
-        raise exception_raised(str(e.json()))
+        exception_text = custom_exception or str(e.json())
+        raise exception_raised(exception_text)
 
     return response
