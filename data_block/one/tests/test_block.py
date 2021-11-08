@@ -2,6 +2,10 @@ import responses
 from django.test import TestCase
 
 from blocks.event import event_ingestor
+from data_block.one.exceptions import (
+    DataBlockOneInvalidCandlestickException,
+    DataBlockOneInvalidInputPayloadException,
+)
 
 
 class GetEquityName(TestCase):
@@ -814,3 +818,32 @@ class PostRun(TestCase):
         response = event_ingestor(payload)
 
         self.assertDictEqual(response, {"response": []})
+
+    def test_failure_missing_candlestick_input(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "equity_name": "IBM",
+                "start_date": "2021-06-18 00:00:00",
+                "end_date": "2021-06-22 00:00:00",
+            },
+            "outputs": {},
+        }
+
+        with self.assertRaises(DataBlockOneInvalidInputPayloadException):
+            event_ingestor(payload)
+
+    def test_failure_invalid_candlestick_frequency(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "equity_name": "IBM",
+                "candlestick": "INVALID",
+                "start_date": "2021-06-18 00:00:00",
+                "end_date": "2021-06-22 00:00:00",
+            },
+            "outputs": {},
+        }
+
+        with self.assertRaises(DataBlockOneInvalidCandlestickException):
+            event_ingestor(payload)
