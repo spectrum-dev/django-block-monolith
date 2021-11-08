@@ -4,13 +4,14 @@ import pandas as pd
 from pydantic import BaseModel
 
 from signal_block.one.events.main import handle_intersect
+from utils.types import EventActionEnum
 from utils.utils import format_signal_block_response, validate_payload
 
 from .exceptions import SignalBlockOneInvalidInputPayloadException
 
 
 class InputPayload(BaseModel):
-    event_action: str
+    event_action: EventActionEnum
 
 
 def run(input, computational_block):
