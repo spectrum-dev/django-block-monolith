@@ -8,7 +8,10 @@ from utils.utils import (
     validate_payload,
 )
 
-from .exceptions import SignalBlockFourInvalidInputPayloadException
+from .exceptions import (
+    SignalBlockFourInvalidEventTypeException,
+    SignalBlockFourInvalidInputPayloadException,
+)
 
 
 class InputPayload(BaseModel):
@@ -42,6 +45,8 @@ def run(input, output):
         _crossover_func = crossover_above
     elif case("BELOW"):
         _crossover_func = crossover_below
+    else:
+        raise SignalBlockFourInvalidEventTypeException
 
     response_df = _crossover_func(
         computational_block_df,
