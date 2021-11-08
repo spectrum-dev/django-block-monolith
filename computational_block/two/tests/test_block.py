@@ -1,6 +1,13 @@
 from django.test import TestCase
 
 from blocks.event import event_ingestor
+from computational_block.two.exceptions import (
+    ComputationalBlockTwoDataValueNotFloatException,
+    ComputationalBlockTwoFieldDoesNotExistException,
+    ComputationalBlockTwoInvalidOperationTypeException,
+    ComputationalBlockTwoOperationValueNotFloatException,
+)
+from utils.exceptions import BlockDataDoesNotExistException
 
 DATA_BLOCK = [
     {
@@ -532,26 +539,80 @@ class TriggerEvent(TestCase):
             },
         )
 
-    # TODO: Test for only 1 input dataset
-    # TODO: Test for only numbers in operation_value
-    # def test_failure_json_more_than_one_data(self):
-    #     payload = {
-    #         "blockType": "COMPUTATIONAL_BLOCK",
-    #         "blockId": 2,
-    #         "inputs": {
-    #             "data_field": "close",
-    #             "operation_type": "+",
-    #             "operation_value": "5",
-    #         },
-    #         "outputs": {
-    #             "DATA_BLOCK-1-1": POWER_DATA_BLOCK,
-    #             "DATA_BLOCK-1-2": POWER_DATA_BLOCK,
-    #         },
-    #     }
-    #     response = event_ingestor(payload)
-    #     self.assertDictEqual(
-    #         response,
-    #         {
-    #             "response": "..."
-    #         },
-    #     )
+    def test_failure_no_data(self):
+        payload = {
+            "blockType": "COMPUTATIONAL_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "data_field": "volume",
+                "operation_type": "*",
+                "operation_value": "5",
+            },
+            "outputs": {},
+        }
+        with self.assertRaises(BlockDataDoesNotExistException):
+            event_ingestor(payload)
+
+    def test_failure_non_number_operation_value(self):
+        payload = {
+            "blockType": "COMPUTATIONAL_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "data_field": "volume",
+                "operation_type": "*",
+                "operation_value": "test",
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
+        }
+        with self.assertRaises(ComputationalBlockTwoOperationValueNotFloatException):
+            event_ingestor(payload)
+
+    def test_failure_non_existent_operation_type(self):
+        payload = {
+            "blockType": "COMPUTATIONAL_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "data_field": "volume",
+                "operation_type": "**",
+                "operation_value": "5",
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
+        }
+        with self.assertRaises(ComputationalBlockTwoInvalidOperationTypeException):
+            event_ingestor(payload)
+
+    def test_failure_non_existent_data_field(self):
+        payload = {
+            "blockType": "COMPUTATIONAL_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "data_field": "test",
+                "operation_type": "*",
+                "operation_value": "5",
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
+        }
+        with self.assertRaises(ComputationalBlockTwoFieldDoesNotExistException):
+            event_ingestor(payload)
+
+    def test_failure_data_column_not_number(self):
+        payload = {
+            "blockType": "COMPUTATIONAL_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "data_field": "timezone",
+                "operation_type": "*",
+                "operation_value": "5",
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
+        }
+        with self.assertRaises(ComputationalBlockTwoDataValueNotFloatException):
+            event_ingestor(payload)
