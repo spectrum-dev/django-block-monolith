@@ -215,6 +215,21 @@ class PostRun(TestCase):
         with self.assertRaises(SignalBlockSixInvalidInputPayloadException):
             event_ingestor(payload)
 
+    def test_invalid_event_action(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "event_action": "FOO",
+                "event_type": "CLOSE_ABOVE_OPEN",
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": DATA_BLOCK_2,
+            },
+        }
+
+        with self.assertRaises(SignalBlockSixInvalidInputPayloadException):
+            event_ingestor(payload)
+
     def test_invalid_event_type(self):
         payload = {
             **self.payload,
