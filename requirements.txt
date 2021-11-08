@@ -6,10 +6,10 @@ asgiref==3.4.1
 async-timeout==3.0.1
 attrs==21.2.0
 black==21.6b0
-celery==5.1.2
+celery==5.2.0
 certifi==2021.10.8
 chardet==4.0.0
-click==7.1.2
+click==8.0.3
 coverage==6.1.1
 Cython==0.29.24
 Django==3.2.9
