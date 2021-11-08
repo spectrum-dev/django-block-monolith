@@ -1,8 +1,17 @@
 import pandas as pd
+from pydantic import BaseModel
 
 from strategy_block.one.marketsim import run as run_marketsim
 from strategy_block.one.orders import Orders
-from utils.utils import retrieve_block_data
+from utils.utils import retrieve_block_data, validate_payload
+
+from .exceptions import StrategyBlockOneInvalidInputPayloadException
+
+
+class InputPayload(BaseModel):
+    start_value: float
+    commission: float
+    trade_amount_value: float
 
 
 def run(input, output):
@@ -14,6 +23,9 @@ def run(input, output):
     input: Form Input Values
     output: Output Cache Values
     """
+    input = validate_payload(
+        InputPayload, input, StrategyBlockOneInvalidInputPayloadException
+    )
     selectable_data = {
         "data_block": ["DATA_BLOCK", "BULK_DATA_BLOCK"],
         "signal_block": ["SIGNAL_BLOCK"],
@@ -31,8 +43,8 @@ def run(input, output):
     port_vals, trades_df = run_marketsim(
         trades_df,
         data_block_df,
-        float(input["start_value"]),
-        float(input["commission"]),
+        input.start_value,
+        input.commission,
     )
 
     # Generates Responses
@@ -130,7 +142,7 @@ def _generate_trades_df(input, signal_block_df):
     """
     orders = Orders()
 
-    trade_amount = float(input["trade_amount_value"])
+    trade_amount = input.trade_amount_value
 
     for index, row in signal_block_df.iterrows():
         if row["buy"]:
