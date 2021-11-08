@@ -170,12 +170,20 @@ class TestValidatePayload(TestCase):
                 {"foo": "foo_str", "bar": 5, "foobar": "1"},
                 self.CustomException,
             )
+        self.assertEqual(
+            str(ctx.exception),
+            '[\n  {\n    "loc": [\n      "bar"\n    ],\n    "msg": "str type expected",\n    "type": "type_error.str"\n  }\n]',
+        )
 
-    def test_failure_missing_variable(self):
+    def test_failure_missing_variable_and_strict_type(self):
         with self.assertRaises(self.CustomException) as ctx:
             input = validate_payload(
                 self.InputPayload, {"foo": "foo_str", "bar": 5}, self.CustomException
             )
+        self.assertEqual(
+            str(ctx.exception),
+            '[\n  {\n    "loc": [\n      "bar"\n    ],\n    "msg": "str type expected",\n    "type": "type_error.str"\n  },\n  {\n    "loc": [\n      "foobar"\n    ],\n    "msg": "field required",\n    "type": "value_error.missing"\n  }\n]',
+        )
 
     def test_failure_missing_variable_custom_text(self):
         with self.assertRaises(self.CustomException) as ctx:
