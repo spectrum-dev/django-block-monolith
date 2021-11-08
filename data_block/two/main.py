@@ -1,6 +1,20 @@
 import pandas as pd
+from pydantic import BaseModel
 
 from data_block.two.alpha_vantage import get_crypto_data
+from utils.utils import validate_payload
+
+from .exceptions import (
+    DataBlockTwoInvalidCandlestickException,
+    DataBlockTwoInvalidInputPayloadException,
+)
+
+
+class InputPayload(BaseModel):
+    crypto_name: str
+    candlestick: str
+    start_date: str
+    end_date: str
 
 
 def run(input):
@@ -12,31 +26,35 @@ def run(input):
     input: The input payload
     """
 
-    def map_candlestick_to_freq_date(candlestick):
-        case = lambda x: x == candlestick
-        if case("1min"):
-            return "T"
-        elif case("5min"):
-            return "5min"
-        elif case("15min"):
-            return "15min"
-        elif case("30min"):
-            return "30min"
-        elif case("60min"):
-            return "H"
-        elif case("1day"):
-            return "D"
-        elif case("1week"):
-            return "W"
-        elif case("1month"):
-            return "M"
+    input = validate_payload(
+        InputPayload, input, DataBlockTwoInvalidInputPayloadException
+    )
+    case = lambda x: x == input.candlestick
+    if case("1min"):
+        formatted_candlestick = "T"
+    elif case("5min"):
+        formatted_candlestick = "5min"
+    elif case("15min"):
+        formatted_candlestick = "15min"
+    elif case("30min"):
+        formatted_candlestick = "30min"
+    elif case("60min"):
+        formatted_candlestick = "H"
+    elif case("1day"):
+        formatted_candlestick = "D"
+    elif case("1week"):
+        formatted_candlestick = "D"
+    elif case("1month"):
+        formatted_candlestick = "D"
+    else:
+        raise DataBlockTwoInvalidCandlestickException
 
-    response_df = get_crypto_data(input["crypto_name"], input["candlestick"])
+    response_df = get_crypto_data(input.crypto_name, input.candlestick)
 
     date_range = pd.date_range(
-        input["start_date"],
-        input["end_date"],
-        freq=map_candlestick_to_freq_date(input["candlestick"]),
+        input.start_date,
+        input.end_date,
+        freq=formatted_candlestick,
     )
 
     date_intersection = date_range.intersection(response_df.index)
