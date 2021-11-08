@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from blocks.event import event_ingestor
+from signal_block.one.exceptions import SignalBlockOneInvalidInputPayloadException
 
 
 class PostRun(TestCase):
@@ -96,3 +97,32 @@ class PostRun(TestCase):
             response,
             [{"timestamp": "2020-01-03", "order": "SELL"}],
         )
+
+    def test_failure_invalid_event_action(self):
+        payload = {
+            **self.payload,
+            "inputs": {"event_action": "FOO"},
+            "outputs": {
+                "COMPUTATIONAL_BLOCK-1-1": [
+                    {"timestamp": "2020-01-01", "data": 10.00},
+                    {"timestamp": "2020-01-02", "data": 11.00},
+                    {"timestamp": "2020-01-03", "data": 13.00},
+                    {"timestamp": "2020-01-04", "data": 12.00},
+                ],
+                "COMPUTATIONAL_BLOCK-1-2": [
+                    {"timestamp": "2020-01-01", "data": 14.00},
+                    {"timestamp": "2020-01-02", "data": 13.50},
+                    {"timestamp": "2020-01-03", "data": 13.00},
+                    {"timestamp": "2020-01-04", "data": 12.00},
+                ],
+                "COMPUTATIONAL_BLOCK-1-3": [
+                    {"timestamp": "2020-01-01", "data": 9.00},
+                    {"timestamp": "2020-01-02", "data": 10.00},
+                    {"timestamp": "2020-01-03", "data": 13.00},
+                    {"timestamp": "2020-01-04", "data": 15.00},
+                ],
+            },
+        }
+
+        with self.assertRaises(SignalBlockOneInvalidInputPayloadException):
+            event_ingestor(payload)
