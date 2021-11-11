@@ -42,7 +42,7 @@ screen==1.0.1
 sentry-sdk==1.4.3
 six==1.16.0
 sqlparse==0.4.2
-SQLAlchemy==1.4.26
+SQLAlchemy==1.4.27
 ta==0.7.0
 TA-Lib==0.4.21
 toml==0.10.2
