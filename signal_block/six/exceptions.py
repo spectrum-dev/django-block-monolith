@@ -4,3 +4,7 @@ class SignalBlockSixInvalidInputPayloadException(Exception):
 
 class SignalBlockSixInvalidEventTypeException(Exception):
     pass
+
+
+class SignalBlockSixMissingDataFieldException(Exception):
+    pass

@@ -7,6 +7,7 @@ from utils.utils import format_request, format_signal_block_response, validate_p
 from .exceptions import (
     SignalBlockSixInvalidEventTypeException,
     SignalBlockSixInvalidInputPayloadException,
+    SignalBlockSixMissingDataFieldException,
 )
 
 
@@ -40,6 +41,9 @@ def run(input, output):
 
     _candle_close_func = None
     case = lambda x: x == input.event_type
+
+    if any([x not in data_block_df.columns for x in ["open", "high", "low", "close"]]):
+        raise SignalBlockSixMissingDataFieldException
 
     if case("CLOSE_ABOVE_OPEN"):
         _candle_close_func = close_above_open
