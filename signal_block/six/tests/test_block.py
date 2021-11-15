@@ -4,8 +4,9 @@ from blocks.event import event_ingestor
 from signal_block.six.exceptions import (
     SignalBlockSixInvalidEventTypeException,
     SignalBlockSixInvalidInputPayloadException,
+    SignalBlockSixMissingDataFieldException,
 )
-from signal_block.six.tests.fixture import DATA_BLOCK, DATA_BLOCK_2
+from signal_block.six.tests.fixture import DATA_BLOCK, DATA_BLOCK_2, DATA_BLOCK_3
 
 
 class PostRun(TestCase):
@@ -243,4 +244,19 @@ class PostRun(TestCase):
         }
 
         with self.assertRaises(SignalBlockSixInvalidEventTypeException):
+            event_ingestor(payload)
+
+    def test_missing_data_field(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "event_action": "BUY",
+                "event_type": "CLOSE_EQ_LOW",
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": DATA_BLOCK_3,
+            },
+        }
+
+        with self.assertRaises(SignalBlockSixMissingDataFieldException):
             event_ingestor(payload)

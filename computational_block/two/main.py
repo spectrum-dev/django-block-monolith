@@ -24,14 +24,27 @@ class InputPayload(BaseModel):
     operation_type: str
 
 
-def run(input, output):
+def run(input: dict, output: dict) -> dict:
     """
-    Takes in elements from the form input, and a DATA_BLOCK or COMPUTATIONAL_BLOCK to apply some mathematical operation on a chosen field.
+    Operation Block: Generate signals based on mathematical operations on a
+    chosen field
 
-    Attributes
-    ----------
-    input: Form inputs provided in metadata
-    output: Data from a data_block or computational_block stream (has to be numeric so to apply mathematical operation on)
+    Args:
+        input (dict): Input payload from flow
+        output (dict): Data payload from DATA_BLOCK or COMPUTATIONAL_BLOCK
+
+    Raises:
+        ComputationalBlockTwoOperationValueNotFloatException: Named exception raised
+            when operation_value supplied cannot be converted to float
+        ComputationalBlockTwoInvalidOperationTypeException: Named exception raised
+            when unsupported operation_type is supplied
+        ComputationalBlockTwoFieldDoesNotExistException: Named exception raised
+            when data_field does not exist in supplied data
+        ComputationalBlockTwoDataValueNotFloatException: Named exception raised
+            when data_field cannot be converted to float
+
+    Returns:
+        dict: JSON representation of computed dataframe
     """
 
     selectable_data = {

@@ -1,10 +1,20 @@
 from functools import reduce
+from typing import List
 
 import pandas as pd
 
 
-def run(outputs):
+def run(outputs: dict) -> List[dict]:
+    """
+    OR Block: Generate signals where data point exist in either SIGNAL_BLOCK and
+    does not contradict with each other (i.e. BUY and SELL at the same time)
 
+    Args:
+        outputs (dict): Time series data from COMPUTATIONAL_BLOCK
+
+    Returns:
+        List[dict]: JSON representation of signal block data
+    """
     df_list = []
     for _, value in outputs.items():
         df = _create_orders_df(value)
