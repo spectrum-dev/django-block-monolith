@@ -18,13 +18,15 @@ class InputPayload(BaseModel):
 
 
 def run(input: dict) -> dict:
-    """Runs a query to get US stock data
+    """
+    Runs a query to get US stock data
 
     Args:
         input (dict): Input payload from flow
 
     Raises:
-        DataBlockOneInvalidCandlestickException: Named exception raised if candlestick type is not supported
+        DataBlockOneInvalidCandlestickException: Named exception raised if
+        candlestick type is not supported
 
     Returns:
         dict: Returns dictionary representation of dataframe

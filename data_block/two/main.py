@@ -18,13 +18,15 @@ class InputPayload(BaseModel):
 
 
 def run(input: dict) -> dict:
-    """Runs a query to get crypto data
+    """
+    Runs a query to get crypto data
 
     Args:
         input (dict): Input payload from flow
 
     Raises:
-        DataBlockTwoInvalidCandlestickException: Named exception raised if candlestick type is not supported
+        DataBlockTwoInvalidCandlestickException: Named exception raised if
+        candlestick type is not supported
 
     Returns:
         dict: Returns dictionary representation of dataframe
