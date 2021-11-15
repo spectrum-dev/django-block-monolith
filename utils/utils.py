@@ -14,16 +14,21 @@ from .exceptions import (
 
 
 def format_request(request_json: dict, key: str) -> pd.DataFrame:
-    """
-    Takes in a JSON List Payload and converts it to a pandas DataFrame
+    """Takes in a JSON List Payload and converts it to a pandas DataFrame
 
-    Attributes
-    -----------
-    request_json: List of Json Objects
-    key: The main key to index DataFrame by
+    Args:
+        request_json (dict): List of JSON objects
+        key (str): Main key to index DataFrame by
+
+    Raises:
+        InvalidRequestException: Named exception raised when request_json is empty
+        KeyDoesNotExistException: Named exception raised when key is not found in JSON data
+
+    Returns:
+        pd.DataFrame: Returns a pandas DataFrame
     """
     # Ensures request_json is no None and has a value
-    if request_json == None or request_json == []:
+    if request_json is None or request_json == []:
         raise InvalidRequestException
 
     # Checks if the key exists in the request JSON
@@ -41,15 +46,16 @@ def format_request(request_json: dict, key: str) -> pd.DataFrame:
 
 def format_computational_block_response(
     response_df: pd.DataFrame, index_key: str, index_data: str
-):
-    """
-    Formats response for COMPUTATIONAL_BLOCKS into a JSON Payload
+) -> dict:
+    """Formats response for COMPUTATIONAL_BLOCKS into a JSON Payload
 
-    Attributes
-    -----------
-    response_df: Incoming DataFrame
-    index_key: Key data is indexed
-    index_data: Data key that needs to be retrieved
+    Args:
+        response_df (pd.DataFrame): Incoming pandas DataFrame
+        index_key (str): String of column name that should be data's index
+        index_data (str): Data key that needs to be retrieved
+
+    Returns:
+        dict: Returns a dictionary representation of dataframe
     """
     response_df.index.name = index_key
     response_df.name = index_data
@@ -64,16 +70,18 @@ def format_computational_block_response(
 
 def format_signal_block_response(
     response_df: pd.DataFrame, index_key: str, filter_columns: List[str]
-):
-    """
-    Formats response for SIGNAL_BLOCKS into a JSON Payload
+) -> dict:
+    """Formats response for SIGNAL_BLOCKS into a JSON Payload
 
-    Attributes
-    -----------
-    response_df: Incoming DataFrame
-    index_key: Key data is indexed
-    filter_columns: List of keys to be filtered
+    Args:
+        response_df (pd.DataFrame): Incoming pandas DataFrame
+        index_key (str): String of column name that should be data's index
+        filter_columns (List[str]): List of column names to subset data
+
+    Returns:
+        dict: Returns a dictionary representation of dataframe
     """
+
     response_df = response_df.reset_index(level=index_key)
     response_df.drop(
         response_df.columns.difference([index_key] + filter_columns), 1, inplace=True
