@@ -18,7 +18,7 @@ def run(outputs: dict) -> List[dict]:
     """
     df_list = []
     for _, value in outputs.items():
-        df = _create_orders_df(value)
+        df = pd.DataFrame.from_records(value)
         if len(df) == 0:
             df = pd.DataFrame([], columns=["timestamp", "order"])
         df_list.append(df)
@@ -39,8 +39,3 @@ def run(outputs: dict) -> List[dict]:
     df_merged["order"] = df_merged["order_x"]
 
     return format_signal_block_response(df_merged, "timestamp", ["order"])
-
-
-def _create_orders_df(orders):
-    df = pd.DataFrame.from_records(orders)
-    return df
