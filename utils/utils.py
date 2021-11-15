@@ -75,7 +75,7 @@ def format_signal_block_request(
     data: dict, incoming_data_field: str = None
 ) -> pd.DataFrame:
     """
-    Helper function to format request dictionary for SIGNAL_BLOCK  1 and 2
+    Helper function to format request dictionary for SIGNAL_BLOCK 1 and 2
 
     Args:
         data (dict): Data payload from flow
