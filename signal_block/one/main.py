@@ -17,7 +17,7 @@ class InputPayload(BaseModel):
 
 def run(input: dict, computational_block: dict) -> List[dict]:
     """
-    Generate signals where multiple COMPUTATIONAL_BLOCK time series
+    Intersect Block: Generate signals where multiple COMPUTATIONAL_BLOCK time series
     data intersects
 
     Args:

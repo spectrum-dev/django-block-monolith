@@ -6,7 +6,7 @@ import pandas as pd
 
 def run(outputs: dict) -> List[dict]:
     """
-    Generate signals where two input SIGNAL_BLOCK data points agree
+    AND Block: Generate signals where two input SIGNAL_BLOCK data points agree
 
     Args:
         outputs (dict): Dictionary of SIGNAL_BLOCK to be used
