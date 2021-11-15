@@ -109,6 +109,9 @@ def run(input: dict, output: dict) -> List[dict]:
     ):
         raise SignalBlockSevenInputBlockTwoMissingDataFieldException
 
+    # Helper method to format request
+    _format_request = lambda x: pd.DataFrame.from_records(x)
+
     input_block_1 = _format_request(output[input_block_1_name])
     input_block_1 = input_block_1[["timestamp", input_block_1_field]]
     input_block_1 = input_block_1.rename(
@@ -145,11 +148,3 @@ def run(input: dict, output: dict) -> List[dict]:
     )
 
     return format_signal_block_response(response_df, "timestamp", ["order"])
-
-
-def _format_request(request_json):
-    """
-    Helper method to format request
-    """
-    df = pd.DataFrame.from_records(request_json)
-    return df

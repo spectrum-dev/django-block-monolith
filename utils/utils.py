@@ -1,4 +1,5 @@
 import json
+from functools import reduce
 from typing import List, Optional, Type
 
 import pandas as pd
@@ -68,6 +69,36 @@ def format_computational_block_response(
     response_json = json.loads(response_json)
 
     return response_json
+
+
+def format_signal_block_request(
+    data: dict, incoming_data_field: str = None
+) -> pd.DataFrame:
+    """
+    Helper function to format request dictionary for SIGNAL_BLOCK 1 and 2
+
+    Args:
+        data (dict): Data payload from flow
+        incoming_data_field (str, optional): String to specify field required from data.
+            Defaults to None, in which case 'data' will be resultant name.
+
+    Returns:
+        pd.DataFrame: Returns Pandas DataFrame with timestamp as index and data column
+            or specified incoming_data_field as column name
+    """
+    df_list = []
+    for k, v in data.items():
+        df = pd.DataFrame(v)
+        if incoming_data_field is not None:
+            df = df[["timestamp", incoming_data_field]]
+            df = df.rename(columns={incoming_data_field: "data"})
+        else:
+            df = df.rename(columns={"data": k})
+        df_list.append(df)
+
+    df = reduce(lambda x, y: pd.merge(x, y, on="timestamp"), df_list)
+    df = df.set_index("timestamp")
+    return df
 
 
 def format_signal_block_response(
