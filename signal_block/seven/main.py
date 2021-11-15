@@ -1,3 +1,5 @@
+from typing import List
+
 import pandas as pd
 from pydantic import BaseModel
 
@@ -35,7 +37,7 @@ class InputPayload(BaseModel):
     """
 
 
-def run(input: dict, output: dict) -> dict:
+def run(input: dict, output: dict) -> List[dict]:
     """
     Comparison Block: Generate signals where logical comparison rules are satisfied
     for given data points
@@ -61,7 +63,7 @@ def run(input: dict, output: dict) -> dict:
             raised when unsupported comparison type is provided
 
     Returns:
-        dict: Dictionary of JSON representation of signal block data
+        List[dict]: JSON representation of signal block data
     """
     input = validate_payload(
         InputPayload, input, SignalBlockSevenInvalidInputPayloadException
@@ -142,8 +144,7 @@ def run(input: dict, output: dict) -> dict:
         event_action,
     )
 
-    response = format_signal_block_response(response_df, "timestamp", ["order"])
-    return {"response": response}
+    return format_signal_block_response(response_df, "timestamp", ["order"])
 
 
 def _format_request(request_json):
