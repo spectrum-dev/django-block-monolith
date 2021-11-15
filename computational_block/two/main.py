@@ -93,8 +93,6 @@ def run(input: dict, output: dict) -> List[dict]:
 
     data_block_df["data"] = operator_func(operation_lhs, operation_value)
 
-    return {
-        "response": format_computational_block_response(
-            data_block_df[["data"]], "timestamp", "data"
-        )
-    }
+    return format_computational_block_response(
+        data_block_df[["data"]], "timestamp", "data"
+    )
