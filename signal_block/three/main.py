@@ -1,9 +1,11 @@
 from functools import reduce
+from typing import List
 
 import pandas as pd
 
 
-def run(outputs):
+def run(outputs: dict) -> List[dict]:
+
     df_list = []
     for _, value in outputs.items():
         df = _create_orders_df(value)

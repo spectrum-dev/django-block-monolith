@@ -1,4 +1,5 @@
 from functools import reduce
+from typing import List
 
 import pandas as pd
 from pydantic import BaseModel
@@ -22,7 +23,7 @@ class InputPayload(BaseModel):
     consecutive_down: int
 
 
-def run(input, output):
+def run(input: dict, output: dict) -> List[dict]:
     """Takes in elements from input payload and a single DATA_BLOCK
     to generate a series of events associated with the block
 
@@ -34,7 +35,7 @@ def run(input, output):
         SignalBlockTwoInvalidSaddleTypeException: Named exception raised when unsupported saddle type is used
 
     Returns:
-        dict: JSON representation of signal block data
+        List[dict]: JSON representation of signal block data
     """
 
     input = validate_payload(
