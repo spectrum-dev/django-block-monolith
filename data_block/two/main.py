@@ -26,7 +26,7 @@ def run(input: dict) -> dict:
 
     Raises:
         DataBlockTwoInvalidCandlestickException: Named exception raised if
-        candlestick type is not supported
+            candlestick type is not supported
 
     Returns:
         dict: Returns dictionary representation of dataframe
