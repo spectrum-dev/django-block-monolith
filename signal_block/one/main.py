@@ -14,15 +14,15 @@ class InputPayload(BaseModel):
     event_action: EventActionEnum
 
 
-def run(input, computational_block):
-    """
-    Takes in elements from the form input and multiple computational_block
-    to generates a series of events associated with that block
+def run(input: dict, computational_block: dict) -> dict:
+    """Takes in elements from the form input and multiple computational_block to generate a series of events associated with that block
 
-    Attributes
-    ----------
-    input: Form Inputs
-    computational_block: Time series data from a computational block
+    Args:
+        input (dict): Input payload from flow
+        computational_block (dict): JSON representation of time series data from computational block
+
+    Returns:
+        dict: JSON representation of signal block data
     """
     computational_block_df = _format_request(computational_block)
 
