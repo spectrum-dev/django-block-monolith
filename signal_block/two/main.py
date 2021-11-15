@@ -23,13 +23,18 @@ class InputPayload(BaseModel):
 
 
 def run(input, output):
-    """
-    Takes in elements from the form input and a single DATA_BLOCK
-    to generates a series of events associated with that block
-    Attributes
-    ----------
-    input: Form Inputs
-    output: Time series data from a block
+    """Takes in elements from input payload and a single DATA_BLOCK
+    to generate a series of events associated with the block
+
+    Args:
+        input (dict): Input payload from flow
+        output (dict): Time series data from block
+
+    Raises:
+        SignalBlockTwoInvalidSaddleTypeException: Named exception raised when unsupported saddle type is used
+
+    Returns:
+        dict: JSON representation of signal block data
     """
 
     input = validate_payload(
