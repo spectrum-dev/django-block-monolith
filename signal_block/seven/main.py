@@ -24,8 +24,7 @@ class InputPayload(BaseModel):
     event_action: EventActionEnum
 
 
-def run(input, output):
-    """
+"""
     Takes in elements from the form input and two DATA or COMPUTATIONAL blocks and perform logical comparisons on
     to generates a series of events associated with that block
 
@@ -33,6 +32,36 @@ def run(input, output):
     ----------
     input: Form Inputs
     input_blocks: Time series data from 2 blocks (either can be computational or data)
+    """
+
+
+def run(input: dict, output: dict) -> dict:
+    """
+    Comparison Block: Generate signals where logical comparison rules are satisfied
+    for given data points
+
+    Args:
+        input (dict): Input payload from flow
+        output (dict): Time series data from DATA_BLOCK or COMPUTATIONAL_BLOCK
+
+    Raises:
+        SignalBlockSevenInputBlockOneInvalidDataStringException: Named exception
+            raised when invalid input data_string is supplied
+        SignalBlockSevenInputBlockTwoInvalidDataStringException: Named exception
+            raised when invalid input data_string is supplied
+        SignalBlockSevenMissingInputBlockOneException: Named exception
+            raised when invalid input data block is missing
+        SignalBlockSevenMissingInputBlockTwoException: Named exception
+            raised when invalid input data block is missing
+        SignalBlockSevenInputBlockOneMissingDataFieldException: Named exception
+            raised when field is not available in data block
+        SignalBlockSevenInputBlockTwoMissingDataFieldException: Named exception
+            raised when field is not available in data block
+        SignalBlockSevenInvalidComparisonTypeException: Named exception
+            raised when unsupported comparison type is provided
+
+    Returns:
+        dict: Dictionary of JSON representation of signal block data
     """
     input = validate_payload(
         InputPayload, input, SignalBlockSevenInvalidInputPayloadException
