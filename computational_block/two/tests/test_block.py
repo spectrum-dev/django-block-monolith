@@ -445,34 +445,7 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
-            response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 100},
-                    {"timestamp": "01/02/2020", "data": 121},
-                    {"timestamp": "01/03/2020", "data": 144},
-                    {"timestamp": "01/04/2020", "data": 169},
-                    {"timestamp": "01/05/2020", "data": 196},
-                ]
-            },
-        )
-
-    def test_success_json_power_negative(self):
-        payload = {
-            "blockType": "COMPUTATIONAL_BLOCK",
-            "blockId": 2,
-            "inputs": {
-                "data_field": "close",
-                "operation_type": "^",
-                "operation_value": "2",
-            },
-            "outputs": {
-                "DATA_BLOCK-1-1": DATA_BLOCK,
-            },
-        }
-        response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
             {
                 "response": [
