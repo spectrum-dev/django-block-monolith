@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic import BaseModel
 
 from signal_block.four.events.crossover_above import main as crossover_above
@@ -22,17 +24,22 @@ class InputPayload(BaseModel):
     event_value: float
 
 
-def run(input, output):
+def run(input: dict, output: dict) -> List[dict]:
     """
-    Takes in elements from the form input and a single COMPUTATIONAL_BLOCK
-    to generates a series of events associated with that block
+    Crossover Block: Generates signals based on whether one time series crosses over another
+    time series
 
-    Attributes
-    ----------
-    input: Form Inputs
-    computational_block: Time series data from a computational block
+    Args:
+        input (dict): Input payload from flow
+        output (dict): Time series data from COMPUTATIONAL_BLOCK
+
+    Raises:
+        SignalBlockFourInvalidEventTypeException: Named exception raised when
+            unsupported event type is used
+
+    Returns:
+        List[dict]: JSON representation of signal block data
     """
-
     input = validate_payload(
         InputPayload, input, SignalBlockFourInvalidInputPayloadException
     )
