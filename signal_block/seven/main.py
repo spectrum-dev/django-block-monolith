@@ -145,7 +145,7 @@ def run(input: dict, output: dict) -> List[dict]:
     )
 
     response = format_signal_block_response(response_df, "timestamp", ["order"])
-    return {"response": response}
+    return response
 
 
 def _format_request(request_json):
