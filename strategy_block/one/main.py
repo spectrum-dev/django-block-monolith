@@ -14,14 +14,16 @@ class InputPayload(BaseModel):
     trade_amount_value: float
 
 
-def run(input, output):
+def run(input: dict, output: dict) -> dict:
     """
-    Runs the backtest
+    Simple Backtest Block: Completes the flow and runs the backtest
 
-    Attributes
-    ----------
-    input: Form Input Values
-    output: Output Cache Values
+    Args:
+        input (dict): Input payload from flow
+        output (dict): Data payload from flow
+
+    Returns:
+        dict: Dictionary of portfolio values and trades placed at different time points
     """
     input = validate_payload(
         InputPayload, input, StrategyBlockOneInvalidInputPayloadException
