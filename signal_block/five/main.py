@@ -1,7 +1,10 @@
 from functools import reduce
 from typing import List
 
+import numpy as np
 import pandas as pd
+
+from utils.utils import format_signal_block_response
 
 
 def run(outputs: dict) -> List[dict]:
@@ -34,19 +37,13 @@ def run(outputs: dict) -> List[dict]:
     # Checks if any orders is same as what is being checked
     df_merged = df_merged[df_merged.nunique(1).eq(1)]
 
-    orders_response = _create_orders_json(df_merged)
+    # If all orders are the same, any merged column can be the actual final column
+    # If all columns are NA, then return NA, else return first non-NA column
+    def f(x):
+        try:
+            return x[x.notna()][0]
+        except KeyError:
+            return np.nan
 
-    return orders_response
-
-
-def _create_orders_json(orders_df):
-    response = []
-    for index, row in orders_df.iterrows():
-        response.append(
-            {
-                "timestamp": index,
-                "order": row.dropna()[0],
-            }
-        )
-
-    return response
+    df_merged["order"] = df_merged.apply(f, axis=1)
+    return format_signal_block_response(df_merged, "timestamp", ["order"])
