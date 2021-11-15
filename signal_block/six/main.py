@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic import BaseModel
 
 from signal_block.six.events.close_above_events import *
@@ -16,7 +18,7 @@ class InputPayload(BaseModel):
     event_action: EventActionEnum
 
 
-def run(input: dict, output: dict) -> dict:
+def run(input: dict, output: dict) -> List[dict]:
     """
     Candle Close Block: Generate signals where DATA_BLOCK data points satisfy
     some characteristics
@@ -30,7 +32,7 @@ def run(input: dict, output: dict) -> dict:
             unsupported event type is used
 
     Returns:
-        dict: Dictionary of JSON representation of signal block data
+        List[dict]: JSON representation of signal block data
     """
     input = validate_payload(
         InputPayload, input, SignalBlockSixInvalidInputPayloadException
@@ -71,5 +73,4 @@ def run(input: dict, output: dict) -> dict:
         input.event_action,
     )
 
-    response = format_signal_block_response(response_df, "timestamp", ["order"])
-    return {"response": response}
+    return format_signal_block_response(response_df, "timestamp", ["order"])
