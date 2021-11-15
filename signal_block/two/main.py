@@ -1,13 +1,15 @@
-from functools import reduce
 from typing import List
 
-import pandas as pd
 from pydantic import BaseModel
 
 from signal_block.two.events.downward_saddle import main as downward_saddle
 from signal_block.two.events.upward_saddle import main as upward_saddle
 from utils.types import EventActionEnum
-from utils.utils import format_signal_block_response, validate_payload
+from utils.utils import (
+    format_signal_block_request,
+    format_signal_block_response,
+    validate_payload,
+)
 
 from .exceptions import (
     SignalBlockTwoInvalidInputPayloadException,
@@ -43,7 +45,7 @@ def run(input: dict, output: dict) -> List[dict]:
     input = validate_payload(
         InputPayload, input, SignalBlockTwoInvalidInputPayloadException
     )
-    output_df = _format_request(output, input.incoming_data)
+    output_df = format_signal_block_request(output, input.incoming_data)
 
     response_df = None
     case = lambda x: x == input.saddle_type
@@ -65,17 +67,3 @@ def run(input: dict, output: dict) -> List[dict]:
         raise SignalBlockTwoInvalidSaddleTypeException
 
     return format_signal_block_response(response_df, "timestamp", ["order"])
-
-
-def _format_request(data, incoming_data_field):
-    df_list = []
-    for k, v in data.items():
-        df = pd.DataFrame(v)
-        df = df[["timestamp", incoming_data_field]]
-        df = df.rename(columns={incoming_data_field: "data"})
-        df_list.append(df)
-
-    df = reduce(lambda x, y: pd.merge(x, y, on="timestamp"), df_list)
-    df = df.set_index("timestamp")
-
-    return df
