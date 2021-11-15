@@ -144,8 +144,7 @@ def run(input: dict, output: dict) -> List[dict]:
         event_action,
     )
 
-    response = format_signal_block_response(response_df, "timestamp", ["order"])
-    return response
+    return format_signal_block_response(response_df, "timestamp", ["order"])
 
 
 def _format_request(request_json):
