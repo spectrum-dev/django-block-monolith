@@ -16,7 +16,9 @@ class InputPayload(BaseModel):
 
 
 def run(input: dict, computational_block: dict) -> List[dict]:
-    """Takes in elements from the form input and multiple computational_block to generate a series of events associated with that block
+    """
+    Generate signals where multiple COMPUTATIONAL_BLOCK time series
+    data intersects
 
     Args:
         input (dict): Input payload from flow

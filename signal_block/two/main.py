@@ -24,7 +24,8 @@ class InputPayload(BaseModel):
 
 
 def run(input: dict, output: dict) -> List[dict]:
-    """Takes in elements from input payload and a single DATA_BLOCK
+    """
+    Takes in elements from input payload and a single DATA_BLOCK
     to generate a series of events associated with the block
 
     Args:
