@@ -5,7 +5,15 @@ import pandas as pd
 
 
 def run(outputs: dict) -> List[dict]:
+    """
+    Generate signals where two input SIGNAL_BLOCK data points agree
 
+    Args:
+        outputs (dict): Dictionary of SIGNAL_BLOCK to be used
+
+    Returns:
+        List[dict]: Returns a JSON representation of signal block data
+    """
     df_list = []
     for _, value in outputs.items():
         df = _create_orders_df(value)
