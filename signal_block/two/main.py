@@ -33,7 +33,8 @@ def run(input: dict, output: dict) -> List[dict]:
         output (dict): Time series data from block
 
     Raises:
-        SignalBlockTwoInvalidSaddleTypeException: Named exception raised when unsupported saddle type is used
+        SignalBlockTwoInvalidSaddleTypeException: Named exception raised when
+            unsupported saddle type is used
 
     Returns:
         List[dict]: JSON representation of signal block data

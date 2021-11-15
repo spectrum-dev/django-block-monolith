@@ -22,7 +22,8 @@ def run(input: dict, computational_block: dict) -> List[dict]:
 
     Args:
         input (dict): Input payload from flow
-        computational_block (dict): JSON representation of time series data from computational block
+        computational_block (dict): JSON representation of time series data from
+            computational block
 
     Returns:
         List[dict]: JSON representation of signal block data
