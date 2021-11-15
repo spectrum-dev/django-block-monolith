@@ -1,20 +1,41 @@
-def run(input):
+from pydantic import BaseModel
+
+from utils.utils import validate_payload
+
+from .exceptions import BulkDataBlockOneInvalidInputPayloadException
+
+
+class InputPayload(BaseModel):
+    exchange_name: str
+    start_date: str
+    end_date: str
+
+
+def run(input: dict) -> dict:
     """
     Runs a database query to get all data associated with a list of tickers
 
-    Attributes
-    ----------
-    input: { "exchange_name": "", "candlestick": "", start_date: "", end_date: "" }
+    Args:
+        input (dict): {
+            "exchange_name": "",
+            "candlestick": "",
+            start_date: "",
+            end_date: ""
+        }
 
-    Returns: {
-        [ticker]: [{ data_record }]
-    }
+    Returns:
+        dict: {
+            [ticker]: [{ data_record }]
+        }
     """
     import data_store.models
 
+    input = validate_payload(
+        InputPayload, input, BulkDataBlockOneInvalidInputPayloadException
+    )
     query = data_store.models.EquityDataStore.objects.filter(
-        exchange=input["exchange_name"],
-        datetime__range=(input["start_date"], input["end_date"]),
+        exchange=input.exchange_name,
+        datetime__range=(input.start_date, input.end_date),
     )
 
     response = {}
