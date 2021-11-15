@@ -12,10 +12,16 @@ class InputPayload(BaseModel):
 
 
 def run(input: dict) -> dict:
-    """Runs a database query to get all data associated with a list of tickers
+    """
+    Runs a database query to get all data associated with a list of tickers
 
     Args:
-        input (dict): { "exchange_name": "", "candlestick": "", start_date: "", end_date: "" }
+        input (dict): {
+            "exchange_name": "",
+            "candlestick": "",
+            start_date: "",
+            end_date: ""
+        }
 
     Returns:
         dict: {
