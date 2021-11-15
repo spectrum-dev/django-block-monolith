@@ -1,4 +1,5 @@
 import operator
+from typing import List
 
 from pydantic import BaseModel
 
@@ -24,7 +25,7 @@ class InputPayload(BaseModel):
     operation_type: str
 
 
-def run(input: dict, output: dict) -> dict:
+def run(input: dict, output: dict) -> List[dict]:
     """
     Operation Block: Generate signals based on mathematical operations on a
     chosen field
@@ -44,7 +45,7 @@ def run(input: dict, output: dict) -> dict:
             when data_field cannot be converted to float
 
     Returns:
-        dict: JSON representation of computed dataframe
+        List[dict]: JSON representation of computed dataframe
     """
 
     selectable_data = {
@@ -92,8 +93,6 @@ def run(input: dict, output: dict) -> dict:
 
     data_block_df["data"] = operator_func(operation_lhs, operation_value)
 
-    return {
-        "response": format_computational_block_response(
-            data_block_df[["data"]], "timestamp", "data"
-        )
-    }
+    return format_computational_block_response(
+        data_block_df[["data"]], "timestamp", "data"
+    )

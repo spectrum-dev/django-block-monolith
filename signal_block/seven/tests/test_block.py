@@ -84,15 +84,13 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "order": "BUY"},
-                    {"timestamp": "01/02/2020", "order": "BUY"},
-                    {"timestamp": "01/05/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "order": "BUY"},
+                {"timestamp": "01/02/2020", "order": "BUY"},
+                {"timestamp": "01/05/2020", "order": "BUY"},
+            ],
         )
 
     def test_success_json_less_than_equal_buy(self):
@@ -117,16 +115,14 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "order": "BUY"},
-                    {"timestamp": "01/02/2020", "order": "BUY"},
-                    {"timestamp": "01/03/2020", "order": "BUY"},
-                    {"timestamp": "01/05/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "order": "BUY"},
+                {"timestamp": "01/02/2020", "order": "BUY"},
+                {"timestamp": "01/03/2020", "order": "BUY"},
+                {"timestamp": "01/05/2020", "order": "BUY"},
+            ],
         )
 
     def test_success_json_more_than_buy(self):
@@ -151,13 +147,11 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/04/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/04/2020", "order": "BUY"},
+            ],
         )
 
     def test_success_json_more_than_equal_buy(self):
@@ -182,14 +176,12 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/03/2020", "order": "BUY"},
-                    {"timestamp": "01/04/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/03/2020", "order": "BUY"},
+                {"timestamp": "01/04/2020", "order": "BUY"},
+            ],
         )
 
     def test_success_json_more_than_equal_buy_both_computational_block(self):
@@ -220,15 +212,13 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "order": "BUY"},
-                    {"timestamp": "01/02/2020", "order": "BUY"},
-                    {"timestamp": "01/04/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "order": "BUY"},
+                {"timestamp": "01/02/2020", "order": "BUY"},
+                {"timestamp": "01/04/2020", "order": "BUY"},
+            ],
         )
 
     def test_success_json_more_than_equal_buy_custom_blocks(self):
@@ -259,15 +249,13 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "order": "BUY"},
-                    {"timestamp": "01/02/2020", "order": "BUY"},
-                    {"timestamp": "01/04/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "order": "BUY"},
+                {"timestamp": "01/02/2020", "order": "BUY"},
+                {"timestamp": "01/04/2020", "order": "BUY"},
+            ],
         )
 
     def test_failure_missing_input(self):

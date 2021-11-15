@@ -27,15 +27,13 @@ class PostRun(TestCase):
 
         response = event_ingestor(payload)
 
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "order": "BUY"},
-                    {"timestamp": "01/02/2020", "order": "BUY"},
-                    {"timestamp": "01/04/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "order": "BUY"},
+                {"timestamp": "01/02/2020", "order": "BUY"},
+                {"timestamp": "01/04/2020", "order": "BUY"},
+            ],
         )
 
     def test_close_above_open(self):
@@ -52,14 +50,12 @@ class PostRun(TestCase):
 
         response = event_ingestor(payload)
 
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/02/2020", "order": "BUY"},
-                    {"timestamp": "01/04/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/02/2020", "order": "BUY"},
+                {"timestamp": "01/04/2020", "order": "BUY"},
+            ],
         )
 
     def test_close_below_high(self):
@@ -76,15 +72,13 @@ class PostRun(TestCase):
 
         response = event_ingestor(payload)
 
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "order": "BUY"},
-                    {"timestamp": "01/03/2020", "order": "BUY"},
-                    {"timestamp": "01/05/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "order": "BUY"},
+                {"timestamp": "01/03/2020", "order": "BUY"},
+                {"timestamp": "01/05/2020", "order": "BUY"},
+            ],
         )
 
     def test_close_below_open(self):
@@ -101,14 +95,12 @@ class PostRun(TestCase):
 
         response = event_ingestor(payload)
 
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "order": "BUY"},
-                    {"timestamp": "01/05/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "order": "BUY"},
+                {"timestamp": "01/05/2020", "order": "BUY"},
+            ],
         )
 
     def test_close_eq_high(self):
@@ -125,14 +117,12 @@ class PostRun(TestCase):
 
         response = event_ingestor(payload)
 
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/02/2020", "order": "BUY"},
-                    {"timestamp": "01/04/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/02/2020", "order": "BUY"},
+                {"timestamp": "01/04/2020", "order": "BUY"},
+            ],
         )
 
     def test_close_eq_low(self):
@@ -149,14 +139,12 @@ class PostRun(TestCase):
 
         response = event_ingestor(payload)
 
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/03/2020", "order": "BUY"},
-                    {"timestamp": "01/05/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/03/2020", "order": "BUY"},
+                {"timestamp": "01/05/2020", "order": "BUY"},
+            ],
         )
 
     def test_close_eq_low_sell(self):
@@ -173,14 +161,12 @@ class PostRun(TestCase):
 
         response = event_ingestor(payload)
 
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/03/2020", "order": "SELL"},
-                    {"timestamp": "01/05/2020", "order": "SELL"},
-                ]
-            },
+            [
+                {"timestamp": "01/03/2020", "order": "SELL"},
+                {"timestamp": "01/05/2020", "order": "SELL"},
+            ],
         )
 
     def test_no_results(self):
@@ -197,9 +183,9 @@ class PostRun(TestCase):
 
         response = event_ingestor(payload)
 
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {"response": []},
+            [],
         )
 
     def test_missing_input(self):
