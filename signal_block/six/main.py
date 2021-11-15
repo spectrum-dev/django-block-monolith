@@ -16,15 +16,21 @@ class InputPayload(BaseModel):
     event_action: EventActionEnum
 
 
-def run(input, output):
+def run(input: dict, output: dict) -> dict:
     """
-    Takes in elements from the form input and a single COMPUTATIONAL_BLOCK
-    to generates a series of events associated with that block
+    Candle Close Block: Generate signals where DATA_BLOCK data points satisfy
+    some characteristics
 
-    Attributes
-    ----------
-    input: Form Inputs
-    computational_block: Time series data from a computational block
+    Args:
+        input (dict): Input payload from flow
+        output (dict): Time series data from DATA_BLOCK
+
+    Raises:
+        SignalBlockSixInvalidEventTypeException: Named exception raised when
+            unsupported event type is used
+
+    Returns:
+        dict: Dictionary of JSON representation of signal block data
     """
     input = validate_payload(
         InputPayload, input, SignalBlockSixInvalidInputPayloadException
