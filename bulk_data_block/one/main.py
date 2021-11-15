@@ -1,14 +1,13 @@
-def run(input):
-    """
-    Runs a database query to get all data associated with a list of tickers
+def run(input: dict) -> dict:
+    """Runs a database query to get all data associated with a list of tickers
 
-    Attributes
-    ----------
-    input: { "exchange_name": "", "candlestick": "", start_date: "", end_date: "" }
+    Args:
+        input (dict): { "exchange_name": "", "candlestick": "", start_date: "", end_date: "" }
 
-    Returns: {
-        [ticker]: [{ data_record }]
-    }
+    Returns:
+        dict: {
+            [ticker]: [{ data_record }]
+        }
     """
     import data_store.models
 
