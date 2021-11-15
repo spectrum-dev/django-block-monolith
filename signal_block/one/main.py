@@ -1,4 +1,5 @@
 from functools import reduce
+from typing import List
 
 import pandas as pd
 from pydantic import BaseModel
@@ -14,15 +15,18 @@ class InputPayload(BaseModel):
     event_action: EventActionEnum
 
 
-def run(input, computational_block):
+def run(input: dict, computational_block: dict) -> List[dict]:
     """
-    Takes in elements from the form input and multiple computational_block
-    to generates a series of events associated with that block
+    Intersect Block: Generate signals where multiple COMPUTATIONAL_BLOCK time series
+    data intersects
 
-    Attributes
-    ----------
-    input: Form Inputs
-    computational_block: Time series data from a computational block
+    Args:
+        input (dict): Input payload from flow
+        computational_block (dict): JSON representation of time series data from
+            computational block
+
+    Returns:
+        List[dict]: JSON representation of signal block data
     """
     computational_block_df = _format_request(computational_block)
 

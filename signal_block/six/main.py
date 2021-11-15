@@ -7,6 +7,7 @@ from utils.utils import format_request, format_signal_block_response, validate_p
 from .exceptions import (
     SignalBlockSixInvalidEventTypeException,
     SignalBlockSixInvalidInputPayloadException,
+    SignalBlockSixMissingDataFieldException,
 )
 
 
@@ -15,15 +16,21 @@ class InputPayload(BaseModel):
     event_action: EventActionEnum
 
 
-def run(input, output):
+def run(input: dict, output: dict) -> dict:
     """
-    Takes in elements from the form input and a single COMPUTATIONAL_BLOCK
-    to generates a series of events associated with that block
+    Candle Close Block: Generate signals where DATA_BLOCK data points satisfy
+    some characteristics
 
-    Attributes
-    ----------
-    input: Form Inputs
-    computational_block: Time series data from a computational block
+    Args:
+        input (dict): Input payload from flow
+        output (dict): Time series data from DATA_BLOCK
+
+    Raises:
+        SignalBlockSixInvalidEventTypeException: Named exception raised when
+            unsupported event type is used
+
+    Returns:
+        dict: Dictionary of JSON representation of signal block data
     """
     input = validate_payload(
         InputPayload, input, SignalBlockSixInvalidInputPayloadException
@@ -40,6 +47,9 @@ def run(input, output):
 
     _candle_close_func = None
     case = lambda x: x == input.event_type
+
+    if any([x not in data_block_df.columns for x in ["open", "high", "low", "close"]]):
+        raise SignalBlockSixMissingDataFieldException
 
     if case("CLOSE_ABOVE_OPEN"):
         _candle_close_func = close_above_open
