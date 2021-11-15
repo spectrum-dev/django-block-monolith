@@ -46,7 +46,7 @@ def format_request(request_json: dict, key: str) -> pd.DataFrame:
 
 def format_computational_block_response(
     response_df: pd.DataFrame, index_key: str, index_data: str
-) -> dict:
+) -> List[dict]:
     """Formats response for COMPUTATIONAL_BLOCKS into a JSON Payload
 
     Args:
@@ -55,7 +55,7 @@ def format_computational_block_response(
         index_data (str): Data key that needs to be retrieved
 
     Returns:
-        dict: Returns a dictionary representation of dataframe
+        List[dict]: Returns a dictionary representation of dataframe
     """
     response_df.index.name = index_key
     response_df.name = index_data
@@ -70,7 +70,7 @@ def format_computational_block_response(
 
 def format_signal_block_response(
     response_df: pd.DataFrame, index_key: str, filter_columns: List[str]
-) -> dict:
+) -> List[dict]:
     """Formats response for SIGNAL_BLOCKS into a JSON Payload
 
     Args:
@@ -79,7 +79,7 @@ def format_signal_block_response(
         filter_columns (List[str]): List of column names to subset data
 
     Returns:
-        dict: Returns a dictionary representation of dataframe
+        List[dict]: Returns a dictionary representation of dataframe
     """
 
     response_df = response_df.reset_index(level=index_key)
