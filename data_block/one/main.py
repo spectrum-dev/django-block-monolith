@@ -17,13 +17,17 @@ class InputPayload(BaseModel):
     end_date: str
 
 
-def run(input):
-    """
-    Runs a query to get the US stock data
+def run(input: dict) -> dict:
+    """Runs a query to get US stock data
 
-    Attributes
-    ----------
-    input: The input payload
+    Args:
+        input (dict): Input payload from flow
+
+    Raises:
+        DataBlockOneInvalidCandlestickException: Named exception raised if candlestick type is not supported
+
+    Returns:
+        dict: Returns dictionary representation of dataframe
     """
 
     input = validate_payload(
