@@ -17,7 +17,7 @@ def run(outputs: dict) -> List[dict]:
     """
     df_list = []
     for _, value in outputs.items():
-        df = _create_orders_df(value)
+        df = pd.DataFrame.from_records(value)
         if len(df) == 0:
             df = pd.DataFrame([], columns=["timestamp", "order"])
         df_list.append(df)
@@ -37,11 +37,6 @@ def run(outputs: dict) -> List[dict]:
     orders_response = _create_orders_json(df_merged)
 
     return orders_response
-
-
-def _create_orders_df(orders):
-    df = pd.DataFrame.from_records(orders)
-    return df
 
 
 def _create_orders_json(orders_df):
