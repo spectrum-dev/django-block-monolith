@@ -37,12 +37,15 @@ def run(input: dict, output: dict) -> dict:
             "SIGNAL_BLOCK",
         ],
     }
-    block_data = retrieve_block_data(selectable_data, output)
-    data_block = block_data["data_block"]
-    signal_block = block_data["signal_block"]
+
+    # Place this as first validation so it fails before checking block data
     input = validate_payload(
         InputPayload, input, StrategyBlockTwoInvalidInputPayloadException
     )
+    block_data = retrieve_block_data(selectable_data, output)
+    data_block = block_data["data_block"]
+    signal_block = block_data["signal_block"]
+
     portfolio_cash_value = input.start_value
     trade_commission = input.commission
     trade_amount = input.trade_amount_value

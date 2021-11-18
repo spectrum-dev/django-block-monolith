@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from blocks.event import event_ingestor
+from strategy_block.two.exceptions import StrategyBlockTwoInvalidInputPayloadException
 from utils.exceptions import BlockDataDoesNotExistException
 
 
@@ -876,6 +877,167 @@ class BacktestBlockRunning(TestCase):
                         {"value": 50000.0, "timestamp": "01/10/2020"},
                     ],
                     "trades": [],
+                }
+            },
+        )
+
+    def test_backtest_block_missing_input(self):
+        payload = {
+            "blockType": "STRATEGY_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "commission": 2.00,
+                "stop_loss": 999,
+                "take_profit": 999,
+                "trade_amount_value": 1000.00,
+            },
+            "outputs": {},
+        }
+
+        with self.assertRaises(StrategyBlockTwoInvalidInputPayloadException):
+            event_ingestor(payload)
+
+    def test_backtest_block_input_not_castable_to_float(self):
+        payload = {
+            "blockType": "STRATEGY_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "start_value": 50000.00,
+                "commission": 2.00,
+                "stop_loss": 999,
+                "take_profit": "FOO",
+                "trade_amount_value": 1000.00,
+            },
+            "outputs": {},
+        }
+
+        with self.assertRaises(StrategyBlockTwoInvalidInputPayloadException):
+            event_ingestor(payload)
+
+    def test_backtest_block_input_castable_to_float(self):
+        payload = {
+            "blockType": "STRATEGY_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "start_value": "10000",
+                "commission": 2.00,
+                "stop_loss": 0.25,
+                "take_profit": 0.30,
+                "trade_amount_value": 1000.00,
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": [
+                    {
+                        "timestamp": "01/01/2020",
+                        "close": "10.00",
+                    },
+                    {
+                        "timestamp": "01/02/2020",
+                        "close": "8.00",
+                    },
+                    {
+                        "timestamp": "01/03/2020",
+                        "close": "5.00",
+                    },
+                    {
+                        "timestamp": "01/04/2020",
+                        "close": "10.00",
+                    },
+                    {
+                        "timestamp": "01/05/2020",
+                        "close": "12.00",
+                    },
+                    {
+                        "timestamp": "01/06/2020",
+                        "close": "20.00",
+                    },
+                    {
+                        "timestamp": "01/07/2020",
+                        "close": "16.00",
+                    },
+                    {
+                        "timestamp": "01/08/2020",
+                        "close": "18.00",
+                    },
+                    {
+                        "timestamp": "01/09/2020",
+                        "close": "20.00",
+                    },
+                    {
+                        "timestamp": "01/10/2020",
+                        "close": "20.00",
+                    },
+                ],
+                "SIGNAL_BLOCK-1-1": [
+                    {"timestamp": "01/01/2020", "order": "SELL"},
+                    {"timestamp": "01/02/2020", "order": "SELL"},
+                    {"timestamp": "01/03/2020", "order": "BUY_CLOSE"},
+                    {"timestamp": "01/04/2020", "order": "SELL"},
+                    {"timestamp": "01/06/2020", "order": "BUY_CLOSE"},
+                ],
+            },
+        }
+        response = event_ingestor(payload)
+        self.assertDictEqual(
+            response,
+            {
+                "response": {
+                    "portVals": [
+                        {"value": 9998.0, "timestamp": "01/01/2020"},
+                        {"value": 10196.0, "timestamp": "01/02/2020"},
+                        {"value": 10867.0, "timestamp": "01/03/2020"},
+                        {"value": 10865.0, "timestamp": "01/04/2020"},
+                        {"value": 10665.0, "timestamp": "01/05/2020"},
+                        {"value": 9863.0, "timestamp": "01/06/2020"},
+                        {"value": 9863.0, "timestamp": "01/07/2020"},
+                        {"value": 9863.0, "timestamp": "01/08/2020"},
+                        {"value": 9863.0, "timestamp": "01/09/2020"},
+                        {"value": 9863.0, "timestamp": "01/10/2020"},
+                    ],
+                    "trades": [
+                        {
+                            "amount_invested": 1000.0,
+                            "cash_allocated": 1000.0,
+                            "order": "SELL",
+                            "shares": 100,
+                            "timestamp": "01/01/2020",
+                        },
+                        {
+                            "amount_invested": 1000.0,
+                            "cash_allocated": 1000.0,
+                            "order": "SELL",
+                            "shares": 125,
+                            "timestamp": "01/02/2020",
+                        },
+                        {
+                            "amount_invested": 500.0,
+                            "cash_allocated": 1000.0,
+                            "order": "BUY_CLOSE",
+                            "shares": 100,
+                            "timestamp": "01/03/2020",
+                        },
+                        {
+                            "amount_invested": 625.0,
+                            "cash_allocated": 1000.0,
+                            "order": "BUY_CLOSE",
+                            "shares": 125,
+                            "timestamp": "01/03/2020",
+                        },
+                        {
+                            "amount_invested": 1000.0,
+                            "cash_allocated": 1000.0,
+                            "order": "SELL",
+                            "shares": 100,
+                            "timestamp": "01/04/2020",
+                        },
+                        {
+                            "amount_invested": 2000.0,
+                            "cash_allocated": 1000.0,
+                            "order": "BUY_CLOSE",
+                            "shares": 100,
+                            "timestamp": "01/06/2020",
+                        },
+                    ],
                 }
             },
         )
