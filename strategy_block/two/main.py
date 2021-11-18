@@ -15,8 +15,6 @@ def run(input, output):
     input: Form Input Values
     output: Output Cache Values
     """
-    # data_block = get_block_data_from_dict("DATA_BLOCK", output)
-    # signal_block = get_block_data_from_dict("SIGNAL_BLOCK", output)
     selectable_data = {
         "data_block": [
             "DATA_BLOCK",
@@ -210,9 +208,9 @@ def run(input, output):
     port_val_df["value"] = port_val_df["held_units"].astype(float) * port_val_df[
         "close"
     ].astype(float) + port_val_df["portfolio_cash_value"].astype(float)
-    print(port_val_df)
+    # print(port_val_df)
     port_val_df = port_val_df[["timestamp", "value"]]
-    port_val_df["timestamp"] = port_val_df.timestamp.dt.strftime("%m/%d/%Y %H:%M:%S")
+    # port_val_df["timestamp"] = port_val_df.timestamp.dt.strftime("%m/%d/%Y %H:%M:%S")
     port_val_df = port_val_df.drop_duplicates(
         keep="last",
         subset=[
@@ -234,7 +232,7 @@ def run(input, output):
         }
     )
     trades_df["cash_allocated"] = trade_amount
-    trades_df["timestamp"] = trades_df.timestamp.dt.strftime("%m/%d/%Y %H:%M:%S")
+    # trades_df["timestamp"] = trades_df.timestamp.dt.strftime("%m/%d/%Y %H:%M:%S")
     trades = trades_df.to_dict(orient="records")
 
     return {"response": {"portVals": port_vals, "trades": trades}}

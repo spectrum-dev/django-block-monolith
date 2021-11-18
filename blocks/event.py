@@ -11,7 +11,7 @@ from signal_block.six.main import run as signal_block_6_run
 from signal_block.three.main import run as signal_block_3_run
 from signal_block.two.main import run as signal_block_2_run
 from strategy_block.one.main import run as strategy_block_1_run
-from strategy_blocks.two.main import run as strategy_block_2_run
+from strategy_block.two.main import run as strategy_block_2_run
 
 
 def event_ingestor(payload):

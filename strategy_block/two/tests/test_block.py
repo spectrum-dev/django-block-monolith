@@ -1,8 +1,12 @@
 from django.test import TestCase
+
 from blocks.event import event_ingestor
+from utils.exceptions import BlockDataDoesNotExistException
 
 
 class BacktestBlockRunning(TestCase):
+    maxDiff = None
+
     def test_failure_missing_data_block(self):
         payload = {
             "blockType": "STRATEGY_BLOCK",
@@ -22,8 +26,8 @@ class BacktestBlockRunning(TestCase):
                 ],
             },
         }
-        response = event_ingestor(payload)
-        self.assertDictEqual(response, {"response": {"portVals": [], "trades": []}})
+        with self.assertRaises(BlockDataDoesNotExistException):
+            event_ingestor(payload)
 
     def test_failure_missing_signal_block(self):
         payload = {
@@ -59,8 +63,8 @@ class BacktestBlockRunning(TestCase):
                 ]
             },
         }
-        response = event_ingestor(payload)
-        self.assertDictEqual(response, {"response": {"portVals": [], "trades": []}})
+        with self.assertRaises(BlockDataDoesNotExistException):
+            event_ingestor(payload)
 
     def test_backtest_block_simple_scenario(self):
         payload = {
@@ -135,11 +139,11 @@ class BacktestBlockRunning(TestCase):
             {
                 "response": {
                     "portVals": [
-                        {"value": 10000.0, "timestamp": "01/01/2020 00:00:00"},
-                        {"value": 9998.0, "timestamp": "01/02/2020 00:00:00"},
-                        {"value": 10086.0, "timestamp": "01/03/2020 00:00:00"},
-                        {"value": 10084.0, "timestamp": "01/04/2020 00:00:00"},
-                        {"value": 10160.0, "timestamp": "01/05/2020 00:00:00"},
+                        {"value": 10000.0, "timestamp": "01/01/2020"},
+                        {"value": 9998.0, "timestamp": "01/02/2020"},
+                        {"value": 10086.0, "timestamp": "01/03/2020"},
+                        {"value": 10084.0, "timestamp": "01/04/2020"},
+                        {"value": 10160.0, "timestamp": "01/05/2020"},
                     ],
                     "trades": [
                         {
@@ -147,21 +151,21 @@ class BacktestBlockRunning(TestCase):
                             "cash_allocated": 1000.0,
                             "order": "BUY",
                             "shares": 90,
-                            "timestamp": "01/02/2020 00:00:00",
+                            "timestamp": "01/02/2020",
                         },
                         {
                             "amount_invested": 1080.0,
                             "cash_allocated": 1000.0,
                             "order": "SELL_CLOSE",
                             "shares": 90,
-                            "timestamp": "01/03/2020 00:00:00",
+                            "timestamp": "01/03/2020",
                         },
                         {
                             "amount_invested": 988.0,
                             "cash_allocated": 1000.0,
                             "order": "BUY",
                             "shares": 76,
-                            "timestamp": "01/04/2020 00:00:00",
+                            "timestamp": "01/04/2020",
                         },
                     ],
                 }
@@ -237,16 +241,16 @@ class BacktestBlockRunning(TestCase):
             {
                 "response": {
                     "portVals": [
-                        {"value": 10000.0, "timestamp": "01/01/2020 00:00:00"},
-                        {"value": 9998.0, "timestamp": "01/02/2020 00:00:00"},
-                        {"value": 10248.0, "timestamp": "01/03/2020 00:00:00"},
-                        {"value": 11494.0, "timestamp": "01/04/2020 00:00:00"},
-                        {"value": 11694.0, "timestamp": "01/05/2020 00:00:00"},
-                        {"value": 11892.0, "timestamp": "01/06/2020 00:00:00"},
-                        {"value": 12232.0, "timestamp": "01/07/2020 00:00:00"},
-                        {"value": 12374.0, "timestamp": "01/08/2020 00:00:00"},
-                        {"value": 12516.0, "timestamp": "01/09/2020 00:00:00"},
-                        {"value": 12514.0, "timestamp": "01/10/2020 00:00:00"},
+                        {"value": 10000.0, "timestamp": "01/01/2020"},
+                        {"value": 9998.0, "timestamp": "01/02/2020"},
+                        {"value": 10248.0, "timestamp": "01/03/2020"},
+                        {"value": 11494.0, "timestamp": "01/04/2020"},
+                        {"value": 11694.0, "timestamp": "01/05/2020"},
+                        {"value": 11892.0, "timestamp": "01/06/2020"},
+                        {"value": 12232.0, "timestamp": "01/07/2020"},
+                        {"value": 12374.0, "timestamp": "01/08/2020"},
+                        {"value": 12516.0, "timestamp": "01/09/2020"},
+                        {"value": 12514.0, "timestamp": "01/10/2020"},
                     ],
                     "trades": [
                         {
@@ -254,42 +258,42 @@ class BacktestBlockRunning(TestCase):
                             "cash_allocated": 1000.0,
                             "order": "BUY",
                             "shares": 250,
-                            "timestamp": "01/02/2020 00:00:00",
+                            "timestamp": "01/02/2020",
                         },
                         {
                             "amount_invested": 2500.0,
                             "cash_allocated": 1000.0,
                             "order": "SELL_CLOSE",
                             "shares": 250,
-                            "timestamp": "01/04/2020 00:00:00",
+                            "timestamp": "01/04/2020",
                         },
                         {
                             "amount_invested": 1000.0,
                             "cash_allocated": 1000.0,
                             "order": "BUY",
                             "shares": 100,
-                            "timestamp": "01/04/2020 00:00:00",
+                            "timestamp": "01/04/2020",
                         },
                         {
                             "amount_invested": 994.0,
                             "cash_allocated": 1000.0,
                             "order": "BUY",
                             "shares": 71,
-                            "timestamp": "01/06/2020 00:00:00",
+                            "timestamp": "01/06/2020",
                         },
                         {
                             "amount_invested": 1600.0,
                             "cash_allocated": 1000.0,
                             "order": "SELL_CLOSE",
                             "shares": 100,
-                            "timestamp": "01/07/2020 00:00:00",
+                            "timestamp": "01/07/2020",
                         },
                         {
                             "amount_invested": 1420.0,
                             "cash_allocated": 1000.0,
                             "order": "SELL_CLOSE",
                             "shares": 71,
-                            "timestamp": "01/10/2020 00:00:00",
+                            "timestamp": "01/10/2020",
                         },
                     ],
                 }
@@ -364,16 +368,16 @@ class BacktestBlockRunning(TestCase):
             {
                 "response": {
                     "portVals": [
-                        {"value": 9998.0, "timestamp": "01/01/2020 00:00:00"},
-                        {"value": 9798.0, "timestamp": "01/02/2020 00:00:00"},
-                        {"value": 9496.0, "timestamp": "01/03/2020 00:00:00"},
-                        {"value": 9496.0, "timestamp": "01/04/2020 00:00:00"},
-                        {"value": 9494.0, "timestamp": "01/05/2020 00:00:00"},
-                        {"value": 10156.0, "timestamp": "01/06/2020 00:00:00"},
-                        {"value": 10156.0, "timestamp": "01/07/2020 00:00:00"},
-                        {"value": 10154.0, "timestamp": "01/08/2020 00:00:00"},
-                        {"value": 10264.0, "timestamp": "01/09/2020 00:00:00"},
-                        {"value": 10264.0, "timestamp": "01/10/2020 00:00:00"},
+                        {"value": 9998.0, "timestamp": "01/01/2020"},
+                        {"value": 9798.0, "timestamp": "01/02/2020"},
+                        {"value": 9496.0, "timestamp": "01/03/2020"},
+                        {"value": 9496.0, "timestamp": "01/04/2020"},
+                        {"value": 9494.0, "timestamp": "01/05/2020"},
+                        {"value": 10156.0, "timestamp": "01/06/2020"},
+                        {"value": 10156.0, "timestamp": "01/07/2020"},
+                        {"value": 10154.0, "timestamp": "01/08/2020"},
+                        {"value": 10264.0, "timestamp": "01/09/2020"},
+                        {"value": 10264.0, "timestamp": "01/10/2020"},
                     ],
                     "trades": [
                         {
@@ -381,35 +385,35 @@ class BacktestBlockRunning(TestCase):
                             "cash_allocated": 1000.0,
                             "order": "BUY",
                             "shares": 100,
-                            "timestamp": "01/01/2020 00:00:00",
+                            "timestamp": "01/01/2020",
                         },
                         {
                             "amount_invested": 500.0,
                             "cash_allocated": 1000.0,
                             "order": "SELL_CLOSE",
                             "shares": 100,
-                            "timestamp": "01/03/2020 00:00:00",
+                            "timestamp": "01/03/2020",
                         },
                         {
                             "amount_invested": 996.0,
                             "cash_allocated": 1000.0,
                             "order": "BUY",
                             "shares": 83,
-                            "timestamp": "01/05/2020 00:00:00",
+                            "timestamp": "01/05/2020",
                         },
                         {
                             "amount_invested": 1660.0,
                             "cash_allocated": 1000.0,
                             "order": "SELL_CLOSE",
                             "shares": 83,
-                            "timestamp": "01/06/2020 00:00:00",
+                            "timestamp": "01/06/2020",
                         },
                         {
                             "amount_invested": 990.0,
                             "cash_allocated": 1000.0,
                             "order": "BUY",
                             "shares": 55,
-                            "timestamp": "01/08/2020 00:00:00",
+                            "timestamp": "01/08/2020",
                         },
                     ],
                 }
@@ -487,16 +491,16 @@ class BacktestBlockRunning(TestCase):
             {
                 "response": {
                     "portVals": [
-                        {"value": 9998.0, "timestamp": "01/01/2020 00:00:00"},
-                        {"value": 9796.0, "timestamp": "01/02/2020 00:00:00"},
-                        {"value": 9119.0, "timestamp": "01/03/2020 00:00:00"},
-                        {"value": 11244.0, "timestamp": "01/04/2020 00:00:00"},
-                        {"value": 12094.0, "timestamp": "01/05/2020 00:00:00"},
-                        {"value": 15492.0, "timestamp": "01/06/2020 00:00:00"},
-                        {"value": 15492.0, "timestamp": "01/07/2020 00:00:00"},
-                        {"value": 15490.0, "timestamp": "01/08/2020 00:00:00"},
-                        {"value": 15598.0, "timestamp": "01/09/2020 00:00:00"},
-                        {"value": 15598.0, "timestamp": "01/10/2020 00:00:00"},
+                        {"value": 9998.0, "timestamp": "01/01/2020"},
+                        {"value": 9796.0, "timestamp": "01/02/2020"},
+                        {"value": 9119.0, "timestamp": "01/03/2020"},
+                        {"value": 11244.0, "timestamp": "01/04/2020"},
+                        {"value": 12094.0, "timestamp": "01/05/2020"},
+                        {"value": 15492.0, "timestamp": "01/06/2020"},
+                        {"value": 15492.0, "timestamp": "01/07/2020"},
+                        {"value": 15490.0, "timestamp": "01/08/2020"},
+                        {"value": 15598.0, "timestamp": "01/09/2020"},
+                        {"value": 15598.0, "timestamp": "01/10/2020"},
                     ],
                     "trades": [
                         {
@@ -504,42 +508,42 @@ class BacktestBlockRunning(TestCase):
                             "cash_allocated": 1000.0,
                             "order": "BUY",
                             "shares": 100,
-                            "timestamp": "01/01/2020 00:00:00",
+                            "timestamp": "01/01/2020",
                         },
                         {
                             "amount_invested": 1000.0,
                             "cash_allocated": 1000.0,
                             "order": "BUY",
                             "shares": 125,
-                            "timestamp": "01/02/2020 00:00:00",
+                            "timestamp": "01/02/2020",
                         },
                         {
                             "amount_invested": 1000.0,
                             "cash_allocated": 1000.0,
                             "order": "BUY",
                             "shares": 200,
-                            "timestamp": "01/03/2020 00:00:00",
+                            "timestamp": "01/03/2020",
                         },
                         {
                             "amount_invested": 8500.0,
                             "cash_allocated": 1000.0,
                             "order": "SELL_CLOSE",
                             "shares": 425,
-                            "timestamp": "01/06/2020 00:00:00",
+                            "timestamp": "01/06/2020",
                         },
                         {
                             "amount_invested": 990.0,
                             "cash_allocated": 1000.0,
                             "order": "BUY",
                             "shares": 55,
-                            "timestamp": "01/08/2020 00:00:00",
+                            "timestamp": "01/08/2020",
                         },
                         {
                             "amount_invested": 1000.0,
                             "cash_allocated": 1000.0,
                             "order": "BUY",
                             "shares": 50,
-                            "timestamp": "01/09/2020 00:00:00",
+                            "timestamp": "01/09/2020",
                         },
                     ],
                 }
@@ -616,16 +620,16 @@ class BacktestBlockRunning(TestCase):
             {
                 "response": {
                     "portVals": [
-                        {"value": 9998.0, "timestamp": "01/01/2020 00:00:00"},
-                        {"value": 10196.0, "timestamp": "01/02/2020 00:00:00"},
-                        {"value": 10871.0, "timestamp": "01/03/2020 00:00:00"},
-                        {"value": 9744.0, "timestamp": "01/04/2020 00:00:00"},
-                        {"value": 9744.0, "timestamp": "01/05/2020 00:00:00"},
-                        {"value": 9744.0, "timestamp": "01/06/2020 00:00:00"},
-                        {"value": 9744.0, "timestamp": "01/07/2020 00:00:00"},
-                        {"value": 9742.0, "timestamp": "01/08/2020 00:00:00"},
-                        {"value": 9630.0, "timestamp": "01/09/2020 00:00:00"},
-                        {"value": 9630.0, "timestamp": "01/10/2020 00:00:00"},
+                        {"value": 9998.0, "timestamp": "01/01/2020"},
+                        {"value": 10196.0, "timestamp": "01/02/2020"},
+                        {"value": 10871.0, "timestamp": "01/03/2020"},
+                        {"value": 9744.0, "timestamp": "01/04/2020"},
+                        {"value": 9744.0, "timestamp": "01/05/2020"},
+                        {"value": 9744.0, "timestamp": "01/06/2020"},
+                        {"value": 9744.0, "timestamp": "01/07/2020"},
+                        {"value": 9742.0, "timestamp": "01/08/2020"},
+                        {"value": 9630.0, "timestamp": "01/09/2020"},
+                        {"value": 9630.0, "timestamp": "01/10/2020"},
                     ],
                     "trades": [
                         {
@@ -633,35 +637,35 @@ class BacktestBlockRunning(TestCase):
                             "cash_allocated": 1000.0,
                             "order": "SELL",
                             "shares": 100,
-                            "timestamp": "01/01/2020 00:00:00",
+                            "timestamp": "01/01/2020",
                         },
                         {
                             "amount_invested": 1000.0,
                             "cash_allocated": 1000.0,
                             "order": "SELL",
                             "shares": 125,
-                            "timestamp": "01/02/2020 00:00:00",
+                            "timestamp": "01/02/2020",
                         },
                         {
                             "amount_invested": 2250.0,
                             "cash_allocated": 1000.0,
                             "order": "BUY_CLOSE",
                             "shares": 225,
-                            "timestamp": "01/04/2020 00:00:00",
+                            "timestamp": "01/04/2020",
                         },
                         {
                             "amount_invested": 990.0,
                             "cash_allocated": 1000.0,
                             "order": "SELL",
                             "shares": 55,
-                            "timestamp": "01/08/2020 00:00:00",
+                            "timestamp": "01/08/2020",
                         },
                         {
                             "amount_invested": 1000.0,
                             "cash_allocated": 1000.0,
                             "order": "SELL",
                             "shares": 50,
-                            "timestamp": "01/09/2020 00:00:00",
+                            "timestamp": "01/09/2020",
                         },
                     ],
                 }
@@ -737,16 +741,16 @@ class BacktestBlockRunning(TestCase):
             {
                 "response": {
                     "portVals": [
-                        {"value": 9998.0, "timestamp": "01/01/2020 00:00:00"},
-                        {"value": 10196.0, "timestamp": "01/02/2020 00:00:00"},
-                        {"value": 10867.0, "timestamp": "01/03/2020 00:00:00"},
-                        {"value": 10865.0, "timestamp": "01/04/2020 00:00:00"},
-                        {"value": 10665.0, "timestamp": "01/05/2020 00:00:00"},
-                        {"value": 9863.0, "timestamp": "01/06/2020 00:00:00"},
-                        {"value": 9863.0, "timestamp": "01/07/2020 00:00:00"},
-                        {"value": 9863.0, "timestamp": "01/08/2020 00:00:00"},
-                        {"value": 9863.0, "timestamp": "01/09/2020 00:00:00"},
-                        {"value": 9863.0, "timestamp": "01/10/2020 00:00:00"},
+                        {"value": 9998.0, "timestamp": "01/01/2020"},
+                        {"value": 10196.0, "timestamp": "01/02/2020"},
+                        {"value": 10867.0, "timestamp": "01/03/2020"},
+                        {"value": 10865.0, "timestamp": "01/04/2020"},
+                        {"value": 10665.0, "timestamp": "01/05/2020"},
+                        {"value": 9863.0, "timestamp": "01/06/2020"},
+                        {"value": 9863.0, "timestamp": "01/07/2020"},
+                        {"value": 9863.0, "timestamp": "01/08/2020"},
+                        {"value": 9863.0, "timestamp": "01/09/2020"},
+                        {"value": 9863.0, "timestamp": "01/10/2020"},
                     ],
                     "trades": [
                         {
@@ -754,42 +758,42 @@ class BacktestBlockRunning(TestCase):
                             "cash_allocated": 1000.0,
                             "order": "SELL",
                             "shares": 100,
-                            "timestamp": "01/01/2020 00:00:00",
+                            "timestamp": "01/01/2020",
                         },
                         {
                             "amount_invested": 1000.0,
                             "cash_allocated": 1000.0,
                             "order": "SELL",
                             "shares": 125,
-                            "timestamp": "01/02/2020 00:00:00",
+                            "timestamp": "01/02/2020",
                         },
                         {
                             "amount_invested": 500.0,
                             "cash_allocated": 1000.0,
                             "order": "BUY_CLOSE",
                             "shares": 100,
-                            "timestamp": "01/03/2020 00:00:00",
+                            "timestamp": "01/03/2020",
                         },
                         {
                             "amount_invested": 625.0,
                             "cash_allocated": 1000.0,
                             "order": "BUY_CLOSE",
                             "shares": 125,
-                            "timestamp": "01/03/2020 00:00:00",
+                            "timestamp": "01/03/2020",
                         },
                         {
                             "amount_invested": 1000.0,
                             "cash_allocated": 1000.0,
                             "order": "SELL",
                             "shares": 100,
-                            "timestamp": "01/04/2020 00:00:00",
+                            "timestamp": "01/04/2020",
                         },
                         {
                             "amount_invested": 2000.0,
                             "cash_allocated": 1000.0,
                             "order": "BUY_CLOSE",
                             "shares": 100,
-                            "timestamp": "01/06/2020 00:00:00",
+                            "timestamp": "01/06/2020",
                         },
                     ],
                 }
@@ -860,16 +864,16 @@ class BacktestBlockRunning(TestCase):
             {
                 "response": {
                     "portVals": [
-                        {"value": 50000.0, "timestamp": "01/01/2020 00:00:00"},
-                        {"value": 50000.0, "timestamp": "01/02/2020 00:00:00"},
-                        {"value": 50000.0, "timestamp": "01/03/2020 00:00:00"},
-                        {"value": 50000.0, "timestamp": "01/04/2020 00:00:00"},
-                        {"value": 50000.0, "timestamp": "01/05/2020 00:00:00"},
-                        {"value": 50000.0, "timestamp": "01/06/2020 00:00:00"},
-                        {"value": 50000.0, "timestamp": "01/07/2020 00:00:00"},
-                        {"value": 50000.0, "timestamp": "01/08/2020 00:00:00"},
-                        {"value": 50000.0, "timestamp": "01/09/2020 00:00:00"},
-                        {"value": 50000.0, "timestamp": "01/10/2020 00:00:00"},
+                        {"value": 50000.0, "timestamp": "01/01/2020"},
+                        {"value": 50000.0, "timestamp": "01/02/2020"},
+                        {"value": 50000.0, "timestamp": "01/03/2020"},
+                        {"value": 50000.0, "timestamp": "01/04/2020"},
+                        {"value": 50000.0, "timestamp": "01/05/2020"},
+                        {"value": 50000.0, "timestamp": "01/06/2020"},
+                        {"value": 50000.0, "timestamp": "01/07/2020"},
+                        {"value": 50000.0, "timestamp": "01/08/2020"},
+                        {"value": 50000.0, "timestamp": "01/09/2020"},
+                        {"value": 50000.0, "timestamp": "01/10/2020"},
                     ],
                     "trades": [],
                 }
