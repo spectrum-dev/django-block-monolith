@@ -30,9 +30,6 @@ def run(input, output):
     trade_commission = float(input["commission"])
     trade_amount = float(input["trade_amount_value"])
 
-    if data_block is None or signal_block is None:
-        return {"response": {"portVals": [], "trades": []}}
-
     # TODO: add validation for inputs
 
     price_df = format_request(data_block, "timestamp")
