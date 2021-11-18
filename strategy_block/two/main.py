@@ -1,20 +1,34 @@
 import math
 
 import pandas as pd
+from pydantic import BaseModel
 
 from strategy_block.one.orders import Orders
-from utils.utils import format_request, retrieve_block_data
+from utils.utils import format_request, retrieve_block_data, validate_payload
+
+from .exceptions import StrategyBlockTwoInvalidInputPayloadException
 
 
-def run(input, output):
+class InputPayload(BaseModel):
+    start_value: float
+    commission: float
+    trade_amount_value: float
+    stop_loss: float
+    take_profit: float
+
+
+def run(input: dict, output: dict) -> dict:
     """
-    Runs the backtest
+    Advanced Backtest Block: Runs backtest with stop-loss/take-profit and commissions
 
-    Attributes
-    ----------
-    input: Form Input Values
-    output: Output Cache Values
+    Args:
+        input (dict): Input payload dict from flow
+        output (dict): Data payloads from flow
+
+    Returns:
+        dict: Portfolio values and trades placed as part of strategy
     """
+
     selectable_data = {
         "data_block": [
             "DATA_BLOCK",
@@ -26,9 +40,12 @@ def run(input, output):
     block_data = retrieve_block_data(selectable_data, output)
     data_block = block_data["data_block"]
     signal_block = block_data["signal_block"]
-    portfolio_cash_value = float(input["start_value"])
-    trade_commission = float(input["commission"])
-    trade_amount = float(input["trade_amount_value"])
+    input = validate_payload(
+        InputPayload, input, StrategyBlockTwoInvalidInputPayloadException
+    )
+    portfolio_cash_value = input.start_value
+    trade_commission = input.commission
+    trade_amount = input.trade_amount_value
 
     # TODO: add validation for inputs
 
@@ -306,9 +323,9 @@ def _generate_trades_df(input, signal_block_df):
     """
     orders = Orders()
 
-    trade_amount = float(input["trade_amount_value"])
-    stop_loss_pct = float(input["stop_loss"])
-    take_profit_pct = float(input["take_profit"])
+    trade_amount = input.trade_amount_value
+    stop_loss_pct = input.stop_loss
+    take_profit_pct = input.take_profit
 
     for index, row in signal_block_df.iterrows():
         if row["buy"]:
