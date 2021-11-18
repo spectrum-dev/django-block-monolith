@@ -215,20 +215,6 @@ def get_data_from_id_and_field(id_field_string: str, output: dict) -> pd.DataFra
     data = data.rename(columns={data_field: "data"})
     return data
 
-def get_block_data_from_dict(block_type, output):
-    """
-    block_type: string of form 'DATA_BLOCK' or 'SIGNAL_BLOCK' etc.
-    output: dictionary of connecting output datasets
-    Returns dictionary item that matches with block type required
-    """
-    data = None
-    # TODO: validate that cannot be more than 1 of block type?
-    for key in output.keys():
-        key_breakup = key.split("-")
-        if key_breakup[0] == block_type:
-            data = output[key]
-            break
-    return data
 
 def validate_payload(
     input_payload: Type[BaseModel],

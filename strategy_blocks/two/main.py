@@ -3,7 +3,7 @@ import math
 import pandas as pd
 
 from strategy_block.one.orders import Orders
-from utils.utils import format_request, get_block_data_from_dict
+from utils.utils import format_request, retrieve_block_data
 
 
 def run(input, output):
@@ -15,8 +15,19 @@ def run(input, output):
     input: Form Input Values
     output: Output Cache Values
     """
-    data_block = get_block_data_from_dict("DATA_BLOCK", output)
-    signal_block = get_block_data_from_dict("SIGNAL_BLOCK", output)
+    # data_block = get_block_data_from_dict("DATA_BLOCK", output)
+    # signal_block = get_block_data_from_dict("SIGNAL_BLOCK", output)
+    selectable_data = {
+        "data_block": [
+            "DATA_BLOCK",
+        ],
+        "signal_block": [
+            "SIGNAL_BLOCK",
+        ],
+    }
+    block_data = retrieve_block_data(selectable_data, output)
+    data_block = block_data["data_block"]
+    signal_block = block_data["signal_block"]
     portfolio_cash_value = float(input["start_value"])
     trade_commission = float(input["commission"])
     trade_amount = float(input["trade_amount_value"])
