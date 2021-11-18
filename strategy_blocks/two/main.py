@@ -1,8 +1,9 @@
+import math
+
 import pandas as pd
 
-from utils.utils import get_block_data_from_dict, _convert_dict_to_df
-from strategy_blocks.one.orders import Orders
-import math
+from strategy_block.one.orders import Orders
+from utils.utils import format_request, get_block_data_from_dict
 
 
 def run(input, output):
@@ -25,7 +26,7 @@ def run(input, output):
 
     # TODO: add validation for inputs
 
-    price_df = _convert_dict_to_df(data_block)
+    price_df = format_request(data_block, "timestamp")
     signal_block_df = _generate_signal_block_df(signal_block)
     trades_df = _generate_trades_df(input, signal_block_df)
 

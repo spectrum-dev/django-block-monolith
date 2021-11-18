@@ -15,6 +15,9 @@ def format_request(request_json: dict, key: str) -> pd.DataFrame:
     request_json: List of Json Objects
     key: The main key to index DataFrame by
     """
+    DAILY_DT_FORMAT = "%m/%d/%Y"
+    INTRDAY_DT_FORMAT = "%m/%d/%YT%H:%M:%S.%f"
+
     # Ensures request_json is no None and has a value
     if request_json == None or request_json == []:
         raise InvalidRequestException
@@ -26,7 +29,22 @@ def format_request(request_json: dict, key: str) -> pd.DataFrame:
 
     # Converts the JSON into a DataFrame with the key being the index
     request_df = pd.DataFrame(request_json)
+    if key == "timestamp":
+        is_daily = False
+        try:
+            request_df[key] = pd.to_datetime(request_df[key], format=DAILY_DT_FORMAT)
+            is_daily = True
+        except ValueError:
+            # If date cannot be parsed then it means it's a datetime rather than date
+            request_df[key] = pd.to_datetime(request_df[key], format=INTRDAY_DT_FORMAT)
+
+    # Sort value is crucial for timestamp for some operations
     request_df = request_df.sort_values(by=key)
+    if key == "timestamp":
+        if is_daily:
+            request_df[key] = request_df[key].dt.strftime(DAILY_DT_FORMAT)
+        else:
+            request_df[key] = request_df[key].dt.strftime(INTRDAY_DT_FORMAT)
     request_df = request_df.set_index(key)
 
     return request_df
@@ -113,22 +131,3 @@ def get_block_data_from_dict(block_type, output):
             data = output[key]
             break
     return data
-
-
-def _convert_dict_to_df(data_dict):
-    """
-    Generates a Data Block DF
-
-    Attributes
-    ----------
-
-    data_block: Incoming Data Block DF
-    """
-    data_block_df = pd.DataFrame(data_dict)
-
-    assert "timestamp" in data_block_df.columns
-
-    data_block_df.timestamp = pd.to_datetime(data_block_df.timestamp)
-    data_block_df = data_block_df.sort_values(by="timestamp")
-    data_block_df = data_block_df.set_index("timestamp")
-    return data_block_df

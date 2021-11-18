@@ -26,10 +26,10 @@ class TestFormatRequest(TestCase):
 
     def test_successfully_returns_request_df(self):
         response_df = format_request(
-            [{"timestamp": "2020-01-01", "data": 0.00}], "timestamp"
+            [{"timestamp": "01/31/2021", "data": 0.00}], "timestamp"
         )
         expected_response_df = pd.DataFrame(
-            [["2020-01-01", 0.00]], columns=["timestamp", "data"]
+            [["01/31/2021", 0.00]], columns=["timestamp", "data"]
         )
         expected_response_df = expected_response_df.set_index("timestamp")
 
@@ -39,20 +39,20 @@ class TestFormatRequest(TestCase):
 class FormatComputationalBlockResponse(TestCase):
     def test_ok(self):
         response_df = pd.DataFrame(
-            [["2020-01-01", 0.00]], columns=["timestamp", "data"]
+            [["01/31/2021", 0.00]], columns=["timestamp", "data"]
         )
         response_df = response_df.set_index("timestamp")
         response_json = format_computational_block_response(
             response_df, "timestamp", "data"
         )
 
-        self.assertEqual(response_json, [{"timestamp": "2020-01-01", "data": 0.0}])
+        self.assertEqual(response_json, [{"timestamp": "01/31/2021", "data": 0.0}])
 
 
 class FormatSignalBlockResponse(TestCase):
     def test_ok(self):
         response_df = pd.DataFrame(
-            [["2020-01-01", "BUY"]], columns=["timestamp", "order"]
+            [["01/31/2021", "BUY"]], columns=["timestamp", "order"]
         )
         response_df = response_df.set_index("timestamp")
 
@@ -60,7 +60,7 @@ class FormatSignalBlockResponse(TestCase):
             response_df, "timestamp", ["order"]
         )
 
-        self.assertEqual(response_json, [{"timestamp": "2020-01-01", "order": "BUY"}])
+        self.assertEqual(response_json, [{"timestamp": "01/31/2021", "order": "BUY"}])
 
 
 class TestUtils(TestCase):
