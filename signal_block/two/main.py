@@ -1,57 +1,69 @@
-from functools import reduce
+from typing import List
 
-import pandas as pd
+from pydantic import BaseModel
 
 from signal_block.two.events.downward_saddle import main as downward_saddle
 from signal_block.two.events.upward_saddle import main as upward_saddle
-from utils.utils import format_signal_block_response
+from utils.types import EventActionEnum
+from utils.utils import (
+    format_signal_block_request,
+    format_signal_block_response,
+    validate_payload,
+)
+
+from .exceptions import (
+    SignalBlockTwoInvalidInputPayloadException,
+    SignalBlockTwoInvalidSaddleTypeException,
+)
 
 
-def run(input, output):
+class InputPayload(BaseModel):
+    incoming_data: str
+    saddle_type: str
+    event_action: EventActionEnum
+    consecutive_up: int
+    consecutive_down: int
+
+
+def run(input: dict, output: dict) -> List[dict]:
     """
-    Takes in elements from the form input and a single DATA_BLOCK
-    to generates a series of events associated with that block
+    Saddle Block: Takes in elements from input payload and a single DATA_BLOCK
+    to generate a series of events associated with the block
 
-    Attributes
-    ----------
-    input: Form Inputs
-    output: Time series data from a block
+    Args:
+        input (dict): Input payload from flow
+        output (dict): Time series data from block
+
+    Raises:
+        SignalBlockTwoInvalidSaddleTypeException: Named exception raised when
+            unsupported saddle type is used
+
+    Returns:
+        List[dict]: JSON representation of signal block data
     """
 
-    incoming_data_field = input.get("incoming_data", "")
-    output_df = _format_request(output, incoming_data_field)
+    input = validate_payload(
+        InputPayload, input, SignalBlockTwoInvalidInputPayloadException
+    )
+    output_df = format_signal_block_request(output, input.incoming_data)
 
     response_df = None
-    case = lambda x: x == input["saddle_type"]
+    case = lambda x: x == input.saddle_type
     if case("UPWARD"):
         response_df = upward_saddle(
             output_df,
-            input["event_action"],
-            consecutive_up=int(input["consecutive_up"]),
-            consecutive_down=int(input["consecutive_down"]),
+            input.event_action,
+            consecutive_up=input.consecutive_up,
+            consecutive_down=input.consecutive_down,
         )
     elif case("DOWNWARD"):
         response_df = downward_saddle(
             output_df,
-            input["event_action"],
-            consecutive_down=int(input["consecutive_down"]),
-            consecutive_up=int(input["consecutive_up"]),
+            input.event_action,
+            consecutive_down=input.consecutive_down,
+            consecutive_up=input.consecutive_up,
         )
     else:
-        pass
+        raise SignalBlockTwoInvalidSaddleTypeException
 
     return format_signal_block_response(response_df, "timestamp", ["order"])
-
-
-def _format_request(data, incoming_data_field):
-    df_list = []
-    for k, v in data.items():
-        df = pd.DataFrame(v)
-        df = df[["timestamp", incoming_data_field]]
-        df = df.rename(columns={incoming_data_field: "data"})
-        df_list.append(df)
-
-    df = reduce(lambda x, y: pd.merge(x, y, on="timestamp"), df_list)
-    df = df.set_index("timestamp")
-
-    return df

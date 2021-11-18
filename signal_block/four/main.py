@@ -1,38 +1,64 @@
+from typing import List
+
+from pydantic import BaseModel
+
 from signal_block.four.events.crossover_above import main as crossover_above
 from signal_block.four.events.crossover_below import main as crossover_below
-from utils.utils import format_signal_block_response, get_data_from_id_and_field
+from utils.types import EventActionEnum
+from utils.utils import (
+    format_signal_block_response,
+    get_data_from_id_and_field,
+    validate_payload,
+)
+
+from .exceptions import (
+    SignalBlockFourInvalidEventTypeException,
+    SignalBlockFourInvalidInputPayloadException,
+)
 
 
-def run(input, output):
+class InputPayload(BaseModel):
+    incoming_data: str
+    event_type: str
+    event_action: EventActionEnum
+    event_value: float
+
+
+def run(input: dict, output: dict) -> List[dict]:
     """
-    Takes in elements from the form input and a single COMPUTATIONAL_BLOCK
-    to generates a series of events associated with that block
+    Crossover Block: Generates signals based on whether one time series crosses over another
+    time series
 
-    Attributes
-    ----------
-    input: Form Inputs
-    computational_block: Time series data from a computational block
+    Args:
+        input (dict): Input payload from flow
+        output (dict): Time series data from COMPUTATIONAL_BLOCK
+
+    Raises:
+        SignalBlockFourInvalidEventTypeException: Named exception raised when
+            unsupported event type is used
+
+    Returns:
+        List[dict]: JSON representation of signal block data
     """
+    input = validate_payload(
+        InputPayload, input, SignalBlockFourInvalidInputPayloadException
+    )
 
-    data_field_string = input.get("incoming_data")
-
-    # TODO: VALIDATION
-    if data_field_string is None:
-        pass
-
-    computational_block_df = get_data_from_id_and_field(data_field_string, output)
+    computational_block_df = get_data_from_id_and_field(input.incoming_data, output)
 
     _crossover_func = None
-    case = lambda x: x == input["event_type"]
+    case = lambda x: x == input.event_type
 
     if case("ABOVE"):
         _crossover_func = crossover_above
     elif case("BELOW"):
         _crossover_func = crossover_below
+    else:
+        raise SignalBlockFourInvalidEventTypeException
 
     response_df = _crossover_func(
         computational_block_df,
-        input["event_action"],
-        crossover_value=float(input["event_value"]),
+        input.event_action,
+        crossover_value=input.event_value,
     )
     return format_signal_block_response(response_df, "timestamp", ["order"])

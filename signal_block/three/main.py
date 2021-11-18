@@ -1,12 +1,24 @@
 from functools import reduce
+from typing import List
 
 import pandas as pd
 
+from utils.utils import format_signal_block_response
 
-def run(outputs):
+
+def run(outputs: dict) -> List[dict]:
+    """
+    AND Block: Generate signals where two input SIGNAL_BLOCK data points agree
+
+    Args:
+        outputs (dict): Dictionary of SIGNAL_BLOCK to be used
+
+    Returns:
+        List[dict]: Returns a JSON representation of signal block data
+    """
     df_list = []
     for _, value in outputs.items():
-        df = _create_orders_df(value)
+        df = pd.DataFrame.from_records(value)
         if len(df) == 0:
             df = pd.DataFrame([], columns=["timestamp", "order"])
         df_list.append(df)
@@ -23,24 +35,7 @@ def run(outputs):
     # Checks if all orders are same
     df_merged = df_merged[df_merged.nunique(1).eq(1)]
 
-    orders_response = _create_orders_json(df_merged)
+    # If all orders are the same, any merged column can be the actual final column
+    df_merged["order"] = df_merged["order_x"]
 
-    return orders_response
-
-
-def _create_orders_df(orders):
-    df = pd.DataFrame.from_records(orders)
-    return df
-
-
-def _create_orders_json(orders_df):
-    response = []
-    for index, row in orders_df.iterrows():
-        response.append(
-            {
-                "timestamp": index,
-                "order": row[0],
-            }
-        )
-
-    return response
+    return format_signal_block_response(df_merged, "timestamp", ["order"])

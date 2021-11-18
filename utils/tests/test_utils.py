@@ -1,13 +1,22 @@
 import pandas as pd
 from django.test import TestCase
 from pandas.util.testing import assert_frame_equal
+from pydantic import BaseModel, StrictStr
 
-from utils.exceptions import InvalidRequestException, KeyDoesNotExistException
+from utils.exceptions import (
+    BlockDataDoesNotExistException,
+    BlockDoesNotExistException,
+    FieldDoesNotExistException,
+    InvalidRequestException,
+    KeyDoesNotExistException,
+)
 from utils.utils import (
     format_computational_block_response,
     format_request,
     format_signal_block_response,
     get_data_from_id_and_field,
+    retrieve_block_data,
+    validate_payload,
 )
 
 
@@ -63,7 +72,38 @@ class FormatSignalBlockResponse(TestCase):
         self.assertEqual(response_json, [{"timestamp": "01/31/2021", "order": "BUY"}])
 
 
-class TestUtils(TestCase):
+class TestRetrieveBlockData(TestCase):
+    def test_single_block_ok(self):
+        selectable_data = {"data_block": ["DATA_BLOCK"]}
+        incoming_data = {"DATA_BLOCK": []}
+
+        response = retrieve_block_data(selectable_data, incoming_data)
+
+        self.assertDictEqual(response, {"data_block": []})
+
+    def test_multiple_block_ok(self):
+        selectable_data = {
+            "data_block": ["DATA_BLOCK"],
+            "signal_block": ["SIGNAL_BLOCK"],
+        }
+        incoming_data = {"DATA_BLOCK": [], "SIGNAL_BLOCK": []}
+
+        response = retrieve_block_data(selectable_data, incoming_data)
+
+        self.assertDictEqual(response, {"data_block": [], "signal_block": []})
+
+    def test_raises_exception_when_block_not_found(self):
+        selectable_data = {
+            "data_block": ["DATA_BLOCK"],
+            "signal_block": ["SIGNAL_BLOCK"],
+        }
+        incoming_data = {"DATA_BLOCK": []}
+
+        with self.assertRaises(BlockDataDoesNotExistException):
+            retrieve_block_data(selectable_data, incoming_data)
+
+
+class TestGetDataFromIdAndField(TestCase):
     output = {
         "COMPUTATIONAL_BLOCK-1-2": [
             {"timestamp": "01/01/2020", "close": "12.00"},
@@ -90,9 +130,67 @@ class TestUtils(TestCase):
         assert_frame_equal(data, expected_df)
 
     def test_failure_error_non_existing_block_id(self):
-        # TODO
-        pass
+        with self.assertRaises(BlockDoesNotExistException):
+            get_data_from_id_and_field("3-close", self.output)
 
     def test_failure_error_non_existing_field(self):
-        # TODO
+        with self.assertRaises(FieldDoesNotExistException):
+            get_data_from_id_and_field("2-test", self.output)
+
+
+class TestValidatePayload(TestCase):
+    class InputPayload(BaseModel):
+        foo: str
+        bar: StrictStr
+        foobar: int
+
+    class CustomException(Exception):
         pass
+
+    def test_ok(self):
+        input = validate_payload(
+            self.InputPayload,
+            {"foo": "foo_str", "bar": "bar_str", "foobar": 1},
+            Exception,
+        )
+        self.assertEqual(
+            input, self.InputPayload(foo="foo_str", bar="bar_str", foobar=1)
+        )
+
+    def test_success_casted_type(self):
+        input = validate_payload(
+            self.InputPayload, {"foo": 5, "bar": "bar_str", "foobar": "1"}, Exception
+        )
+        self.assertEqual(input, self.InputPayload(foo="5", bar="bar_str", foobar=1))
+
+    def test_failure_strict_type(self):
+        with self.assertRaises(self.CustomException) as ctx:
+            input = validate_payload(
+                self.InputPayload,
+                {"foo": "foo_str", "bar": 5, "foobar": "1"},
+                self.CustomException,
+            )
+        self.assertEqual(
+            str(ctx.exception),
+            '[\n  {\n    "loc": [\n      "bar"\n    ],\n    "msg": "str type expected",\n    "type": "type_error.str"\n  }\n]',
+        )
+
+    def test_failure_missing_variable_and_strict_type(self):
+        with self.assertRaises(self.CustomException) as ctx:
+            input = validate_payload(
+                self.InputPayload, {"foo": "foo_str", "bar": 5}, self.CustomException
+            )
+        self.assertEqual(
+            str(ctx.exception),
+            '[\n  {\n    "loc": [\n      "bar"\n    ],\n    "msg": "str type expected",\n    "type": "type_error.str"\n  },\n  {\n    "loc": [\n      "foobar"\n    ],\n    "msg": "field required",\n    "type": "value_error.missing"\n  }\n]',
+        )
+
+    def test_failure_missing_variable_custom_text(self):
+        with self.assertRaises(self.CustomException) as ctx:
+            input = validate_payload(
+                self.InputPayload,
+                {"foo": "foo_str", "bar": 5},
+                self.CustomException,
+                "my custom exception",
+            )
+        self.assertEqual(str(ctx.exception), "my custom exception")

@@ -4,3 +4,15 @@ class InvalidRequestException(Exception):
 
 class KeyDoesNotExistException(Exception):
     pass
+
+
+class BlockDataDoesNotExistException(Exception):
+    pass
+
+
+class BlockDoesNotExistException(Exception):
+    pass
+
+
+class FieldDoesNotExistException(Exception):
+    pass

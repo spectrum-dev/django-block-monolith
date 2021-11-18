@@ -1,6 +1,10 @@
 from django.test import TestCase
 
 from blocks.event import event_ingestor
+from signal_block.two.exceptions import (
+    SignalBlockTwoInvalidInputPayloadException,
+    SignalBlockTwoInvalidSaddleTypeException,
+)
 
 
 class PostRun(TestCase):
@@ -101,6 +105,32 @@ class PostRun(TestCase):
 
         self.assertEqual(response, [{"timestamp": "2020-01-06", "order": "BUY"}])
 
+    def test_upward_castable_as_float(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "incoming_data": "data",
+                "saddle_type": "UPWARD",
+                "event_action": "BUY",
+                "consecutive_up": "2",
+                "consecutive_down": 1,
+            },
+            "outputs": {
+                "COMPUTATIONAL_BLOCK-1-1": [
+                    {"timestamp": "2020-01-01", "data": 10.00},
+                    {"timestamp": "2020-01-02", "data": 11.00},
+                    {"timestamp": "2020-01-03", "data": 13.00},
+                    {"timestamp": "2020-01-04", "data": 16.00},
+                    {"timestamp": "2020-01-05", "data": 15.00},
+                    {"timestamp": "2020-01-06", "data": 20.00},
+                ]
+            },
+        }
+
+        response = event_ingestor(payload)
+
+        self.assertEqual(response, [{"timestamp": "2020-01-06", "order": "BUY"}])
+
     def test_upward_no_event(self):
         payload = {
             **self.payload,
@@ -178,3 +208,102 @@ class PostRun(TestCase):
         response = event_ingestor(payload)
 
         self.assertEqual(response, [])
+
+    def test_failure_invalid_saddle_type(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "incoming_data": "data",
+                "saddle_type": "INVALID",
+                "event_action": "BUY",
+                "consecutive_down": 2,
+                "consecutive_up": 1,
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": [
+                    {"timestamp": "2020-01-01", "data": 10.00},
+                    {"timestamp": "2020-01-02", "data": 9.00},
+                    {"timestamp": "2020-01-03", "data": 8.00},
+                    {"timestamp": "2020-01-04", "data": 7.00},
+                    {"timestamp": "2020-01-05", "data": 6.00},
+                    {"timestamp": "2020-01-06", "data": 5.00},
+                ]
+            },
+        }
+
+        with self.assertRaises(SignalBlockTwoInvalidSaddleTypeException):
+            event_ingestor(payload)
+
+    def test_failure_invalid_event_action(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "incoming_data": "data",
+                "saddle_type": "DOWNWARD",
+                "event_action": "FOO",
+                "consecutive_down": 2,
+                "consecutive_up": 1,
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": [
+                    {"timestamp": "2020-01-01", "data": 10.00},
+                    {"timestamp": "2020-01-02", "data": 9.00},
+                    {"timestamp": "2020-01-03", "data": 8.00},
+                    {"timestamp": "2020-01-04", "data": 7.00},
+                    {"timestamp": "2020-01-05", "data": 6.00},
+                    {"timestamp": "2020-01-06", "data": 5.00},
+                ]
+            },
+        }
+
+        with self.assertRaises(SignalBlockTwoInvalidInputPayloadException):
+            event_ingestor(payload)
+
+    def test_failure_missing_input_variable(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "saddle_type": "DOWNWARD",
+                "event_action": "BUY",
+                "consecutive_down": 2,
+                "consecutive_up": 1,
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": [
+                    {"timestamp": "2020-01-01", "data": 10.00},
+                    {"timestamp": "2020-01-02", "data": 9.00},
+                    {"timestamp": "2020-01-03", "data": 8.00},
+                    {"timestamp": "2020-01-04", "data": 7.00},
+                    {"timestamp": "2020-01-05", "data": 6.00},
+                    {"timestamp": "2020-01-06", "data": 5.00},
+                ]
+            },
+        }
+
+        with self.assertRaises(SignalBlockTwoInvalidInputPayloadException):
+            event_ingestor(payload)
+
+    def test_failure_not_castable_to_float(self):
+        payload = {
+            **self.payload,
+            "inputs": {
+                "incoming_data": "data",
+                "saddle_type": "DOWNWARD",
+                "event_action": "BUY",
+                "consecutive_down": "FOO",
+                "consecutive_up": 1,
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": [
+                    {"timestamp": "2020-01-01", "data": 10.00},
+                    {"timestamp": "2020-01-02", "data": 9.00},
+                    {"timestamp": "2020-01-03", "data": 8.00},
+                    {"timestamp": "2020-01-04", "data": 7.00},
+                    {"timestamp": "2020-01-05", "data": 6.00},
+                    {"timestamp": "2020-01-06", "data": 5.00},
+                ]
+            },
+        }
+
+        with self.assertRaises(SignalBlockTwoInvalidInputPayloadException):
+            event_ingestor(payload)

@@ -1,27 +1,32 @@
-from utils.utils import format_computational_block_response, format_request
+from typing import List
+
+from utils.utils import (
+    format_computational_block_response,
+    format_request,
+    retrieve_block_data,
+)
 
 from .mappings import INDICATORS
 
 from .momentum import *  # isort:skip
 
 
-def run(input, output):
+def run(input: dict, output: dict) -> List[dict]:
     """
-    Takes in elements from the form input, and a DATA_BLOCK to create a technical analysis signal
+    Technical Analysis Block: Generates data points based on technical indicators
 
-    Attributes
-    ----------
-    input: Form inputs provided in metadata
-    data_block: Data from a data_block stream
+    Args:
+        input (dict): Input payload from flow
+        output (dict): Data payload from DATA_BLOCK
+
+    Returns:
+        List[dict]: JSON representation of dataframe with timestamp and data fields
     """
-    data_block = None
-    for key in output.keys():
-        key_breakup = key.split("-")
-        if key_breakup[0] == "DATA_BLOCK" or key_breakup[0] == "BULK_DATA_BLOCK":
-            data_block = output[key]
-            break
+    selectable_data = {"data_block": ["DATA_BLOCK", "BULK_DATA_BLOCK"]}
 
-    data_block_df = format_request(data_block, "timestamp")
+    block_data = retrieve_block_data(selectable_data, output)
+
+    data_block_df = format_request(block_data["data_block"], "timestamp")
     response = calculate_indicator(input, data_block_df)
     return format_computational_block_response(response, "timestamp", "data")
 

@@ -1,0 +1,2 @@
+class BulkDataBlockOneInvalidInputPayloadException(Exception):
+    pass

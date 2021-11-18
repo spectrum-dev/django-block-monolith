@@ -2,6 +2,12 @@ import pandas as pd
 from pydantic import BaseModel
 
 from data_block.one.alpha_vantage import get_us_stock_data
+from utils.utils import validate_payload
+
+from .exceptions import (
+    DataBlockOneInvalidCandlestickException,
+    DataBlockOneInvalidInputPayloadException,
+)
 
 
 class InputPayload(BaseModel):
@@ -11,35 +17,43 @@ class InputPayload(BaseModel):
     end_date: str
 
 
-def run(input):
+def run(input: dict) -> dict:
     """
-    Runs a query to get the US stock data
+    Runs a query to get US stock data
 
-    Attributes
-    ----------
-    input: The input payload
+    Args:
+        input (dict): Input payload from flow
+
+    Raises:
+        DataBlockOneInvalidCandlestickException: Named exception raised if
+            candlestick type is not supported
+
+    Returns:
+        dict: Returns dictionary representation of dataframe
     """
 
-    def map_candlestick_to_freq_date(candlestick):
-        case = lambda x: x == candlestick
-        if case("1min"):
-            return "T"
-        elif case("5min"):
-            return "5min"
-        elif case("15min"):
-            return "15min"
-        elif case("30min"):
-            return "30min"
-        elif case("60min"):
-            return "H"
-        elif case("1day"):
-            return "D"
-        elif case("1week"):
-            return "D"
-        elif case("1month"):
-            return "D"
-
-    input = InputPayload(**input)
+    input = validate_payload(
+        InputPayload, input, DataBlockOneInvalidInputPayloadException
+    )
+    case = lambda x: x == input.candlestick
+    if case("1min"):
+        formatted_candlestick = "T"
+    elif case("5min"):
+        formatted_candlestick = "5min"
+    elif case("15min"):
+        formatted_candlestick = "15min"
+    elif case("30min"):
+        formatted_candlestick = "30min"
+    elif case("60min"):
+        formatted_candlestick = "H"
+    elif case("1day"):
+        formatted_candlestick = "D"
+    elif case("1week"):
+        formatted_candlestick = "D"
+    elif case("1month"):
+        formatted_candlestick = "D"
+    else:
+        raise DataBlockOneInvalidCandlestickException
 
     response_df = get_us_stock_data(input.equity_name, data_type=input.candlestick)
 
@@ -47,7 +61,7 @@ def run(input):
         date_range = pd.date_range(
             input.start_date,
             input.end_date,
-            freq=map_candlestick_to_freq_date(input.candlestick),
+            freq=formatted_candlestick,
         )
 
         date_intersection = date_range.intersection(response_df.index)

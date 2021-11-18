@@ -1,11 +1,32 @@
+from typing import List
+
 import pandas as pd
+from pydantic import BaseModel
 
 from signal_block.seven.events.comparison_events import *
-from utils.utils import format_signal_block_response
+from utils.types import EventActionEnum
+from utils.utils import format_signal_block_response, validate_payload
+
+from .exceptions import (
+    SignalBlockSevenInputBlockOneInvalidDataStringException,
+    SignalBlockSevenInputBlockOneMissingDataFieldException,
+    SignalBlockSevenInputBlockTwoInvalidDataStringException,
+    SignalBlockSevenInputBlockTwoMissingDataFieldException,
+    SignalBlockSevenInvalidComparisonTypeException,
+    SignalBlockSevenInvalidInputPayloadException,
+    SignalBlockSevenMissingInputBlockOneException,
+    SignalBlockSevenMissingInputBlockTwoException,
+)
 
 
-def run(input, output):
-    """
+class InputPayload(BaseModel):
+    incoming_data_one: str
+    incoming_data_two: str
+    comparison_type: str
+    event_action: EventActionEnum
+
+
+"""
     Takes in elements from the form input and two DATA or COMPUTATIONAL blocks and perform logical comparisons on
     to generates a series of events associated with that block
 
@@ -14,59 +35,82 @@ def run(input, output):
     input: Form Inputs
     input_blocks: Time series data from 2 blocks (either can be computational or data)
     """
+
+
+def run(input: dict, output: dict) -> List[dict]:
+    """
+    Comparison Block: Generate signals where logical comparison rules are satisfied
+    for given data points
+
+    Args:
+        input (dict): Input payload from flow
+        output (dict): Time series data from DATA_BLOCK or COMPUTATIONAL_BLOCK
+
+    Raises:
+        SignalBlockSevenInputBlockOneInvalidDataStringException: Named exception
+            raised when invalid input data_string is supplied
+        SignalBlockSevenInputBlockTwoInvalidDataStringException: Named exception
+            raised when invalid input data_string is supplied
+        SignalBlockSevenMissingInputBlockOneException: Named exception
+            raised when invalid input data block is missing
+        SignalBlockSevenMissingInputBlockTwoException: Named exception
+            raised when invalid input data block is missing
+        SignalBlockSevenInputBlockOneMissingDataFieldException: Named exception
+            raised when field is not available in data block
+        SignalBlockSevenInputBlockTwoMissingDataFieldException: Named exception
+            raised when field is not available in data block
+        SignalBlockSevenInvalidComparisonTypeException: Named exception
+            raised when unsupported comparison type is provided
+
+    Returns:
+        List[dict]: JSON representation of signal block data
+    """
+    input = validate_payload(
+        InputPayload, input, SignalBlockSevenInvalidInputPayloadException
+    )
     # Data comes in as BlockIDInFlow, we have to parse the available outputs to get the right dataset name
     # Field name and block ID also comes in as 1 variable split by '-'
     # E.g. Flow BlockID 2 means COMPUTATIONAL_BLOCK-1-2
-    input_block_1_id, input_block_1_field = input.get("incoming_data_one", "").split(
-        "-"
-    )
-    input_block_2_id, input_block_2_field = input.get("incoming_data_two", "").split(
-        "-"
-    )
+    try:
+        input_block_1_id, input_block_1_field = input.incoming_data_one.split("-")
+    except ValueError:
+        raise SignalBlockSevenInputBlockOneInvalidDataStringException
+    try:
+        input_block_2_id, input_block_2_field = input.incoming_data_two.split("-")
+    except ValueError:
+        raise SignalBlockSevenInputBlockTwoInvalidDataStringException
 
     # Extracts Block Name from Block ID in Flow
-    input_block_1_name = [x for x in output.keys() if x.endswith(input_block_1_id)][0]
-    input_block_2_name = [x for x in output.keys() if x.endswith(input_block_2_id)][0]
-
-    comparison_type = input.get("comparison_type")
-    event_action = input.get("event_action")
-
-    if any(
-        x is None
-        for x in [
-            input_block_1_name,
-            input_block_1_field,
-            input_block_2_name,
-            input_block_2_field,
-            comparison_type,
-            event_action,
+    try:
+        input_block_1_name = [x for x in output.keys() if x.endswith(input_block_1_id)][
+            0
         ]
-    ):
-        # TODO: validation to check that all required fields are populated
-        # Possibly can be redundant if serializer takes care of this
-        pass
+    except IndexError:
+        raise SignalBlockSevenMissingInputBlockOneException
+    try:
+        input_block_2_name = [x for x in output.keys() if x.endswith(input_block_2_id)][
+            0
+        ]
+    except IndexError:
+        raise SignalBlockSevenMissingInputBlockTwoException
 
-    if input_block_1_name not in output.keys():
-        # TODO: validation for block not available as part of data
-        pass
-
-    if any(
-        x in ["timestamp", input_block_1_field]
-        for x in output[input_block_1_name][0].keys()
-    ):
-        # TODO: validation for field not present in dataset
-        pass
-
-    if input_block_2_name not in output.keys():
-        # TODO: validation for block not available as part of data
-        pass
+    comparison_type = input.comparison_type
+    event_action = input.event_action
 
     if any(
-        x in ["timestamp", input_block_2_field]
-        for x in output[input_block_2_name][0].keys()
+        x not in output[input_block_1_name][0].keys()
+        for x in ["timestamp", input_block_1_field]
     ):
-        # TODO: validation for field not present in dataset
-        pass
+        raise SignalBlockSevenInputBlockOneMissingDataFieldException
+
+    if any(
+        x not in output[input_block_2_name][0].keys()
+        for x in ["timestamp", input_block_2_field]
+    ):
+        raise SignalBlockSevenInputBlockTwoMissingDataFieldException
+
+    # Helper method to format request
+    _format_request = lambda x: pd.DataFrame.from_records(x)
 
     input_block_1 = _format_request(output[input_block_1_name])
     input_block_1 = input_block_1[["timestamp", input_block_1_field]]
@@ -95,19 +139,12 @@ def run(input, output):
         _comparison_func = more_than
     elif case(">="):
         _comparison_func = more_than_equal
+    else:
+        raise SignalBlockSevenInvalidComparisonTypeException
 
     response_df = _comparison_func(
         df_merged,
         event_action,
     )
 
-    response = format_signal_block_response(response_df, "timestamp", ["order"])
-    return {"response": response}
-
-
-def _format_request(request_json):
-    """
-    Helper method to format request
-    """
-    df = pd.DataFrame.from_records(request_json)
-    return df
+    return format_signal_block_response(response_df, "timestamp", ["order"])

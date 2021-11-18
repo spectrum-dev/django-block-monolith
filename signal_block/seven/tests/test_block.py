@@ -1,6 +1,16 @@
 from django.test import TestCase
 
 from blocks.event import event_ingestor
+from signal_block.seven.exceptions import (
+    SignalBlockSevenInputBlockOneInvalidDataStringException,
+    SignalBlockSevenInputBlockOneMissingDataFieldException,
+    SignalBlockSevenInputBlockTwoInvalidDataStringException,
+    SignalBlockSevenInputBlockTwoMissingDataFieldException,
+    SignalBlockSevenInvalidComparisonTypeException,
+    SignalBlockSevenInvalidInputPayloadException,
+    SignalBlockSevenMissingInputBlockOneException,
+    SignalBlockSevenMissingInputBlockTwoException,
+)
 
 DATA_BLOCK = [
     {
@@ -74,15 +84,13 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "order": "BUY"},
-                    {"timestamp": "01/02/2020", "order": "BUY"},
-                    {"timestamp": "01/05/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "order": "BUY"},
+                {"timestamp": "01/02/2020", "order": "BUY"},
+                {"timestamp": "01/05/2020", "order": "BUY"},
+            ],
         )
 
     def test_success_json_less_than_equal_buy(self):
@@ -107,16 +115,14 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "order": "BUY"},
-                    {"timestamp": "01/02/2020", "order": "BUY"},
-                    {"timestamp": "01/03/2020", "order": "BUY"},
-                    {"timestamp": "01/05/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "order": "BUY"},
+                {"timestamp": "01/02/2020", "order": "BUY"},
+                {"timestamp": "01/03/2020", "order": "BUY"},
+                {"timestamp": "01/05/2020", "order": "BUY"},
+            ],
         )
 
     def test_success_json_more_than_buy(self):
@@ -141,13 +147,11 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/04/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/04/2020", "order": "BUY"},
+            ],
         )
 
     def test_success_json_more_than_equal_buy(self):
@@ -172,14 +176,12 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/03/2020", "order": "BUY"},
-                    {"timestamp": "01/04/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/03/2020", "order": "BUY"},
+                {"timestamp": "01/04/2020", "order": "BUY"},
+            ],
         )
 
     def test_success_json_more_than_equal_buy_both_computational_block(self):
@@ -210,15 +212,13 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "order": "BUY"},
-                    {"timestamp": "01/02/2020", "order": "BUY"},
-                    {"timestamp": "01/04/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "order": "BUY"},
+                {"timestamp": "01/02/2020", "order": "BUY"},
+                {"timestamp": "01/04/2020", "order": "BUY"},
+            ],
         )
 
     def test_success_json_more_than_equal_buy_custom_blocks(self):
@@ -249,13 +249,289 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "order": "BUY"},
-                    {"timestamp": "01/02/2020", "order": "BUY"},
-                    {"timestamp": "01/04/2020", "order": "BUY"},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "order": "BUY"},
+                {"timestamp": "01/02/2020", "order": "BUY"},
+                {"timestamp": "01/04/2020", "order": "BUY"},
+            ],
         )
+
+    def test_failure_missing_input(self):
+        payload = {
+            "blockType": "SIGNAL_BLOCK",
+            "blockId": 7,
+            "inputs": {
+                "incoming_data_two": "2-field",
+                "comparison_type": ">=",
+                "event_action": "BUY",
+            },
+            "outputs": {
+                "COMPUTATIONAL_BLOCK-1-1": [
+                    {"timestamp": "01/01/2020", "value": "13.00"},
+                    {"timestamp": "01/02/2020", "value": "13.00"},
+                    {"timestamp": "01/03/2020", "value": "7.00"},
+                    {"timestamp": "01/04/2020", "value": "19.00"},
+                    {"timestamp": "01/05/2020", "value": "20.00"},
+                ],
+                "COMPUTATIONAL_BLOCK-1-2": [
+                    {"timestamp": "01/01/2020", "field": "12.00"},
+                    {"timestamp": "01/02/2020", "field": "12.00"},
+                    {"timestamp": "01/03/2020", "field": "12.00"},
+                    {"timestamp": "01/04/2020", "field": "12.00"},
+                    {"timestamp": "01/05/2020", "field": "21.00"},
+                ],
+            },
+        }
+
+        with self.assertRaises(SignalBlockSevenInvalidInputPayloadException):
+            event_ingestor(payload)
+
+    def test_failure_missing_input_block_one(self):
+        payload = {
+            "blockType": "SIGNAL_BLOCK",
+            "blockId": 7,
+            "inputs": {
+                "incoming_data_one": "3-value",
+                "incoming_data_two": "2-field",
+                "comparison_type": ">=",
+                "event_action": "BUY",
+            },
+            "outputs": {
+                "COMPUTATIONAL_BLOCK-1-1": [
+                    {"timestamp": "01/01/2020", "value": "13.00"},
+                    {"timestamp": "01/02/2020", "value": "13.00"},
+                    {"timestamp": "01/03/2020", "value": "7.00"},
+                    {"timestamp": "01/04/2020", "value": "19.00"},
+                    {"timestamp": "01/05/2020", "value": "20.00"},
+                ],
+                "COMPUTATIONAL_BLOCK-1-2": [
+                    {"timestamp": "01/01/2020", "field": "12.00"},
+                    {"timestamp": "01/02/2020", "field": "12.00"},
+                    {"timestamp": "01/03/2020", "field": "12.00"},
+                    {"timestamp": "01/04/2020", "field": "12.00"},
+                    {"timestamp": "01/05/2020", "field": "21.00"},
+                ],
+            },
+        }
+
+        with self.assertRaises(SignalBlockSevenMissingInputBlockOneException):
+            event_ingestor(payload)
+
+    def test_failure_missing_input_block_two(self):
+        payload = {
+            "blockType": "SIGNAL_BLOCK",
+            "blockId": 7,
+            "inputs": {
+                "incoming_data_one": "1-value",
+                "incoming_data_two": "3-field",
+                "comparison_type": ">=",
+                "event_action": "BUY",
+            },
+            "outputs": {
+                "COMPUTATIONAL_BLOCK-1-1": [
+                    {"timestamp": "01/01/2020", "value": "13.00"},
+                    {"timestamp": "01/02/2020", "value": "13.00"},
+                    {"timestamp": "01/03/2020", "value": "7.00"},
+                    {"timestamp": "01/04/2020", "value": "19.00"},
+                    {"timestamp": "01/05/2020", "value": "20.00"},
+                ],
+                "COMPUTATIONAL_BLOCK-1-2": [
+                    {"timestamp": "01/01/2020", "field": "12.00"},
+                    {"timestamp": "01/02/2020", "field": "12.00"},
+                    {"timestamp": "01/03/2020", "field": "12.00"},
+                    {"timestamp": "01/04/2020", "field": "12.00"},
+                    {"timestamp": "01/05/2020", "field": "21.00"},
+                ],
+            },
+        }
+
+        with self.assertRaises(SignalBlockSevenMissingInputBlockTwoException):
+            event_ingestor(payload)
+
+    def test_failure_missing_field_info_from_incoming_data_one(self):
+        payload = {
+            "blockType": "SIGNAL_BLOCK",
+            "blockId": 7,
+            "inputs": {
+                "incoming_data_one": "1",
+                "incoming_data_two": "2-field",
+                "comparison_type": ">=",
+                "event_action": "BUY",
+            },
+            "outputs": {
+                "COMPUTATIONAL_BLOCK-1-1": [
+                    {"timestamp": "01/01/2020", "value": "13.00"},
+                    {"timestamp": "01/02/2020", "value": "13.00"},
+                    {"timestamp": "01/03/2020", "value": "7.00"},
+                    {"timestamp": "01/04/2020", "value": "19.00"},
+                    {"timestamp": "01/05/2020", "value": "20.00"},
+                ],
+                "COMPUTATIONAL_BLOCK-1-2": [
+                    {"timestamp": "01/01/2020", "field": "12.00"},
+                    {"timestamp": "01/02/2020", "field": "12.00"},
+                    {"timestamp": "01/03/2020", "field": "12.00"},
+                    {"timestamp": "01/04/2020", "field": "12.00"},
+                    {"timestamp": "01/05/2020", "field": "21.00"},
+                ],
+            },
+        }
+
+        with self.assertRaises(SignalBlockSevenInputBlockOneInvalidDataStringException):
+            event_ingestor(payload)
+
+    def test_failure_missing_field_info_from_incoming_data_two(self):
+        payload = {
+            "blockType": "SIGNAL_BLOCK",
+            "blockId": 7,
+            "inputs": {
+                "incoming_data_one": "1-value",
+                "incoming_data_two": "2",
+                "comparison_type": ">=",
+                "event_action": "BUY",
+            },
+            "outputs": {
+                "COMPUTATIONAL_BLOCK-1-1": [
+                    {"timestamp": "01/01/2020", "value": "13.00"},
+                    {"timestamp": "01/02/2020", "value": "13.00"},
+                    {"timestamp": "01/03/2020", "value": "7.00"},
+                    {"timestamp": "01/04/2020", "value": "19.00"},
+                    {"timestamp": "01/05/2020", "value": "20.00"},
+                ],
+                "COMPUTATIONAL_BLOCK-1-2": [
+                    {"timestamp": "01/01/2020", "field": "12.00"},
+                    {"timestamp": "01/02/2020", "field": "12.00"},
+                    {"timestamp": "01/03/2020", "field": "12.00"},
+                    {"timestamp": "01/04/2020", "field": "12.00"},
+                    {"timestamp": "01/05/2020", "field": "21.00"},
+                ],
+            },
+        }
+
+        with self.assertRaises(SignalBlockSevenInputBlockTwoInvalidDataStringException):
+            event_ingestor(payload)
+
+    def test_failure_field_dne_incoming_data_one(self):
+        payload = {
+            "blockType": "SIGNAL_BLOCK",
+            "blockId": 7,
+            "inputs": {
+                "incoming_data_one": "1-foo",
+                "incoming_data_two": "2-field",
+                "comparison_type": ">=",
+                "event_action": "BUY",
+            },
+            "outputs": {
+                "COMPUTATIONAL_BLOCK-1-1": [
+                    {"timestamp": "01/01/2020", "value": "13.00"},
+                    {"timestamp": "01/02/2020", "value": "13.00"},
+                    {"timestamp": "01/03/2020", "value": "7.00"},
+                    {"timestamp": "01/04/2020", "value": "19.00"},
+                    {"timestamp": "01/05/2020", "value": "20.00"},
+                ],
+                "COMPUTATIONAL_BLOCK-1-2": [
+                    {"timestamp": "01/01/2020", "field": "12.00"},
+                    {"timestamp": "01/02/2020", "field": "12.00"},
+                    {"timestamp": "01/03/2020", "field": "12.00"},
+                    {"timestamp": "01/04/2020", "field": "12.00"},
+                    {"timestamp": "01/05/2020", "field": "21.00"},
+                ],
+            },
+        }
+
+        with self.assertRaises(SignalBlockSevenInputBlockOneMissingDataFieldException):
+            event_ingestor(payload)
+
+    def test_failure_field_dne_incoming_data_two(self):
+        payload = {
+            "blockType": "SIGNAL_BLOCK",
+            "blockId": 7,
+            "inputs": {
+                "incoming_data_one": "1-value",
+                "incoming_data_two": "2-foo",
+                "comparison_type": ">=",
+                "event_action": "BUY",
+            },
+            "outputs": {
+                "COMPUTATIONAL_BLOCK-1-1": [
+                    {"timestamp": "01/01/2020", "value": "13.00"},
+                    {"timestamp": "01/02/2020", "value": "13.00"},
+                    {"timestamp": "01/03/2020", "value": "7.00"},
+                    {"timestamp": "01/04/2020", "value": "19.00"},
+                    {"timestamp": "01/05/2020", "value": "20.00"},
+                ],
+                "COMPUTATIONAL_BLOCK-1-2": [
+                    {"timestamp": "01/01/2020", "field": "12.00"},
+                    {"timestamp": "01/02/2020", "field": "12.00"},
+                    {"timestamp": "01/03/2020", "field": "12.00"},
+                    {"timestamp": "01/04/2020", "field": "12.00"},
+                    {"timestamp": "01/05/2020", "field": "21.00"},
+                ],
+            },
+        }
+
+        with self.assertRaises(SignalBlockSevenInputBlockTwoMissingDataFieldException):
+            event_ingestor(payload)
+
+    def test_failure_invalid_comparison_type(self):
+        payload = {
+            "blockType": "SIGNAL_BLOCK",
+            "blockId": 7,
+            "inputs": {
+                "incoming_data_one": "1-value",
+                "incoming_data_two": "2-field",
+                "comparison_type": "FOO",
+                "event_action": "BUY",
+            },
+            "outputs": {
+                "COMPUTATIONAL_BLOCK-1-1": [
+                    {"timestamp": "01/01/2020", "value": "13.00"},
+                    {"timestamp": "01/02/2020", "value": "13.00"},
+                    {"timestamp": "01/03/2020", "value": "7.00"},
+                    {"timestamp": "01/04/2020", "value": "19.00"},
+                    {"timestamp": "01/05/2020", "value": "20.00"},
+                ],
+                "COMPUTATIONAL_BLOCK-1-2": [
+                    {"timestamp": "01/01/2020", "field": "12.00"},
+                    {"timestamp": "01/02/2020", "field": "12.00"},
+                    {"timestamp": "01/03/2020", "field": "12.00"},
+                    {"timestamp": "01/04/2020", "field": "12.00"},
+                    {"timestamp": "01/05/2020", "field": "21.00"},
+                ],
+            },
+        }
+
+        with self.assertRaises(SignalBlockSevenInvalidComparisonTypeException):
+            event_ingestor(payload)
+
+    def test_failure_invalid_event_action(self):
+        payload = {
+            "blockType": "SIGNAL_BLOCK",
+            "blockId": 7,
+            "inputs": {
+                "incoming_data_one": "1-value",
+                "incoming_data_two": "2-field",
+                "comparison_type": ">=",
+                "event_action": "FOO",
+            },
+            "outputs": {
+                "COMPUTATIONAL_BLOCK-1-1": [
+                    {"timestamp": "01/01/2020", "value": "13.00"},
+                    {"timestamp": "01/02/2020", "value": "13.00"},
+                    {"timestamp": "01/03/2020", "value": "7.00"},
+                    {"timestamp": "01/04/2020", "value": "19.00"},
+                    {"timestamp": "01/05/2020", "value": "20.00"},
+                ],
+                "COMPUTATIONAL_BLOCK-1-2": [
+                    {"timestamp": "01/01/2020", "field": "12.00"},
+                    {"timestamp": "01/02/2020", "field": "12.00"},
+                    {"timestamp": "01/03/2020", "field": "12.00"},
+                    {"timestamp": "01/04/2020", "field": "12.00"},
+                    {"timestamp": "01/05/2020", "field": "21.00"},
+                ],
+            },
+        }
+
+        with self.assertRaises(SignalBlockSevenInvalidInputPayloadException):
+            event_ingestor(payload)

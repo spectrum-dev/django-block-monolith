@@ -1,45 +1,52 @@
 import pandas as pd
+from pydantic import BaseModel
 
 from strategy_block.one.marketsim import run as run_marketsim
 from strategy_block.one.orders import Orders
+from utils.utils import retrieve_block_data, validate_payload
+
+from .exceptions import StrategyBlockOneInvalidInputPayloadException
 
 
-def run(input, output):
+class InputPayload(BaseModel):
+    start_value: float
+    commission: float
+    trade_amount_value: float
+
+
+def run(input: dict, output: dict) -> dict:
     """
-    Runs the backtest
+    Simple Backtest Block: Completes the flow and runs the backtest
 
-    Attributes
-    ----------
-    input: Form Input Values
-    output: Output Cache Values
+    Args:
+        input (dict): Input payload from flow
+        output (dict): Data payload from flow
+
+    Returns:
+        dict: Dictionary of portfolio values and trades placed at different time points
     """
-    data_block = None
-    for key in output.keys():
-        key_breakup = key.split("-")
-        if key_breakup[0] == "DATA_BLOCK" or key_breakup[0] == "BULK_DATA_BLOCK":
-            data_block = output[key]
-            break
+    input = validate_payload(
+        InputPayload, input, StrategyBlockOneInvalidInputPayloadException
+    )
+    selectable_data = {
+        "data_block": ["DATA_BLOCK", "BULK_DATA_BLOCK"],
+        "signal_block": ["SIGNAL_BLOCK"],
+    }
+    block_data = retrieve_block_data(selectable_data, output)
 
-    signal_block = None
-    for key in output.keys():
-        key_breakup = key.split("-")
-        if key_breakup[0] == "SIGNAL_BLOCK":
-            signal_block = output[key]
-            break
-
-    if len(signal_block) <= 0 or len(data_block) <= 0:
+    if len(block_data["data_block"]) <= 0 or len(block_data["signal_block"]) <= 0:
         return {"response": {"portVals": [], "trades": []}}
 
-    data_block_df = _generate_data_block_df(data_block)
-    signal_block_df = _generate_signal_block_df(signal_block)
+    data_block_df = _generate_data_block_df(block_data["data_block"])
+    signal_block_df = _generate_signal_block_df(block_data["signal_block"])
     trades_df = _generate_trades_df(input, signal_block_df)
 
     # TODO: Implement the marketsim
     port_vals, trades_df = run_marketsim(
         trades_df,
         data_block_df,
-        float(input["start_value"]),
-        float(input["commission"]),
+        input.start_value,
+        input.commission,
     )
 
     # Generates Responses
@@ -137,7 +144,7 @@ def _generate_trades_df(input, signal_block_df):
     """
     orders = Orders()
 
-    trade_amount = float(input["trade_amount_value"])
+    trade_amount = input.trade_amount_value
 
     for index, row in signal_block_df.iterrows():
         if row["buy"]:

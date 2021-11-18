@@ -1,6 +1,13 @@
 from django.test import TestCase
 
 from blocks.event import event_ingestor
+from computational_block.two.exceptions import (
+    ComputationalBlockTwoDataValueNotFloatException,
+    ComputationalBlockTwoFieldDoesNotExistException,
+    ComputationalBlockTwoInvalidOperationTypeException,
+    ComputationalBlockTwoOperationValueNotFloatException,
+)
+from utils.exceptions import BlockDataDoesNotExistException
 
 DATA_BLOCK = [
     {
@@ -114,17 +121,15 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 15.0},
-                    {"timestamp": "01/02/2020", "data": 16.0},
-                    {"timestamp": "01/03/2020", "data": 17.0},
-                    {"timestamp": "01/04/2020", "data": 18.0},
-                    {"timestamp": "01/05/2020", "data": 19.0},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": 15.0},
+                {"timestamp": "01/02/2020", "data": 16.0},
+                {"timestamp": "01/03/2020", "data": 17.0},
+                {"timestamp": "01/04/2020", "data": 18.0},
+                {"timestamp": "01/05/2020", "data": 19.0},
+            ],
         )
 
     def test_success_json_add_negative(self):
@@ -141,17 +146,15 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 5.0},
-                    {"timestamp": "01/02/2020", "data": 6.0},
-                    {"timestamp": "01/03/2020", "data": 7.0},
-                    {"timestamp": "01/04/2020", "data": 8.0},
-                    {"timestamp": "01/05/2020", "data": 9.0},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": 5.0},
+                {"timestamp": "01/02/2020", "data": 6.0},
+                {"timestamp": "01/03/2020", "data": 7.0},
+                {"timestamp": "01/04/2020", "data": 8.0},
+                {"timestamp": "01/05/2020", "data": 9.0},
+            ],
         )
 
     def test_success_json_add_decimal(self):
@@ -168,17 +171,15 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 10.5},
-                    {"timestamp": "01/02/2020", "data": 11.5},
-                    {"timestamp": "01/03/2020", "data": 12.5},
-                    {"timestamp": "01/04/2020", "data": 13.5},
-                    {"timestamp": "01/05/2020", "data": 14.5},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": 10.5},
+                {"timestamp": "01/02/2020", "data": 11.5},
+                {"timestamp": "01/03/2020", "data": 12.5},
+                {"timestamp": "01/04/2020", "data": 13.5},
+                {"timestamp": "01/05/2020", "data": 14.5},
+            ],
         )
 
     def test_success_json_subtract(self):
@@ -195,17 +196,15 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 5.0},
-                    {"timestamp": "01/02/2020", "data": 6.0},
-                    {"timestamp": "01/03/2020", "data": 7.0},
-                    {"timestamp": "01/04/2020", "data": 8.0},
-                    {"timestamp": "01/05/2020", "data": 9.0},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": 5.0},
+                {"timestamp": "01/02/2020", "data": 6.0},
+                {"timestamp": "01/03/2020", "data": 7.0},
+                {"timestamp": "01/04/2020", "data": 8.0},
+                {"timestamp": "01/05/2020", "data": 9.0},
+            ],
         )
 
     def test_success_json_subtract_negative(self):
@@ -222,17 +221,15 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 15.0},
-                    {"timestamp": "01/02/2020", "data": 16.0},
-                    {"timestamp": "01/03/2020", "data": 17.0},
-                    {"timestamp": "01/04/2020", "data": 18.0},
-                    {"timestamp": "01/05/2020", "data": 19.0},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": 15.0},
+                {"timestamp": "01/02/2020", "data": 16.0},
+                {"timestamp": "01/03/2020", "data": 17.0},
+                {"timestamp": "01/04/2020", "data": 18.0},
+                {"timestamp": "01/05/2020", "data": 19.0},
+            ],
         )
 
     def test_success_json_subtract_decimal(self):
@@ -249,17 +246,15 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 10.5},
-                    {"timestamp": "01/02/2020", "data": 11.5},
-                    {"timestamp": "01/03/2020", "data": 12.5},
-                    {"timestamp": "01/04/2020", "data": 13.5},
-                    {"timestamp": "01/05/2020", "data": 14.5},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": 10.5},
+                {"timestamp": "01/02/2020", "data": 11.5},
+                {"timestamp": "01/03/2020", "data": 12.5},
+                {"timestamp": "01/04/2020", "data": 13.5},
+                {"timestamp": "01/05/2020", "data": 14.5},
+            ],
         )
 
     def test_success_json_multiply(self):
@@ -276,17 +271,15 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 50.0},
-                    {"timestamp": "01/02/2020", "data": 55.0},
-                    {"timestamp": "01/03/2020", "data": 60.0},
-                    {"timestamp": "01/04/2020", "data": 65.0},
-                    {"timestamp": "01/05/2020", "data": 70.0},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": 50.0},
+                {"timestamp": "01/02/2020", "data": 55.0},
+                {"timestamp": "01/03/2020", "data": 60.0},
+                {"timestamp": "01/04/2020", "data": 65.0},
+                {"timestamp": "01/05/2020", "data": 70.0},
+            ],
         )
 
     def test_success_json_multiply_negative(self):
@@ -303,17 +296,15 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": -50.0},
-                    {"timestamp": "01/02/2020", "data": -55.0},
-                    {"timestamp": "01/03/2020", "data": -60.0},
-                    {"timestamp": "01/04/2020", "data": -65.0},
-                    {"timestamp": "01/05/2020", "data": -70.0},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": -50.0},
+                {"timestamp": "01/02/2020", "data": -55.0},
+                {"timestamp": "01/03/2020", "data": -60.0},
+                {"timestamp": "01/04/2020", "data": -65.0},
+                {"timestamp": "01/05/2020", "data": -70.0},
+            ],
         )
 
     def test_success_json_multiply_decimal(self):
@@ -330,17 +321,15 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 5},
-                    {"timestamp": "01/02/2020", "data": 5.5},
-                    {"timestamp": "01/03/2020", "data": 6},
-                    {"timestamp": "01/04/2020", "data": 6.5},
-                    {"timestamp": "01/05/2020", "data": 7},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": 5},
+                {"timestamp": "01/02/2020", "data": 5.5},
+                {"timestamp": "01/03/2020", "data": 6},
+                {"timestamp": "01/04/2020", "data": 6.5},
+                {"timestamp": "01/05/2020", "data": 7},
+            ],
         )
 
     def test_success_json_divide(self):
@@ -357,17 +346,15 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 2},
-                    {"timestamp": "01/02/2020", "data": 2.2},
-                    {"timestamp": "01/03/2020", "data": 2.4},
-                    {"timestamp": "01/04/2020", "data": 2.6},
-                    {"timestamp": "01/05/2020", "data": 2.8},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": 2},
+                {"timestamp": "01/02/2020", "data": 2.2},
+                {"timestamp": "01/03/2020", "data": 2.4},
+                {"timestamp": "01/04/2020", "data": 2.6},
+                {"timestamp": "01/05/2020", "data": 2.8},
+            ],
         )
 
     def test_success_json_divide_negative(self):
@@ -384,17 +371,15 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": -2},
-                    {"timestamp": "01/02/2020", "data": -2.2},
-                    {"timestamp": "01/03/2020", "data": -2.4},
-                    {"timestamp": "01/04/2020", "data": -2.6},
-                    {"timestamp": "01/05/2020", "data": -2.8},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": -2},
+                {"timestamp": "01/02/2020", "data": -2.2},
+                {"timestamp": "01/03/2020", "data": -2.4},
+                {"timestamp": "01/04/2020", "data": -2.6},
+                {"timestamp": "01/05/2020", "data": -2.8},
+            ],
         )
 
     def test_success_json_divide_decimal(self):
@@ -411,17 +396,15 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 20},
-                    {"timestamp": "01/02/2020", "data": 22},
-                    {"timestamp": "01/03/2020", "data": 24},
-                    {"timestamp": "01/04/2020", "data": 26},
-                    {"timestamp": "01/05/2020", "data": 28},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": 20},
+                {"timestamp": "01/02/2020", "data": 22},
+                {"timestamp": "01/03/2020", "data": 24},
+                {"timestamp": "01/04/2020", "data": 26},
+                {"timestamp": "01/05/2020", "data": 28},
+            ],
         )
 
     def test_success_json_power(self):
@@ -438,44 +421,15 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 100},
-                    {"timestamp": "01/02/2020", "data": 121},
-                    {"timestamp": "01/03/2020", "data": 144},
-                    {"timestamp": "01/04/2020", "data": 169},
-                    {"timestamp": "01/05/2020", "data": 196},
-                ]
-            },
-        )
-
-    def test_success_json_power_negative(self):
-        payload = {
-            "blockType": "COMPUTATIONAL_BLOCK",
-            "blockId": 2,
-            "inputs": {
-                "data_field": "close",
-                "operation_type": "^",
-                "operation_value": "2",
-            },
-            "outputs": {
-                "DATA_BLOCK-1-1": DATA_BLOCK,
-            },
-        }
-        response = event_ingestor(payload)
-        self.assertDictEqual(
-            response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 100},
-                    {"timestamp": "01/02/2020", "data": 121},
-                    {"timestamp": "01/03/2020", "data": 144},
-                    {"timestamp": "01/04/2020", "data": 169},
-                    {"timestamp": "01/05/2020", "data": 196},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": 100},
+                {"timestamp": "01/02/2020", "data": 121},
+                {"timestamp": "01/03/2020", "data": 144},
+                {"timestamp": "01/04/2020", "data": 169},
+                {"timestamp": "01/05/2020", "data": 196},
+            ],
         )
 
     def test_success_json_power_negative(self):
@@ -492,17 +446,15 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 0.01},
-                    {"timestamp": "01/02/2020", "data": 0.001},
-                    {"timestamp": "01/03/2020", "data": 0.0001},
-                    {"timestamp": "01/04/2020", "data": 0.00001},
-                    {"timestamp": "01/05/2020", "data": 0.000001},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": 0.01},
+                {"timestamp": "01/02/2020", "data": 0.001},
+                {"timestamp": "01/03/2020", "data": 0.0001},
+                {"timestamp": "01/04/2020", "data": 0.00001},
+                {"timestamp": "01/05/2020", "data": 0.000001},
+            ],
         )
 
     def test_success_json_multiply_volume(self):
@@ -519,39 +471,91 @@ class TriggerEvent(TestCase):
             },
         }
         response = event_ingestor(payload)
-        self.assertDictEqual(
+        self.assertEqual(
             response,
-            {
-                "response": [
-                    {"timestamp": "01/01/2020", "data": 50.0},
-                    {"timestamp": "01/02/2020", "data": 55.0},
-                    {"timestamp": "01/03/2020", "data": 60.0},
-                    {"timestamp": "01/04/2020", "data": 65.0},
-                    {"timestamp": "01/05/2020", "data": 70.0},
-                ]
-            },
+            [
+                {"timestamp": "01/01/2020", "data": 50.0},
+                {"timestamp": "01/02/2020", "data": 55.0},
+                {"timestamp": "01/03/2020", "data": 60.0},
+                {"timestamp": "01/04/2020", "data": 65.0},
+                {"timestamp": "01/05/2020", "data": 70.0},
+            ],
         )
 
-    # TODO: Test for only 1 input dataset
-    # TODO: Test for only numbers in operation_value
-    # def test_failure_json_more_than_one_data(self):
-    #     payload = {
-    #         "blockType": "COMPUTATIONAL_BLOCK",
-    #         "blockId": 2,
-    #         "inputs": {
-    #             "data_field": "close",
-    #             "operation_type": "+",
-    #             "operation_value": "5",
-    #         },
-    #         "outputs": {
-    #             "DATA_BLOCK-1-1": POWER_DATA_BLOCK,
-    #             "DATA_BLOCK-1-2": POWER_DATA_BLOCK,
-    #         },
-    #     }
-    #     response = event_ingestor(payload)
-    #     self.assertDictEqual(
-    #         response,
-    #         {
-    #             "response": "..."
-    #         },
-    #     )
+    def test_failure_no_data(self):
+        payload = {
+            "blockType": "COMPUTATIONAL_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "data_field": "volume",
+                "operation_type": "*",
+                "operation_value": "5",
+            },
+            "outputs": {},
+        }
+        with self.assertRaises(BlockDataDoesNotExistException):
+            event_ingestor(payload)
+
+    def test_failure_non_number_operation_value(self):
+        payload = {
+            "blockType": "COMPUTATIONAL_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "data_field": "volume",
+                "operation_type": "*",
+                "operation_value": "test",
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
+        }
+        with self.assertRaises(ComputationalBlockTwoOperationValueNotFloatException):
+            event_ingestor(payload)
+
+    def test_failure_non_existent_operation_type(self):
+        payload = {
+            "blockType": "COMPUTATIONAL_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "data_field": "volume",
+                "operation_type": "**",
+                "operation_value": "5",
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
+        }
+        with self.assertRaises(ComputationalBlockTwoInvalidOperationTypeException):
+            event_ingestor(payload)
+
+    def test_failure_non_existent_data_field(self):
+        payload = {
+            "blockType": "COMPUTATIONAL_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "data_field": "test",
+                "operation_type": "*",
+                "operation_value": "5",
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
+        }
+        with self.assertRaises(ComputationalBlockTwoFieldDoesNotExistException):
+            event_ingestor(payload)
+
+    def test_failure_data_column_not_number(self):
+        payload = {
+            "blockType": "COMPUTATIONAL_BLOCK",
+            "blockId": 2,
+            "inputs": {
+                "data_field": "timezone",
+                "operation_type": "*",
+                "operation_value": "5",
+            },
+            "outputs": {
+                "DATA_BLOCK-1-1": DATA_BLOCK,
+            },
+        }
+        with self.assertRaises(ComputationalBlockTwoDataValueNotFloatException):
+            event_ingestor(payload)
