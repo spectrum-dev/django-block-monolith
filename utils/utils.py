@@ -13,6 +13,9 @@ from .exceptions import (
     KeyDoesNotExistException,
 )
 
+DAILY_DT_FORMAT = "%m/%d/%Y"
+INTRDAY_DT_FORMAT = "%m/%d/%YT%H:%M:%S.%f"
+
 
 def format_request(request_json: dict, key: str) -> pd.DataFrame:
     """
@@ -29,8 +32,6 @@ def format_request(request_json: dict, key: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Returns a pandas DataFrame
     """
-    DAILY_DT_FORMAT = "%m/%d/%Y"
-    INTRDAY_DT_FORMAT = "%m/%d/%YT%H:%M:%S.%f"
 
     # Ensures request_json is no None and has a value
     if request_json is None or request_json == []:
