@@ -50,8 +50,6 @@ def run(input: dict, output: dict) -> dict:
     trade_commission = input.commission
     trade_amount = input.trade_amount_value
 
-    # TODO: add validation for inputs
-
     price_df = format_request(data_block, "timestamp")
     signal_block_df = _generate_signal_block_df(signal_block)
     trades_df = _generate_trades_df(input, signal_block_df)
@@ -225,9 +223,7 @@ def run(input: dict, output: dict) -> dict:
     port_val_df["value"] = port_val_df["held_units"].astype(float) * port_val_df[
         "close"
     ].astype(float) + port_val_df["portfolio_cash_value"].astype(float)
-    # print(port_val_df)
     port_val_df = port_val_df[["timestamp", "value"]]
-    # port_val_df["timestamp"] = port_val_df.timestamp.dt.strftime("%m/%d/%Y %H:%M:%S")
     port_val_df = port_val_df.drop_duplicates(
         keep="last",
         subset=[
@@ -249,7 +245,6 @@ def run(input: dict, output: dict) -> dict:
         }
     )
     trades_df["cash_allocated"] = trade_amount
-    # trades_df["timestamp"] = trades_df.timestamp.dt.strftime("%m/%d/%Y %H:%M:%S")
     trades = trades_df.to_dict(orient="records")
 
     return {"response": {"portVals": port_vals, "trades": trades}}
