@@ -4,7 +4,7 @@ import pandas as pd
 from pydantic import BaseModel
 
 from signal_block.seven.events.comparison_events import *
-from utils.types import EventActionEnum
+# from utils.types import EventActionEnum
 from utils.utils import format_signal_block_response, validate_payload
 
 from .exceptions import (
@@ -23,7 +23,7 @@ class InputPayload(BaseModel):
     incoming_data_one: str
     incoming_data_two: str
     comparison_type: str
-    event_action: EventActionEnum
+    event_action: str
 
 
 """
