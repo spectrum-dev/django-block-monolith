@@ -3,7 +3,7 @@ from typing import List
 from pydantic import BaseModel
 
 from signal_block.one.events.main import handle_intersect
-# from utils.types import EventActionEnum
+from utils.types import EventActionEnum
 from utils.utils import (
     format_signal_block_request,
     format_signal_block_response,
@@ -14,7 +14,10 @@ from .exceptions import SignalBlockOneInvalidInputPayloadException
 
 
 class InputPayload(BaseModel):
-    event_action: str
+    event_action: EventActionEnum
+
+    class Config:
+        use_enum_values = True
 
 
 def run(input: dict, computational_block: dict) -> List[dict]:

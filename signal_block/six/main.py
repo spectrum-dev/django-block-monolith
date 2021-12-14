@@ -3,7 +3,7 @@ from typing import List
 from pydantic import BaseModel
 
 from signal_block.six.events.close_above_events import *
-# from utils.types import EventActionEnum
+from utils.types import EventActionEnum
 from utils.utils import format_request, format_signal_block_response, validate_payload
 
 from .exceptions import (
@@ -15,7 +15,10 @@ from .exceptions import (
 
 class InputPayload(BaseModel):
     event_type: str
-    event_action: str
+    event_action: EventActionEnum
+
+    class Config:
+        use_enum_values = True
 
 
 def run(input: dict, output: dict) -> List[dict]:
