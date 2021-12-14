@@ -3,7 +3,7 @@ from typing import List
 from pydantic import BaseModel
 
 from signal_block.six.events.close_above_events import *
-# from utils.types import EventActionEnum
+from utils.types import EventActionEnum
 from utils.utils import format_request, format_signal_block_response, validate_payload
 
 from .exceptions import (
@@ -15,7 +15,7 @@ from .exceptions import (
 
 class InputPayload(BaseModel):
     event_type: str
-    event_action: str
+    event_action: EventActionEnum
 
 
 def run(input: dict, output: dict) -> List[dict]:
@@ -70,7 +70,7 @@ def run(input: dict, output: dict) -> List[dict]:
 
     response_df = _candle_close_func(
         data_block_df,
-        input.event_action,
+        input.event_action.value,
     )
 
     return format_signal_block_response(response_df, "timestamp", ["order"])
