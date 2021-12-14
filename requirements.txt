@@ -10,7 +10,7 @@ celery==5.2.1
 certifi==2021.10.8
 chardet==4.0.0
 click==8.0.3
-coverage==6.1.2
+coverage==6.2
 Cython==0.29.24
 Django==3.2.9
 django-admin==2.0.1
