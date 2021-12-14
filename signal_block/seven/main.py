@@ -25,6 +25,9 @@ class InputPayload(BaseModel):
     comparison_type: str
     event_action: EventActionEnum
 
+    class Config:
+        use_enum_values = True
+
 
 """
     Takes in elements from the form input and two DATA or COMPUTATIONAL blocks and perform logical comparisons on
@@ -95,7 +98,7 @@ def run(input: dict, output: dict) -> List[dict]:
         raise SignalBlockSevenMissingInputBlockTwoException
 
     comparison_type = input.comparison_type
-    event_action = input.event_action.value
+    event_action = input.event_action
 
     if any(
         x not in output[input_block_1_name][0].keys()

@@ -23,6 +23,9 @@ class InputPayload(BaseModel):
     event_action: EventActionEnum
     event_value: float
 
+    class Config:
+        use_enum_values = True
+
 
 def run(input: dict, output: dict) -> List[dict]:
     """
@@ -58,7 +61,7 @@ def run(input: dict, output: dict) -> List[dict]:
 
     response_df = _crossover_func(
         computational_block_df,
-        input.event_action.value,
+        input.event_action,
         crossover_value=input.event_value,
     )
     return format_signal_block_response(response_df, "timestamp", ["order"])

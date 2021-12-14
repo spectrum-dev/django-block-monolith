@@ -17,6 +17,9 @@ class InputPayload(BaseModel):
     event_type: str
     event_action: EventActionEnum
 
+    class Config:
+        use_enum_values = True
+
 
 def run(input: dict, output: dict) -> List[dict]:
     """
@@ -70,7 +73,7 @@ def run(input: dict, output: dict) -> List[dict]:
 
     response_df = _candle_close_func(
         data_block_df,
-        input.event_action.value,
+        input.event_action,
     )
 
     return format_signal_block_response(response_df, "timestamp", ["order"])

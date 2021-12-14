@@ -24,6 +24,9 @@ class InputPayload(BaseModel):
     consecutive_up: int
     consecutive_down: int
 
+    class Config:
+        use_enum_values = True
+
 
 def run(input: dict, output: dict) -> List[dict]:
     """
@@ -52,14 +55,14 @@ def run(input: dict, output: dict) -> List[dict]:
     if case("UPWARD"):
         response_df = upward_saddle(
             output_df,
-            input.event_action.value,
+            input.event_action,
             consecutive_up=input.consecutive_up,
             consecutive_down=input.consecutive_down,
         )
     elif case("DOWNWARD"):
         response_df = downward_saddle(
             output_df,
-            input.event_action.value,
+            input.event_action,
             consecutive_down=input.consecutive_down,
             consecutive_up=input.consecutive_up,
         )

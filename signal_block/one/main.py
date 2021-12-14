@@ -16,6 +16,9 @@ from .exceptions import SignalBlockOneInvalidInputPayloadException
 class InputPayload(BaseModel):
     event_action: EventActionEnum
 
+    class Config:
+        use_enum_values = True
+
 
 def run(input: dict, computational_block: dict) -> List[dict]:
     """
@@ -36,6 +39,6 @@ def run(input: dict, computational_block: dict) -> List[dict]:
     input = validate_payload(
         InputPayload, input, SignalBlockOneInvalidInputPayloadException
     )
-    response_df["order"] = input.event_action.value
+    response_df["order"] = input.event_action
 
     return format_signal_block_response(response_df, "timestamp", ["order"])
