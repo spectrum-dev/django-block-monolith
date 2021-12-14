@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 from signal_block.four.events.crossover_above import main as crossover_above
 from signal_block.four.events.crossover_below import main as crossover_below
-# from utils.types import EventActionEnum
+from utils.types import EventActionEnum
 from utils.utils import (
     format_signal_block_response,
     get_data_from_id_and_field,
@@ -20,8 +20,11 @@ from .exceptions import (
 class InputPayload(BaseModel):
     incoming_data: str
     event_type: str
-    event_action: str
+    event_action: EventActionEnum
     event_value: float
+
+    class Config:
+        use_enum_values = True
 
 
 def run(input: dict, output: dict) -> List[dict]:
