@@ -12,7 +12,7 @@ chardet==4.0.0
 click==8.0.3
 coverage==6.2
 Cython==0.29.26
-Django==3.2.11
+Django==4.0.1
 django-admin==2.0.1
 django-celery-results==2.2.0
 django-celery-beat==2.2.1
