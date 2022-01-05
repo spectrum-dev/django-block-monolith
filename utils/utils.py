@@ -13,6 +13,9 @@ from .exceptions import (
     KeyDoesNotExistException,
 )
 
+DAILY_DT_FORMAT = "%m/%d/%Y"
+INTRDAY_DT_FORMAT = "%m/%d/%YT%H:%M:%S.%f"
+
 
 def format_request(request_json: dict, key: str) -> pd.DataFrame:
     """
@@ -29,6 +32,7 @@ def format_request(request_json: dict, key: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Returns a pandas DataFrame
     """
+
     # Ensures request_json is no None and has a value
     if request_json is None or request_json == []:
         raise InvalidRequestException
@@ -40,7 +44,22 @@ def format_request(request_json: dict, key: str) -> pd.DataFrame:
 
     # Converts the JSON into a DataFrame with the key being the index
     request_df = pd.DataFrame(request_json)
+    if key == "timestamp":
+        is_daily = False
+        try:
+            request_df[key] = pd.to_datetime(request_df[key], format=DAILY_DT_FORMAT)
+            is_daily = True
+        except ValueError:
+            # If date cannot be parsed then it means it's a datetime rather than date
+            request_df[key] = pd.to_datetime(request_df[key], format=INTRDAY_DT_FORMAT)
+
+    # Sort value is crucial for timestamp for some operations
     request_df = request_df.sort_values(by=key)
+    if key == "timestamp":
+        if is_daily:
+            request_df[key] = request_df[key].dt.strftime(DAILY_DT_FORMAT)
+        else:
+            request_df[key] = request_df[key].dt.strftime(INTRDAY_DT_FORMAT)
     request_df = request_df.set_index(key)
 
     return request_df

@@ -11,6 +11,7 @@ from signal_block.six.main import run as signal_block_6_run
 from signal_block.three.main import run as signal_block_3_run
 from signal_block.two.main import run as signal_block_2_run
 from strategy_block.one.main import run as strategy_block_1_run
+from strategy_block.two.main import run as strategy_block_2_run
 
 
 def event_ingestor(payload):
@@ -67,5 +68,7 @@ def event_ingestor(payload):
     elif case("STRATEGY_BLOCK"):
         if block_id == 1:
             return strategy_block_1_run(inputs, outputs)
+        elif block_id == 2:
+            return strategy_block_2_run(inputs, outputs)
 
     raise Exception("Block type or ID is invalid")
