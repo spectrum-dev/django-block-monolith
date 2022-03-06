@@ -24,10 +24,13 @@ docker-compose run --rm block-monolith /bin/bash
 <perform any Django CLI functions here>
 ```
 
+## Documentation
+
+Developer documentation can be found [here](https://spectrum-dev.notion.site/Developer-Documentation-0811ab7d0e5a4190ad9515929c8d90c5).
+
 ## Development
 
 Want to contribute? Great! Feel free to create PR's for improvements and I will take a look at them as quickly as possible! Forks are also encouraged as well!
-
 
 ## License
 
