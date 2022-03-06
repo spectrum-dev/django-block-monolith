@@ -1,158 +1,158 @@
 version: "3.9"
 
- services:
-     postgres:
-         image: postgres:13
-         environment:
-             - POSTGRES_DB=postgres
-             - POSTGRES_USER=postgres
-             - POSTGRES_PASSWORD=postgres
-         networks:
-             - default
-         ports:
-             - 5432:5432
-     test:
-         build: .
-         command: python manage.py test
-         environment:
-             - ALPHA_VANTAGE_API_KEY=demo
-             - DJANGO_SECRET_KEY=django-public-secret-key
-             - DJANGO_DEBUG=1
-             - CELERY_BACKEND_DATABASE_NAME=celery-backend
-             - DATABASE_NAME=default
-             - DATABASE_USER=postgres
-             - DATABASE_PASSWORD=postgres
-             - DATABASE_HOST=postgres
-             - DATABASE_PORT=5432
-             - DATA_BANK_DATABASE_NAME=data-bank
-             - DATA_BANK_DATABASE_USER=postgres
-             - DATA_BANK_DATABASE_PASSWORD=postgres
-             - DATA_BANK_DATABASE_HOST=postgres
-             - DATA_BANK_DATABASE_PORT=5432
-             - EOD_HISTORICAL_DATA_API_KEY=TEST
-             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
-         depends_on:
-             - postgres
-             - rabbitmq
-         networks:
-             - default
-     lint:
-         build: .
-         command: python -m black . -t py38
-         environment:
-             - ALPHA_VANTAGE_API_KEY=demo
-             - DJANGO_SECRET_KEY=django-public-secret-key
-             - DJANGO_DEBUG=1
-             - CELERY_BACKEND_DATABASE_NAME=celery-backend
-             - DATABASE_NAME=default
-             - DATABASE_USER=postgres
-             - DATABASE_PASSWORD=postgres
-             - DATABASE_HOST=postgres
-             - DATABASE_PORT=5432
-             - DATA_BANK_DATABASE_NAME=data-bank
-             - DATA_BANK_DATABASE_USER=postgres
-             - DATA_BANK_DATABASE_PASSWORD=postgres
-             - DATA_BANK_DATABASE_HOST=postgres
-             - DATA_BANK_DATABASE_PORT=5432
-             - EOD_HISTORICAL_DATA_API_KEY=TEST
-             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
-         depends_on:
-             - postgres
-             - rabbitmq
-         networks:
-             - default
-     test-coverage:
-         build: .
-         command: bash -c "python -m coverage run manage.py test && python -m coverage report --fail-under 100 --show-missing"
-         environment:
-             - ALPHA_VANTAGE_API_KEY=demo
-             - DJANGO_SECRET_KEY=django-public-secret-key
-             - DJANGO_DEBUG=1
-             - CELERY_BACKEND_DATABASE_NAME=celery-backend
-             - DATABASE_NAME=default
-             - DATABASE_USER=postgres
-             - DATABASE_PASSWORD=postgres
-             - DATABASE_HOST=postgres
-             - DATABASE_PORT=5432
-             - DATA_BANK_DATABASE_NAME=data-bank
-             - DATA_BANK_DATABASE_USER=postgres
-             - DATA_BANK_DATABASE_PASSWORD=postgres
-             - DATA_BANK_DATABASE_HOST=postgres
-             - DATA_BANK_DATABASE_PORT=5432
-             - EOD_HISTORICAL_DATA_API_KEY=TEST
-             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
-         depends_on:
-             - postgres
-             - rabbitmq
-         networks:
-             - default
-     test-lint:
-         build: .
-         command: >
-             bash -c "python -m black . -t py38 --check
-             && python -m autoflake --recursive --check .
-             && python -m isort . --profile=black --check-only
-             "
-         environment:
-             - ALPHA_VANTAGE_API_KEY=demo
-             - DJANGO_SECRET_KEY=django-public-secret-key
-             - DJANGO_DEBUG=1
-             - CELERY_BACKEND_DATABASE_NAME=celery-backend
-             - DATABASE_NAME=default
-             - DATABASE_USER=postgres
-             - DATABASE_PASSWORD=postgres
-             - DATABASE_HOST=postgres
-             - DATABASE_PORT=5432
-             - DATA_BANK_DATABASE_NAME=data-bank
-             - DATA_BANK_DATABASE_USER=postgres
-             - DATA_BANK_DATABASE_PASSWORD=postgres
-             - DATA_BANK_DATABASE_HOST=postgres
-             - DATA_BANK_DATABASE_PORT=5432
-             - EOD_HISTORICAL_DATA_API_KEY=TEST
-             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
-         depends_on:
-             - postgres
-             - rabbitmq
-         networks:
-             - default
-     block-monolith:
-         build:
-             context: .
-         ports:
-             - 8000:8000
-         environment:
-             - ALPHA_VANTAGE_API_KEY="demo"
-             - DJANGO_SECRET_KEY=django-public-secret-key
-             - DJANGO_DEBUG=1
-             - CELERY_BACKEND_DATABASE_NAME=celery-backend
-             - DATABASE_NAME=default
-             - DATABASE_USER=postgres
-             - DATABASE_PASSWORD=postgres
-             - DATABASE_HOST=postgres
-             - DATABASE_PORT=5432
-             - DATA_BANK_DATABASE_NAME=data-bank
-             - DATA_BANK_DATABASE_USER=postgres
-             - DATA_BANK_DATABASE_PASSWORD=postgres
-             - DATA_BANK_DATABASE_HOST=postgres
-             - DATA_BANK_DATABASE_PORT=5432
-             - EOD_HISTORICAL_DATA_API_KEY=TEST
-             - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
-         volumes:
-             - .:/usr/src/app/
-         depends_on:
-             - postgres
-             # - rabbitmq
-         entrypoint: ''
-         command: './docker-entrypoint.sh'
-         networks:
-             - default
+services:
+    postgres:
+        image: postgres:13
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        networks:
+            - default
+        ports:
+            - 5432:5432
+    test:
+        build: .
+        command: python manage.py test
+        environment:
+            - ALPHA_VANTAGE_API_KEY=demo
+            - DJANGO_SECRET_KEY=django-public-secret-key
+            - DJANGO_DEBUG=1
+            - CELERY_BACKEND_DATABASE_NAME=celery-backend
+            - DATABASE_NAME=default
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
+            - DATABASE_HOST=postgres
+            - DATABASE_PORT=5432
+            - DATA_BANK_DATABASE_NAME=data-bank
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
+            - DATA_BANK_DATABASE_HOST=postgres
+            - DATA_BANK_DATABASE_PORT=5432
+            - EOD_HISTORICAL_DATA_API_KEY=TEST
+            - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
+        depends_on:
+            - postgres
+            - rabbitmq
+        networks:
+            - default
+    lint:
+        build: .
+        command: python -m black . -t py38
+        environment:
+            - ALPHA_VANTAGE_API_KEY=demo
+            - DJANGO_SECRET_KEY=django-public-secret-key
+            - DJANGO_DEBUG=1
+            - CELERY_BACKEND_DATABASE_NAME=celery-backend
+            - DATABASE_NAME=default
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
+            - DATABASE_HOST=postgres
+            - DATABASE_PORT=5432
+            - DATA_BANK_DATABASE_NAME=data-bank
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
+            - DATA_BANK_DATABASE_HOST=postgres
+            - DATA_BANK_DATABASE_PORT=5432
+            - EOD_HISTORICAL_DATA_API_KEY=TEST
+            - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
+        depends_on:
+            - postgres
+            - rabbitmq
+        networks:
+            - default
+    test-coverage:
+        build: .
+        command: bash -c "python -m coverage run manage.py test && python -m coverage report --fail-under 100 --show-missing"
+        environment:
+            - ALPHA_VANTAGE_API_KEY=demo
+            - DJANGO_SECRET_KEY=django-public-secret-key
+            - DJANGO_DEBUG=1
+            - CELERY_BACKEND_DATABASE_NAME=celery-backend
+            - DATABASE_NAME=default
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
+            - DATABASE_HOST=postgres
+            - DATABASE_PORT=5432
+            - DATA_BANK_DATABASE_NAME=data-bank
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
+            - DATA_BANK_DATABASE_HOST=postgres
+            - DATA_BANK_DATABASE_PORT=5432
+            - EOD_HISTORICAL_DATA_API_KEY=TEST
+            - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
+        depends_on:
+            - postgres
+            - rabbitmq
+        networks:
+            - default
+    test-lint:
+        build: .
+        command: >
+            bash -c "python -m black . -t py38 --check
+            && python -m autoflake --recursive --check .
+            && python -m isort . --profile=black --check-only
+            "
+        environment:
+            - ALPHA_VANTAGE_API_KEY=demo
+            - DJANGO_SECRET_KEY=django-public-secret-key
+            - DJANGO_DEBUG=1
+            - CELERY_BACKEND_DATABASE_NAME=celery-backend
+            - DATABASE_NAME=default
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
+            - DATABASE_HOST=postgres
+            - DATABASE_PORT=5432
+            - DATA_BANK_DATABASE_NAME=data-bank
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
+            - DATA_BANK_DATABASE_HOST=postgres
+            - DATA_BANK_DATABASE_PORT=5432
+            - EOD_HISTORICAL_DATA_API_KEY=TEST
+            - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
+        depends_on:
+            - postgres
+            - rabbitmq
+        networks:
+            - default
+    block-monolith:
+        build:
+            context: .
+        ports:
+            - 8000:8000
+        environment:
+            - ALPHA_VANTAGE_API_KEY="demo"
+            - DJANGO_SECRET_KEY=django-public-secret-key
+            - DJANGO_DEBUG=1
+            - CELERY_BACKEND_DATABASE_NAME=celery-backend
+            - DATABASE_NAME=default
+            - DATABASE_USER=postgres
+            - DATABASE_PASSWORD=postgres
+            - DATABASE_HOST=postgres
+            - DATABASE_PORT=5432
+            - DATA_BANK_DATABASE_NAME=data-bank
+            - DATA_BANK_DATABASE_USER=postgres
+            - DATA_BANK_DATABASE_PASSWORD=postgres
+            - DATA_BANK_DATABASE_HOST=postgres
+            - DATA_BANK_DATABASE_PORT=5432
+            - EOD_HISTORICAL_DATA_API_KEY=TEST
+            - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672
+        volumes:
+            - .:/usr/src/app/
+        depends_on:
+            - postgres
+            # - rabbitmq
+        entrypoint: ''
+        command: './docker-entrypoint.sh'
+        networks:
+            - default
 
-     rabbitmq:
-         image: "rabbitmq:3-management"
-         ports:
-             - "15672:15672"
-             - "5672:5672"
-         labels:
-             NAME: "rabbitmq"
-         networks:
-             - default
+    rabbitmq:
+        image: "rabbitmq:3-management"
+        ports:
+            - "15672:15672"
+            - "5672:5672"
+        labels:
+            NAME: "rabbitmq"
+        networks:
+            - default
